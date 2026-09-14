@@ -12,7 +12,10 @@ export async function generateMetadata({
   const resolvedParams = await params;
   const product = await serverProductRepository.getBySlug(resolvedParams.slug);
 
-  if (!product || !product.available) {
+  const isPublished = product && (!product.status || product.status === "PUBLISHED");
+  const isIndexable = product?.seo?.indexable !== false;
+
+  if (!product || !product.available || !isPublished) {
     return {
       title: "Product Not Found",
       description: "The requested product is not available.",
@@ -23,16 +26,18 @@ export async function generateMetadata({
     };
   }
 
-  const nameEn = productName(product, "en");
-  const descEn = productDescription(product, "en");
-  const canonicalUrl = getSiteUrl(`/products/${product.slug}`);
-  const primaryImage = product.images[0]?.src
-    ? getSiteUrl(product.images[0].src)
-    : undefined;
+  const nameEn = product.seo?.title?.en || productName(product, "en");
+  const descEn = product.seo?.metaDescription?.en || productDescription(product, "en");
+  const canonicalUrl = product.seo?.canonicalOverride || getSiteUrl(`/products/${product.slug}`);
+  const primaryImage = product.seo?.ogImage || (product.images[0]?.src ? getSiteUrl(product.images[0].src) : undefined);
 
   return {
     title: `${nameEn} — BADU`,
     description: descEn,
+    robots: {
+      index: isIndexable,
+      follow: isIndexable,
+    },
     alternates: {
       canonical: canonicalUrl,
     },

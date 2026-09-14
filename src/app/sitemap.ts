@@ -27,7 +27,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const visibleProducts = await serverProductRepository.getVisible();
     for (const product of visibleProducts) {
-      if (product.slug && product.available) {
+      const isIndexable = product.seo?.indexable !== false;
+      const isPublished = !product.status || product.status === "PUBLISHED";
+      if (product.slug && product.available && isPublished && isIndexable) {
         routes.push({
           url: getSiteUrl(`/products/${product.slug}`),
           lastModified: product.updatedAt ? new Date(product.updatedAt) : new Date(),
