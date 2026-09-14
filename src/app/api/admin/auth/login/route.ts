@@ -39,7 +39,8 @@ export async function POST(request: Request) {
       success: true,
       user,
     });
-  } catch {
+  } catch (err) {
+    console.error("[admin/auth/login] Error during login:", err);
     return NextResponse.json(
       {
         success: false,
