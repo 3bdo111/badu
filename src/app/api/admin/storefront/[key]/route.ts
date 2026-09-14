@@ -16,7 +16,7 @@ export async function PUT(
     const { key } = await params;
     const body = await request.json();
 
-    const updated = serverStorefrontRepository.updateSection(key, body);
+    const updated = await serverStorefrontRepository.updateSection(key, body);
     if (!updated) {
       return NextResponse.json({ error: "Section not found." }, { status: 404 });
     }

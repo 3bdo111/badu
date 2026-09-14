@@ -40,7 +40,7 @@ export default async function OrderConfirmationPage({
   const adminSession = await verifyAdminSession();
 
   const isAuthorized = Boolean(accessCookie || adminSession);
-  const order = isAuthorized ? serverOrderRepository.getOrderByNumber(orderNumber) : undefined;
+  const order = isAuthorized ? await serverOrderRepository.getOrderByNumber(orderNumber) : undefined;
 
   if (!order) {
     return (

@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { getSiteUrl } from "@/lib/config/site";
 import { serverProductRepository } from "@/lib/repositories/server-product-repository";
 
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getSiteUrl();
 
@@ -22,16 +24,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   // Dynamic visible product routes
-  const visibleProducts = serverProductRepository.getVisible();
-  for (const product of visibleProducts) {
-    if (product.slug && product.available) {
-      routes.push({
-        url: getSiteUrl(`/products/${product.slug}`),
-        lastModified: product.updatedAt ? new Date(product.updatedAt) : new Date(),
-        changeFrequency: "weekly",
-        priority: 0.8,
-      });
+  try {
+    const visibleProducts = await serverProductRepository.getVisible();
+    for (const product of visibleProducts) {
+      if (product.slug && product.available) {
+        routes.push({
+          url: getSiteUrl(`/products/${product.slug}`),
+          lastModified: product.updatedAt ? new Date(product.updatedAt) : new Date(),
+          changeFrequency: "weekly",
+          priority: 0.8,
+        });
+      }
     }
+  } catch {
+    // If DB is unavailable during dynamic rendering, return baseline static routes
   }
 
   return routes;

@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db/db";
+import { getDb } from "@/lib/db/db";
 
 export async function GET() {
   try {
-    // Quick database ping
-    db.prepare("SELECT 1").get();
+    const db = await getDb();
+    await db.get("SELECT 1");
 
     return NextResponse.json(
       {

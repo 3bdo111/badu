@@ -1,5 +1,4 @@
 import type { BaduDatabase } from "./adapter";
-import { createSqliteAdapter } from "./sqlite-adapter";
 import { createPostgresAdapter } from "./postgres-adapter";
 import { seedDatabase } from "./seed";
 
@@ -12,16 +11,13 @@ export type { BaduDatabase, SqlValue, RunResult } from "./adapter";
  *   otherwise, dev    → SQLite at DATABASE_PATH or ./data/badu.db
  *   otherwise, prod   → hard failure at startup
  */
-function createDatabase(): Promise<BaduDatabase> {
+async function createDatabase(): Promise<BaduDatabase> {
   const databaseUrl = process.env.DATABASE_URL;
 
   if (databaseUrl && databaseUrl.trim()) {
-    const init = (async () => {
-      const db = createPostgresAdapter({ connectionString: databaseUrl });
-      await seedDatabase(db);
-      return db;
-    })();
-    return init;
+    const db = createPostgresAdapter({ connectionString: databaseUrl });
+    await seedDatabase(db);
+    return db;
   }
 
   if (process.env.NODE_ENV === "production") {
@@ -33,13 +29,16 @@ function createDatabase(): Promise<BaduDatabase> {
     );
   }
 
+  // Dynamic import of sqlite-adapter so serverless production builds for Vercel/Postgres
+  // do not require or bundle better-sqlite3 native C++ bindings at module load time.
+  const { createSqliteAdapter } = await import("./sqlite-adapter");
   const db = createSqliteAdapter({ dbPath: process.env.DATABASE_PATH });
-  return seedDatabase(db).then(() => db);
+  await seedDatabase(db);
+  return db;
 }
 
 // Singleton init cached across Next.js hot reloads in development.
 declare global {
-  // eslint-disable-next-line no-var
   var _baduDbInit: Promise<BaduDatabase> | undefined;
 }
 

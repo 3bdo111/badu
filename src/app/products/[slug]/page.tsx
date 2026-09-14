@@ -10,7 +10,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  const product = serverProductRepository.getBySlug(resolvedParams.slug);
+  const product = await serverProductRepository.getBySlug(resolvedParams.slug);
 
   if (!product || !product.available) {
     return {
@@ -67,7 +67,7 @@ export default async function ProductDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const resolvedParams = await params;
-  const product = serverProductRepository.getBySlug(resolvedParams.slug);
+  const product = await serverProductRepository.getBySlug(resolvedParams.slug);
 
   const jsonLd = product && product.available ? {
     "@context": "https://schema.org/",

@@ -220,3 +220,107 @@ In the event of a deployment issue:
 - **Browser E2E Smoke Test**: Verified Admin Login, Dashboard, Visual CMS Preview, Dynamic Store, Product Page, Cart Drawer, COD Checkout, and Order Confirmation (`BADU-597332`)
 - **Restart Persistence**: Production server restarted; database records, orders, and storefront sections verified 100% intact.
 
+---
+
+## 14. Phase 19.2 — Vercel Production Deployment Guide
+
+Phase 19.2 makes BADU 100% compatible with Vercel serverless platform without breaking local development.
+
+### 14.1 Architecture Overview
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                    VERCEL SERVERLESS EDGE                   │
+│                                                             │
+│   Next.js App Router API & Server Components (Stateless)    │
+└──────────────┬──────────────────────────────┬───────────────┘
+               │                              │
+               ▼                              ▼
+┌─────────────────────────────┐  ┌─────────────────────────────┐
+│    MANAGED POSTGRESQL       │  │      VERCEL BLOB          │
+│   (Neon / Vercel Postgres)  │  │    (Durable CMS Uploads)   │
+│                             │  │                             │
+│  - Products & Categories    │  │  - Uploaded CMS Images    │
+│  - Dynamic Storefront CMS   │  │  - Visual Editor Media    │
+│  - Orders & COD State       │  │                             │
+│  - Admin Sessions           │  │                             │
+└─────────────────────────────┘  └─────────────────────────────┘
+```
+
+- **Dual-Database Driver**: 
+  - **Local Development**: Auto-selects SQLite (`better-sqlite3` at `./data/badu.db`) when `DATABASE_URL` is unconfigured.
+  - **Vercel Production**: Auto-selects Managed PostgreSQL (`@neondatabase/serverless`) when `DATABASE_URL` or `POSTGRES_URL` is set.
+- **Dual-Media Storage**:
+  - **Local Development**: Saves CMS uploads locally to `public/uploads/storefront/`.
+  - **Vercel Production**: Saves CMS uploads to durable Vercel Blob storage when `BLOB_READ_WRITE_TOKEN` is configured.
+
+---
+
+### 14.2 Managed PostgreSQL Database Setup
+
+1. **Create Database**:
+   - Provision a serverless PostgreSQL instance via [Neon.tech](https://neon.tech) or Vercel Marketplace (`Vercel Postgres`).
+2. **Execute DDL Schema**:
+   - Run the Postgres DDL script located at [`src/lib/db/pg-schema.sql`](file:///c:/Users/abdel/Downloads/Badu/src/lib/db/pg-schema.sql) in your database query editor.
+3. **Copy PostgreSQL Connection String**:
+   - Copy the Pooled Connection String (e.g. `postgres://user:pass@ep-xyz.us-east-1.aws.neon.tech/badu?sslmode=require`).
+
+---
+
+### 14.3 Data & Media Migration Commands
+
+Before going live on Vercel, migrate existing SQLite products, orders, and storefront sections into PostgreSQL:
+
+```bash
+# 1. Export SQLite data and print SQL INSERT statements / Migrate directly to PostgreSQL
+# Set DATABASE_URL in your environment first:
+export DATABASE_URL="postgres://user:pass@ep-xyz.us-east-1.aws.neon.tech/badu?sslmode=require"
+
+# Run data migration script:
+npm run db:migrate-pg
+
+# 2. Upload local CMS media files to Vercel Blob (requires BLOB_READ_WRITE_TOKEN):
+export BLOB_READ_WRITE_TOKEN="vercel_blob_rw_xxxxxxxx"
+export CONFIRM=MIGRATE
+
+npm run media:migrate
+```
+
+---
+
+### 14.4 Vercel Environment Variables Configuration
+
+In Vercel Dashboard $\rightarrow$ **Project Settings** $\rightarrow$ **Environment Variables**, configure:
+
+| Variable Name | Required | Description | Example |
+| :--- | :--- | :--- | :--- |
+| `DATABASE_URL` | **Yes** | Pooled PostgreSQL Connection URI | `postgres://user:pass@ep-xyz.us-east-1.neon.tech/badu?sslmode=require` |
+| `BLOB_READ_WRITE_TOKEN` | **Yes** | Vercel Blob Access Token | `vercel_blob_rw_123456789...` |
+| `ADMIN_BOOTSTRAP_EMAIL` | **Yes** | Initial Admin Email | `admin@example.com` |
+| `ADMIN_BOOTSTRAP_PASSWORD` | **Yes** | Initial Admin Password | `StrongAdminPassword123!` |
+| `SESSION_SECRET` | **Yes** | 64+ char session secret key | `super-secret-random-hex-string-here` |
+| `NEXT_PUBLIC_SITE_URL` | **Yes** | Public Production URL | `https://badu.vercel.app` |
+
+---
+
+### 14.5 Preview vs. Production Database Safety Rules
+
+- **Production Branch (`main`)**: Point `DATABASE_URL` to your **Production PostgreSQL Database**.
+- **Preview Deployments (Pull Requests)**: Point `DATABASE_URL` to a **Branch / Staging PostgreSQL Database** (Neon supports instant zero-copy DB branching) to avoid pollution of production orders and products during feature previews.
+
+---
+
+### 14.6 Step-by-Step Vercel Handover Guide
+
+1. Push your repository to GitHub / GitLab / Bitbucket.
+2. Go to [vercel.com/new](https://vercel.com/new) and import the repository.
+3. Framework Preset: **Next.js**.
+4. Configure all Environment Variables listed in Section 14.4.
+5. Click **Deploy**.
+6. Run `npm run db:migrate-pg` locally (with `DATABASE_URL` pointing to production PostgreSQL) to populate live products, storefront CMS sections, and orders.
+7. Run `npm run media:migrate` locally (with `BLOB_READ_WRITE_TOKEN` and `DATABASE_URL`) to upload media assets to Vercel Blob.
+8. Verify production URL:
+   - Perform order lookup / test COD checkout.
+   - Access `/admin` dashboard and Visual CMS Editor.
+
+

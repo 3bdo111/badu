@@ -10,6 +10,7 @@
     "db:backup": "npx tsx src/scripts/db-backup.ts",
     "db:restore": "npx tsx src/scripts/db-restore.ts",
     "db:integrity": "npx tsx src/scripts/db-integrity.ts",
+    "db:migrate-pg": "npx tsx src/scripts/export-sqlite-to-pg.ts",
     "db:migrate:up": "npx tsx src/scripts/migrate-to-postgres.ts",
     "db:migrate:media": "npx tsx src/scripts/migrate-media.ts",
     "production:check": "npx tsx src/scripts/production-check.ts"

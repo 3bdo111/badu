@@ -10,7 +10,7 @@ export async function POST() {
       return NextResponse.json({ error: "Unauthorized. Admin authentication required." }, { status: 401 });
     }
 
-    const publishedSections = serverStorefrontRepository.publishAllSections();
+    const publishedSections = await serverStorefrontRepository.publishAllSections();
     revalidatePath("/");
     revalidatePath("/store");
 

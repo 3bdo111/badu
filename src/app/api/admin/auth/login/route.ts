@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const user = verifyCredentials(email, password);
+    const user = await verifyCredentials(email, password);
     if (!user) {
       return NextResponse.json(
         {

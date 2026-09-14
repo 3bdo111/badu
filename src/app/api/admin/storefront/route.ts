@@ -9,7 +9,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized. Admin authentication required." }, { status: 401 });
     }
 
-    const sections = serverStorefrontRepository.getAllSections();
+    const sections = await serverStorefrontRepository.getAllSections();
     return NextResponse.json(sections);
   } catch {
     return NextResponse.json({ error: "Failed to fetch admin storefront sections." }, { status: 500 });

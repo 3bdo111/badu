@@ -129,13 +129,14 @@ export async function restoreDatabase(backupFilePath: string): Promise<RestoreRe
 
   // 3. Perform restoration by copying backup file over live database location
   // Close active singleton connection if exists
-  if (global._baduSqliteDb) {
+  const g = globalThis as unknown as Record<string, { close: () => void } | undefined>;
+  if (g._baduSqliteDb) {
     try {
-      global._baduSqliteDb.close();
+      g._baduSqliteDb.close();
     } catch {
       // Ignore
     }
-    global._baduSqliteDb = undefined;
+    g._baduSqliteDb = undefined;
   }
 
   fs.copyFileSync(resolvedBackupPath, liveDbPath);

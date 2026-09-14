@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db/db";
+import { getDb } from "@/lib/db/db";
 
 export async function GET() {
   try {
-    const tableCheck = db.prepare(`
-      SELECT count(*) as count FROM sqlite_master WHERE type='table' AND name='products'
-    `).get() as { count: number };
+    const db = await getDb();
+    const tableCheck = await db.get<{ count: number }>("SELECT count(*) as count FROM products");
 
-    const isReady = tableCheck && tableCheck.count > 0;
+    const isReady = tableCheck !== undefined;
 
     if (isReady) {
       return NextResponse.json(

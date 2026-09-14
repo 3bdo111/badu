@@ -26,7 +26,7 @@ export default async function StorePage() {
   const locale: Locale = isLocale(rawLocale) ? rawLocale : defaultLocale;
   const dict = dictionaries[locale];
 
-  const products = serverProductRepository.getVisible();
+  const products = await serverProductRepository.getVisible();
 
   return (
     <div className={styles.page}>

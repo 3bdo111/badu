@@ -37,11 +37,11 @@ async function findReferences(db: Awaited<ReturnType<typeof getDb>>, oldPath: st
       `SELECT id FROM storefront_sections WHERE ${col} = ?`,
       [oldPath]
     );
-    for (const row of rows) refs.push({ table: "storefront_sections", column: col, oldPath });
+    for (let i = 0; i < rows.length; i++) refs.push({ table: "storefront_sections", column: col, oldPath });
   }
 
   const images = await db.all<{ id: string }>(`SELECT id FROM product_images WHERE src = ?`, [oldPath]);
-  for (const row of images) refs.push({ table: "product_images", column: "src", oldPath });
+  for (let i = 0; i < images.length; i++) refs.push({ table: "product_images", column: "src", oldPath });
 
   return refs;
 }

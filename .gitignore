@@ -44,6 +44,7 @@ next-env.d.ts
 /data/*.db
 /data/*.db-wal
 /data/*.db-shm
+/data/*.sql
 /data/backups/
 /data/test_scratch/
 
@@ -54,3 +55,6 @@ next-env.d.ts
 /public/uploads/*
 !/public/uploads/.gitkeep
 
+
+.vercel
+.env*

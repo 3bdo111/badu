@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
 import { checkDatabaseIntegrity, getLiveDatabasePath } from "../lib/db/backup";
-import { db } from "../lib/db/db";
+import { getDb } from "../lib/db/db";
 
-function runProductionCheck() {
+async function runProductionCheck() {
   console.log("=== BADU PRODUCTION READINESS PRE-FLIGHT CHECK ===\n");
   let hasErrors = false;
 
@@ -30,9 +30,10 @@ function runProductionCheck() {
   }
 
   try {
-    const productCount = (db.prepare("SELECT COUNT(*) as c FROM products").get() as { c: number }).c;
-    const orderCount = (db.prepare("SELECT COUNT(*) as c FROM orders").get() as { c: number }).c;
-    const sectionCount = (db.prepare("SELECT COUNT(*) as c FROM storefront_sections").get() as { c: number }).c;
+    const db = await getDb();
+    const productCount = (await db.get<{ c: number }>("SELECT COUNT(*) as c FROM products"))?.c ?? 0;
+    const orderCount = (await db.get<{ c: number }>("SELECT COUNT(*) as c FROM orders"))?.c ?? 0;
+    const sectionCount = (await db.get<{ c: number }>("SELECT COUNT(*) as c FROM storefront_sections"))?.c ?? 0;
     console.log(`  ✓ Database records found — Products: ${productCount}, Orders: ${orderCount}, Storefront Sections: ${sectionCount}`);
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Schema query error";

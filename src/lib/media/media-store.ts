@@ -1,3 +1,6 @@
+import { createVercelBlobMediaStore } from "./vercel-blob-media-store";
+import { createLocalMediaStore } from "./local-media-store";
+
 /**
  * Logical media storage interface.
  *
@@ -41,9 +44,9 @@ export function isBlobStorageConfigured(): boolean {
  * Resolve the media store for the current environment.
  * Throws in production when blob storage is not configured.
  */
+
 export function getMediaStore(): MediaStore {
   if (isBlobStorageConfigured()) {
-    const { createVercelBlobMediaStore } = require("./vercel-blob-media-store") as typeof import("./vercel-blob-media-store");
     return createVercelBlobMediaStore({ token: process.env.BLOB_READ_WRITE_TOKEN! });
   }
 
@@ -54,6 +57,5 @@ export function getMediaStore(): MediaStore {
     );
   }
 
-  const { createLocalMediaStore } = require("./local-media-store") as typeof import("./local-media-store");
   return createLocalMediaStore();
 }

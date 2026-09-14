@@ -1,4 +1,4 @@
-import { db } from "@/lib/db/db";
+import { getDb } from "@/lib/db/db";
 
 export type SectionStatus = "DRAFT" | "PUBLISHED";
 
@@ -141,36 +141,40 @@ function mapSectionRow(row: DbStorefrontSectionRow, useDraft = false): Storefron
 }
 
 export const serverStorefrontRepository = {
-  getDraftSections(): StorefrontSectionRecord[] {
-    const rows = db
-      .prepare("SELECT * FROM storefront_sections ORDER BY COALESCE(draft_sort_order, sort_order) ASC, created_at ASC")
-      .all() as DbStorefrontSectionRow[];
+  async getDraftSections(): Promise<StorefrontSectionRecord[]> {
+    const db = await getDb();
+    const rows = await db.all<DbStorefrontSectionRow>(
+      "SELECT * FROM storefront_sections ORDER BY COALESCE(draft_sort_order, sort_order) ASC, created_at ASC"
+    );
 
     return rows.map((r) => mapSectionRow(r, true));
   },
 
-  getAllSections(): StorefrontSectionRecord[] {
+  async getAllSections(): Promise<StorefrontSectionRecord[]> {
     return this.getDraftSections();
   },
 
-  getPublicSections(): StorefrontSectionRecord[] {
-    const rows = db
-      .prepare("SELECT * FROM storefront_sections WHERE visible = 1 AND status = 'PUBLISHED' ORDER BY sort_order ASC")
-      .all() as DbStorefrontSectionRow[];
+  async getPublicSections(): Promise<StorefrontSectionRecord[]> {
+    const db = await getDb();
+    const rows = await db.all<DbStorefrontSectionRow>(
+      "SELECT * FROM storefront_sections WHERE visible = 1 AND status = 'PUBLISHED' ORDER BY sort_order ASC"
+    );
 
     return rows.map((r) => mapSectionRow(r, false));
   },
 
-  getSectionByKey(sectionKey: string, useDraft = true): StorefrontSectionRecord | undefined {
-    const row = db
-      .prepare("SELECT * FROM storefront_sections WHERE section_key = ?")
-      .get(sectionKey) as DbStorefrontSectionRow | undefined;
+  async getSectionByKey(sectionKey: string, useDraft = true): Promise<StorefrontSectionRecord | undefined> {
+    const db = await getDb();
+    const row = await db.get<DbStorefrontSectionRow>(
+      "SELECT * FROM storefront_sections WHERE section_key = ?",
+      [sectionKey]
+    );
 
     if (!row) return undefined;
     return mapSectionRow(row, useDraft);
   },
 
-  updateSectionDraft(
+  async updateSectionDraft(
     sectionKey: string,
     data: {
       titleEn?: string;
@@ -186,8 +190,8 @@ export const serverStorefrontRepository = {
       imageUrl?: string;
       visible?: boolean;
     }
-  ): StorefrontSectionRecord | undefined {
-    const existing = this.getSectionByKey(sectionKey, true);
+  ): Promise<StorefrontSectionRecord | undefined> {
+    const existing = await this.getSectionByKey(sectionKey, true);
     if (!existing) return undefined;
 
     const now = new Date().toISOString();
@@ -205,44 +209,46 @@ export const serverStorefrontRepository = {
     const updatedImageUrl = data.imageUrl !== undefined ? data.imageUrl.trim() : existing.imageUrl;
     const updatedVisible = data.visible !== undefined ? (data.visible ? 1 : 0) : existing.visible ? 1 : 0;
 
-    db.prepare(`
-      UPDATE storefront_sections
-      SET
-        draft_title_en = ?,
-        draft_title_ar = ?,
-        draft_subtitle_en = ?,
-        draft_subtitle_ar = ?,
-        draft_body_en = ?,
-        draft_body_ar = ?,
-        draft_cta_label_en = ?,
-        draft_cta_label_ar = ?,
-        draft_cta_url = ?,
-        draft_featured_product_id = ?,
-        draft_image_url = ?,
-        draft_visible = ?,
-        updated_at = ?
-      WHERE section_key = ?
-    `).run(
-      updatedTitleEn,
-      updatedTitleAr,
-      updatedSubtitleEn || null,
-      updatedSubtitleAr || null,
-      updatedBodyEn || null,
-      updatedBodyAr || null,
-      updatedCtaLabelEn || null,
-      updatedCtaLabelAr || null,
-      updatedCtaUrl || null,
-      updatedFeaturedProductId || null,
-      updatedImageUrl || null,
-      updatedVisible,
-      now,
-      sectionKey
+    const db = await getDb();
+    await db.run(
+      `UPDATE storefront_sections
+       SET
+         draft_title_en = ?,
+         draft_title_ar = ?,
+         draft_subtitle_en = ?,
+         draft_subtitle_ar = ?,
+         draft_body_en = ?,
+         draft_body_ar = ?,
+         draft_cta_label_en = ?,
+         draft_cta_label_ar = ?,
+         draft_cta_url = ?,
+         draft_featured_product_id = ?,
+         draft_image_url = ?,
+         draft_visible = ?,
+         updated_at = ?
+       WHERE section_key = ?`,
+      [
+        updatedTitleEn,
+        updatedTitleAr,
+        updatedSubtitleEn || null,
+        updatedSubtitleAr || null,
+        updatedBodyEn || null,
+        updatedBodyAr || null,
+        updatedCtaLabelEn || null,
+        updatedCtaLabelAr || null,
+        updatedCtaUrl || null,
+        updatedFeaturedProductId || null,
+        updatedImageUrl || null,
+        updatedVisible,
+        now,
+        sectionKey,
+      ]
     );
 
     return this.getSectionByKey(sectionKey, true);
   },
 
-  updateSection(
+  async updateSection(
     sectionKey: string,
     data: {
       titleEn?: string;
@@ -259,84 +265,85 @@ export const serverStorefrontRepository = {
       visible?: boolean;
       status?: SectionStatus;
     }
-  ): StorefrontSectionRecord | undefined {
-    const updatedDraft = this.updateSectionDraft(sectionKey, data);
+  ): Promise<StorefrontSectionRecord | undefined> {
+    const updatedDraft = await this.updateSectionDraft(sectionKey, data);
     if (data.status === "PUBLISHED") {
       return this.publishSection(sectionKey);
     }
     return updatedDraft;
   },
 
-  publishSection(sectionKey: string): StorefrontSectionRecord | undefined {
-    const existing = this.getSectionByKey(sectionKey, true);
+  async publishSection(sectionKey: string): Promise<StorefrontSectionRecord | undefined> {
+    const existing = await this.getSectionByKey(sectionKey, true);
     if (!existing) return undefined;
 
     const now = new Date().toISOString();
-    db.prepare(`
-      UPDATE storefront_sections
-      SET
-        title_en = COALESCE(draft_title_en, title_en),
-        title_ar = COALESCE(draft_title_ar, title_ar),
-        subtitle_en = draft_subtitle_en,
-        subtitle_ar = draft_subtitle_ar,
-        body_en = draft_body_en,
-        body_ar = draft_body_ar,
-        cta_label_en = draft_cta_label_en,
-        cta_label_ar = draft_cta_label_ar,
-        cta_url = draft_cta_url,
-        featured_product_id = draft_featured_product_id,
-        image_url = draft_image_url,
-        visible = COALESCE(draft_visible, visible),
-        sort_order = COALESCE(draft_sort_order, sort_order),
-        status = 'PUBLISHED',
-        published_at = ?,
-        updated_at = ?
-      WHERE section_key = ?
-    `).run(now, now, sectionKey);
+    const db = await getDb();
+    await db.run(
+      `UPDATE storefront_sections
+       SET
+         title_en = COALESCE(draft_title_en, title_en),
+         title_ar = COALESCE(draft_title_ar, title_ar),
+         subtitle_en = draft_subtitle_en,
+         subtitle_ar = draft_subtitle_ar,
+         body_en = draft_body_en,
+         body_ar = draft_body_ar,
+         cta_label_en = draft_cta_label_en,
+         cta_label_ar = draft_cta_label_ar,
+         cta_url = draft_cta_url,
+         featured_product_id = draft_featured_product_id,
+         image_url = draft_image_url,
+         visible = COALESCE(draft_visible, visible),
+         sort_order = COALESCE(draft_sort_order, sort_order),
+         status = 'PUBLISHED',
+         published_at = ?,
+         updated_at = ?
+       WHERE section_key = ?`,
+      [now, now, sectionKey]
+    );
 
     return this.getSectionByKey(sectionKey, false);
   },
 
-  publishAllSections(): StorefrontSectionRecord[] {
+  async publishAllSections(): Promise<StorefrontSectionRecord[]> {
     const now = new Date().toISOString();
-    db.prepare(`
-      UPDATE storefront_sections
-      SET
-        title_en = COALESCE(draft_title_en, title_en),
-        title_ar = COALESCE(draft_title_ar, title_ar),
-        subtitle_en = draft_subtitle_en,
-        subtitle_ar = draft_subtitle_ar,
-        body_en = draft_body_en,
-        body_ar = draft_body_ar,
-        cta_label_en = draft_cta_label_en,
-        cta_label_ar = draft_cta_label_ar,
-        cta_url = draft_cta_url,
-        featured_product_id = draft_featured_product_id,
-        image_url = draft_image_url,
-        visible = COALESCE(draft_visible, visible),
-        sort_order = COALESCE(draft_sort_order, sort_order),
-        status = 'PUBLISHED',
-        published_at = ?,
-        updated_at = ?
-    `).run(now, now);
+    const db = await getDb();
+    await db.run(
+      `UPDATE storefront_sections
+       SET
+         title_en = COALESCE(draft_title_en, title_en),
+         title_ar = COALESCE(draft_title_ar, title_ar),
+         subtitle_en = draft_subtitle_en,
+         subtitle_ar = draft_subtitle_ar,
+         body_en = draft_body_en,
+         body_ar = draft_body_ar,
+         cta_label_en = draft_cta_label_en,
+         cta_label_ar = draft_cta_label_ar,
+         cta_url = draft_cta_url,
+         featured_product_id = draft_featured_product_id,
+         image_url = draft_image_url,
+         visible = COALESCE(draft_visible, visible),
+         sort_order = COALESCE(draft_sort_order, sort_order),
+         status = 'PUBLISHED',
+         published_at = ?,
+         updated_at = ?`,
+      [now, now]
+    );
 
     return this.getPublicSections();
   },
 
-  reorderSections(keysOrder: string[]): StorefrontSectionRecord[] {
-    const updateOrderStmt = db.prepare(`
-      UPDATE storefront_sections
-      SET draft_sort_order = ?
-      WHERE section_key = ?
-    `);
-
-    const transaction = db.transaction(() => {
-      keysOrder.forEach((key, index) => {
-        updateOrderStmt.run(index + 1, key);
-      });
+  async reorderSections(keysOrder: string[]): Promise<StorefrontSectionRecord[]> {
+    const db = await getDb();
+    await db.transaction(async (tx) => {
+      for (let index = 0; index < keysOrder.length; index++) {
+        await tx.run(
+          `UPDATE storefront_sections SET draft_sort_order = ? WHERE section_key = ?`,
+          [index + 1, keysOrder[index]]
+        );
+      }
     });
 
-    transaction();
     return this.getDraftSections();
   },
 };

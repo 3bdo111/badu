@@ -32,7 +32,7 @@ export async function GET(request: Request) {
     const query = searchParams.get("query") || undefined;
     const status = searchParams.get("status") || undefined;
 
-    const orders = serverOrderRepository.getOrders(query, status);
+    const orders = await serverOrderRepository.getOrders(query, status);
     return NextResponse.json(orders);
   } catch {
     return NextResponse.json({ error: "Failed to fetch orders." }, { status: 500 });
@@ -165,7 +165,7 @@ export async function POST(request: Request) {
       return res;
     }
 
-    const order = serverOrderRepository.createOrder(cleanCustomer, cleanItems);
+    const order = await serverOrderRepository.createOrder(cleanCustomer, cleanItems);
     const accessKey = crypto.randomBytes(16).toString("hex");
 
     idempotencyCache.set(payloadFingerprint, {

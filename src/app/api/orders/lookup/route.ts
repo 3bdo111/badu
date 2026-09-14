@@ -20,7 +20,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Unauthorized access to order details." }, { status: 403 });
     }
 
-    const order = serverOrderRepository.getOrderByNumber(orderNumber);
+    const order = await serverOrderRepository.getOrderByNumber(orderNumber);
     if (!order) {
       return NextResponse.json({ error: "Order not found." }, { status: 404 });
     }

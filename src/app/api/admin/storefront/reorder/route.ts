@@ -16,7 +16,7 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: "Invalid section keys order payload." }, { status: 400 });
     }
 
-    const reordered = serverStorefrontRepository.reorderSections(keysOrder);
+    const reordered = await serverStorefrontRepository.reorderSections(keysOrder);
     return NextResponse.json({ success: true, sections: reordered });
   } catch {
     return NextResponse.json({ error: "Failed to reorder storefront sections." }, { status: 500 });

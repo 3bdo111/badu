@@ -10,8 +10,8 @@ export default async function VisualEditorPage() {
     redirect("/admin/login");
   }
 
-  const draftSections = serverStorefrontRepository.getDraftSections();
-  const products = serverProductRepository.getAll();
+  const draftSections = await serverStorefrontRepository.getDraftSections();
+  const products = await serverProductRepository.getAll();
 
   return <VisualEditorClient initialSections={draftSections} products={products} />;
 }

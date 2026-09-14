@@ -1,5 +1,4 @@
 import { Pool as NeonPool, PoolClient as NeonPoolClient } from "@neondatabase/serverless";
-import type { Pool as PgPool, PoolClient as PgPoolClient } from "pg";
 import type { BaduDatabase, RunResult, SqlValue } from "./adapter";
 import { rewritePositionalParams } from "./adapter";
 import { POSTGRES_SCHEMA } from "./schema-postgres";
@@ -49,7 +48,8 @@ function createClientHandle(dialectClient: PgClient): BaduDatabase {
     },
 
     // Pool-level transaction: checks out a dedicated client for the duration.
-    async transaction<T>(fn: (tx: BaduDatabase) => Promise<T>): Promise<T> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async transaction<T>(_fn: (tx: BaduDatabase) => Promise<T>): Promise<T> {
       throw new Error("Pool-level transaction is unavailable; transactions must come from a checked-out client.");
     },
   };
@@ -61,14 +61,17 @@ function createClientHandle(dialectClient: PgClient): BaduDatabase {
  * instances reuse connections instead of creating one per request.
  */
 export function createPostgresAdapter(options: PostgresAdapterOptions): BaduDatabase {
-  const pool = new Pool({
+  const pool = new NeonPool({
     connectionString: options.connectionString,
     max: options.max ?? Number(process.env.PGPOOL_MAX ?? 5),
     // Neon requires TLS; sslmode is part of the connection string.
   });
 
   const poolHandle = createClientHandle({
-    query: (text, params) => pool.query(text, params ? [...params] : []),
+    query: async <T>(text: string, params?: readonly SqlValue[]) => {
+      const res = await pool.query(text, params ? [...params] : []);
+      return { rows: res.rows as unknown as T[], rowCount: res.rowCount };
+    },
   });
 
   // Ensure schema exists (idempotent, cheap) and surface connection errors early.
@@ -84,9 +87,12 @@ export function createPostgresAdapter(options: PostgresAdapterOptions): BaduData
 
     async transaction<T>(fn: (tx: BaduDatabase) => Promise<T>): Promise<T> {
       await ready;
-      const client: PoolClient = await pool.connect();
+      const client: NeonPoolClient = await pool.connect();
       const txHandle = createClientHandle({
-        query: (text, params) => client.query(text, params ? [...params] : []),
+        query: async <T>(text: string, params?: readonly SqlValue[]) => {
+          const res = await client.query(text, params ? [...params] : []);
+          return { rows: res.rows as unknown as T[], rowCount: res.rowCount };
+        },
       });
       try {
         await client.query("BEGIN");

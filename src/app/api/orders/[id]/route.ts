@@ -13,7 +13,7 @@ export async function GET(
     }
 
     const { id } = await params;
-    const order = serverOrderRepository.getOrderById(id) || serverOrderRepository.getOrderByNumber(id);
+    const order = (await serverOrderRepository.getOrderById(id)) || (await serverOrderRepository.getOrderByNumber(id));
 
     if (!order) {
       return NextResponse.json({ error: "Order not found." }, { status: 404 });
@@ -52,15 +52,18 @@ export async function PATCH(
       return NextResponse.json({ error: "Invalid or unsupported order status value." }, { status: 400 });
     }
 
-    const updated = serverOrderRepository.updateOrderStatus(id, status as OrderStatus);
+    const updated = await serverOrderRepository.updateOrderStatus(id, status as OrderStatus);
     if (!updated) {
       return NextResponse.json({ error: "Order not found." }, { status: 404 });
     }
 
     return NextResponse.json({ success: true, order: updated });
   } catch (err: unknown) {
-    if (err instanceof OrderTransitionError) {
-      return NextResponse.json({ error: err.message }, { status: 400 });
+    if (
+      err instanceof OrderTransitionError ||
+      (err instanceof Error && (err.name === "OrderTransitionError" || err.message.includes("Invalid order status transition")))
+    ) {
+      return NextResponse.json({ error: (err as Error).message }, { status: 400 });
     }
     return NextResponse.json({ error: "Failed to update order status." }, { status: 500 });
   }

@@ -12,9 +12,9 @@ import { Reviews } from "@/components/home/Reviews";
 import { Faq } from "@/components/home/Faq";
 import { FinalCta } from "@/components/home/FinalCta";
 
-export default function Home() {
-  const publicSections = serverStorefrontRepository.getPublicSections();
-  const allProducts = serverProductRepository.getVisible();
+export default async function Home() {
+  const publicSections = await serverStorefrontRepository.getPublicSections();
+  const allProducts = await serverProductRepository.getVisible();
 
   const heroSection = publicSections.find((s) => s.sectionKey === "hero");
   const featuredProductSection = publicSections.find((s) => s.sectionKey === "featured_product");
@@ -25,7 +25,7 @@ export default function Home() {
     featuredProductSection?.featuredProductId || heroSection?.featuredProductId;
 
   if (targetProdId) {
-    featuredProduct = serverProductRepository.getById(targetProdId);
+    featuredProduct = await serverProductRepository.getById(targetProdId);
     if (featuredProduct && !featuredProduct.available) {
       featuredProduct = undefined;
     }

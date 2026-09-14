@@ -12,14 +12,14 @@ export async function GET(request: Request) {
       const admin = await verifyAdminSession();
       if (!admin) {
         // Unauthenticated request asking for hidden items -> return only visible items
-        const visible = serverProductRepository.getVisible();
+        const visible = await serverProductRepository.getVisible();
         return NextResponse.json(visible);
       }
-      const all = serverProductRepository.getAll();
+      const all = await serverProductRepository.getAll();
       return NextResponse.json(all);
     }
 
-    const visible = serverProductRepository.getVisible();
+    const visible = await serverProductRepository.getVisible();
     return NextResponse.json(visible);
   } catch {
     return NextResponse.json(
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const created = serverProductRepository.create(body);
+    const created = await serverProductRepository.create(body);
 
     revalidatePath("/store");
     revalidatePath("/");

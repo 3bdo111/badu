@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
-import { db } from "@/lib/db/db";
+import { getDb } from "@/lib/db/db";
 
 export const SESSION_COOKIE_NAME = "badu_admin_session";
 const SESSION_DURATION_DAYS = 7;
@@ -12,14 +12,16 @@ export interface AdminUserSession {
   role: string;
 }
 
-export function verifyCredentials(
+export async function verifyCredentials(
   emailInput: string,
   passwordInput: string
-): AdminUserSession | null {
+): Promise<AdminUserSession | null> {
   const emailClean = emailInput.trim().toLowerCase();
-  const user = db
-    .prepare("SELECT id, email, password_hash, role FROM admin_users WHERE email = ?")
-    .get(emailClean) as { id: string; email: string; password_hash: string; role: string } | undefined;
+  const db = await getDb();
+  const user = await db.get<{ id: string; email: string; password_hash: string; role: string }>(
+    "SELECT id, email, password_hash, role FROM admin_users WHERE email = ?",
+    [emailClean]
+  );
 
   if (!user) return null;
 
@@ -39,10 +41,12 @@ export async function createSession(userId: string): Promise<string> {
   const now = new Date();
   const expiresAt = new Date(now.getTime() + SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000).toISOString();
 
-  db.prepare(`
-    INSERT INTO admin_sessions (id, user_id, token, expires_at, created_at)
-    VALUES (?, ?, ?, ?, ?)
-  `).run(sessionId, userId, token, expiresAt, now.toISOString());
+  const db = await getDb();
+  await db.run(
+    `INSERT INTO admin_sessions (id, user_id, token, expires_at, created_at)
+     VALUES (?, ?, ?, ?, ?)`,
+    [sessionId, userId, token, expiresAt, now.toISOString()]
+  );
 
   const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE_NAME, token, {
@@ -62,20 +66,20 @@ export async function verifyAdminSession(): Promise<AdminUserSession | null> {
     const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
     if (!token) return null;
 
-    const row = db
-      .prepare(`
-        SELECT u.id, u.email, u.role, s.expires_at
-        FROM admin_sessions s
-        JOIN admin_users u ON s.user_id = u.id
-        WHERE s.token = ?
-      `)
-      .get(token) as { id: string; email: string; role: string; expires_at: string } | undefined;
+    const db = await getDb();
+    const row = await db.get<{ id: string; email: string; role: string; expires_at: string }>(
+      `SELECT u.id, u.email, u.role, s.expires_at
+       FROM admin_sessions s
+       JOIN admin_users u ON s.user_id = u.id
+       WHERE s.token = ?`,
+      [token]
+    );
 
     if (!row) return null;
 
     if (new Date(row.expires_at) < new Date()) {
       // Session expired, delete record
-      db.prepare("DELETE FROM admin_sessions WHERE token = ?").run(token);
+      await db.run("DELETE FROM admin_sessions WHERE token = ?", [token]);
       return null;
     }
 
@@ -94,7 +98,8 @@ export async function destroySession(): Promise<void> {
     const cookieStore = await cookies();
     const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
     if (token) {
-      db.prepare("DELETE FROM admin_sessions WHERE token = ?").run(token);
+      const db = await getDb();
+      await db.run("DELETE FROM admin_sessions WHERE token = ?", [token]);
     }
     cookieStore.delete(SESSION_COOKIE_NAME);
   } catch {
