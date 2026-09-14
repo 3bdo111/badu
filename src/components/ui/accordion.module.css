@@ -1,0 +1,120 @@
+.accordion {
+  width: 100%;
+}
+
+.item {
+  border-block-start: 1px solid var(--color-border);
+}
+
+.item:last-child {
+  border-block-end: 1px solid var(--color-border);
+}
+
+.question {
+  margin: 0;
+  font-family: var(--font-body);
+}
+
+.button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding-inline: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: start;
+  font-weight: 500;
+  color: var(--color-foreground);
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.button:hover {
+  color: var(--color-muted);
+}
+
+.indicator {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1;
+  flex-shrink: 0;
+  color: var(--color-muted);
+}
+
+/* Smooth height animation without measuring content */
+.answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows var(--duration-base) var(--ease-out),
+    visibility 0s linear var(--duration-base);
+}
+
+.open {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition:
+    grid-template-rows var(--duration-base) var(--ease-out),
+    visibility 0s;
+}
+
+.answerInner {
+  overflow: hidden;
+}
+
+/* --- Editorial variant (FAQ): large questions, generous spacing --- */
+.editorial .button {
+  padding-block: var(--space-6);
+  font-size: var(--text-h3);
+  font-family: var(--font-display);
+}
+
+:lang(ar) .editorial .button {
+  font-size: clamp(1.125rem, 2.5vw, 1.35rem);
+}
+
+.editorial .indicator {
+  font-size: var(--text-h2);
+}
+
+.editorial .answerInner p {
+  padding-block-end: var(--space-6);
+  color: var(--color-foreground-secondary);
+  font-size: var(--text-body);
+  max-width: 56ch;
+  line-height: 1.65;
+}
+
+/* --- Compact variant (product details): tighter, quieter rows --- */
+.compact .button {
+  padding-block: var(--space-4);
+  font-size: var(--text-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+:lang(ar) .compact .button {
+  letter-spacing: 0;
+  font-size: var(--text-body);
+  text-transform: none;
+}
+
+.compact .indicator {
+  font-size: var(--text-body);
+}
+
+.compact .answerInner p {
+  padding-block-end: var(--space-4);
+  color: var(--color-foreground-secondary);
+  font-size: var(--text-small);
+  max-width: 60ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .answer {
+    transition: none;
+  }
+}

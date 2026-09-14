@@ -1,0 +1,19 @@
+.logo {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: 0.35em;
+  color: var(--color-foreground);
+  text-decoration: none;
+  line-height: 1;
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.logo:hover {
+  color: var(--color-muted);
+}
+
+.dark,
+.dark:hover {
+  color: var(--color-background);
+}

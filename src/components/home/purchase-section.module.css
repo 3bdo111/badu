@@ -1,0 +1,201 @@
+.purchase {
+  padding-block: var(--space-9);
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background-color: var(--color-secondary);
+}
+
+.thumbnails {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  padding-block-end: var(--space-2);
+}
+
+.thumbBtn {
+  border: 1px solid transparent;
+  padding: 2px;
+  background: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color var(--duration-base) var(--ease-out);
+}
+
+.activeThumb {
+  border-color: var(--color-foreground);
+}
+
+.thumbFrame {
+  position: relative;
+  width: 4rem;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-secondary);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.name {
+  font-size: var(--text-h1);
+  line-height: var(--leading-heading);
+}
+
+.price {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  color: var(--color-foreground);
+}
+
+.metaBadges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.availability {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-small);
+  color: var(--color-foreground-secondary);
+}
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-muted);
+}
+
+.dotAvailable {
+  background-color: #6d7f57;
+}
+
+.dotUnavailable {
+  background-color: #a4574a;
+}
+
+.tagBadge {
+  font-size: var(--text-small);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-secondary);
+  color: var(--color-foreground-secondary);
+}
+
+:lang(ar) .tagBadge {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.optionRow,
+.optionBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.optionLabel {
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+:lang(ar) .optionLabel {
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+.colorValue {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-small);
+}
+
+.swatch {
+  width: 1rem;
+  height: 1rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+}
+
+.buyRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  inline-size: 100%;
+}
+
+.buyRow .addedButton {
+  background-color: #6d7f57;
+}
+
+.feedback {
+  font-size: var(--text-small);
+  color: var(--color-muted);
+  min-height: 1.25rem;
+}
+
+.description {
+  color: var(--color-foreground-secondary);
+  font-size: var(--text-body);
+  border-block-start: 1px solid var(--color-border);
+  padding-block-start: var(--space-5);
+  margin-block-start: var(--space-2);
+  max-width: 48ch;
+  line-height: 1.6;
+}
+
+.accordionWrap {
+  width: 100%;
+  margin-block-start: var(--space-4);
+  max-width: 48ch;
+}
+
+@media (min-width: 64rem) {
+  .purchase {
+    padding-block: var(--space-10);
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-9);
+  }
+
+  .visual {
+    position: sticky;
+    inset-block-start: calc(var(--header-height) + var(--space-5));
+  }
+}

@@ -1,0 +1,113 @@
+.sidebar {
+  width: 16rem;
+  height: 100%;
+  background-color: var(--color-secondary);
+  border-inline-end: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-5);
+  gap: var(--space-6);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.logoWrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.adminBadge {
+  font-size: 0.65rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  padding: 0.15rem 0.4rem;
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+:lang(ar) .adminBadge {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.nav {
+  flex: 1;
+}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.navItem {
+  width: 100%;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  color: var(--color-foreground-secondary);
+  text-decoration: none;
+  font-size: var(--text-small);
+  font-weight: 500;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.navLink:hover:not(.disabled) {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.active {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-weight: 600;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tag {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-border);
+  color: var(--color-muted);
+}
+
+.footer {
+  border-block-start: 1px solid var(--color-border);
+  padding-block-start: var(--space-4);
+}
+
+.footerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.storeLink {
+  font-size: var(--text-small);
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.storeLink:hover {
+  color: var(--color-foreground);
+}

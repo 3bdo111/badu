@@ -1,0 +1,77 @@
+.sizeGuide {
+  padding-block: var(--space-9);
+}
+
+.heading {
+  margin-block-start: var(--space-4);
+  font-size: var(--text-h1);
+}
+
+.tableWrap {
+  margin-block-start: var(--space-7);
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-small);
+  min-width: 24rem;
+}
+
+.table th,
+.table td {
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4);
+  text-align: start;
+  border-block-end: 1px solid var(--color-border);
+}
+
+.table thead th {
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-muted);
+  background-color: var(--color-secondary);
+}
+
+:lang(ar) .table thead th {
+  letter-spacing: 0;
+  font-size: var(--text-small);
+  font-weight: 500;
+}
+
+.table tbody tr:last-child th,
+.table tbody tr:last-child td {
+  border-block-end: none;
+}
+
+.table tbody th {
+  font-weight: 600;
+}
+
+.table td {
+  color: var(--color-foreground-secondary);
+}
+
+.note {
+  margin-block-start: var(--space-2);
+  font-size: var(--text-small);
+  color: var(--color-muted);
+}
+
+.fitNote {
+  margin-block-start: var(--space-4);
+  font-size: var(--text-body);
+  color: var(--color-foreground-secondary);
+  max-width: 50ch;
+}
+
+@media (min-width: 64rem) {
+  .sizeGuide {
+    padding-block: var(--space-10);
+  }
+}

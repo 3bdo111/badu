@@ -1,0 +1,46 @@
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background-color: var(--color-secondary);
+}
+
+.image {
+  object-fit: cover;
+}
+
+/* Quiet labelled frame shown only while real photography is pending */
+.pending {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  background-color: var(--color-secondary);
+  color: var(--color-muted);
+  text-align: center;
+  padding-inline: var(--space-6);
+}
+
+.pendingMark {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: 0.35em;
+  color: var(--color-primary);
+}
+
+.pendingLabel {
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+:lang(ar) .pendingLabel {
+  letter-spacing: 0;
+  font-size: var(--text-small);
+}

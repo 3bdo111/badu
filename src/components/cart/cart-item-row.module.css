@@ -1,0 +1,134 @@
+.itemRow {
+  display: flex;
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+  border-block-end: 1px solid var(--color-border);
+  align-items: flex-start;
+}
+
+.itemRow:last-child {
+  border-block-end: none;
+}
+
+.thumbnailFrame {
+  position: relative;
+  width: 5rem;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-secondary);
+  flex-shrink: 0;
+}
+
+.itemContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.titleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.productName {
+  font-family: var(--font-display);
+  font-size: var(--text-body);
+  font-weight: 500;
+  color: var(--color-foreground);
+  margin: 0;
+}
+
+.metaDetails {
+  font-size: var(--text-small);
+  color: var(--color-foreground-secondary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.metaDot {
+  opacity: 0.5;
+}
+
+.price {
+  font-family: var(--font-display);
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: var(--color-foreground);
+  white-space: nowrap;
+}
+
+.actionsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.quantityControl {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-background);
+}
+
+.qtyBtn {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--color-foreground);
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.qtyBtn:hover {
+  background-color: var(--color-secondary);
+}
+
+.qtyValue {
+  padding-inline: var(--space-2);
+  font-size: var(--text-small);
+  font-weight: 600;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.removeBtn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--text-small);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-muted);
+  padding: var(--space-1) var(--space-2);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+:lang(ar) .removeBtn {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.removeBtn:hover {
+  color: #a4574a;
+}

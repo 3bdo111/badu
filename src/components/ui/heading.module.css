@@ -1,0 +1,25 @@
+.heading {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: var(--leading-heading);
+  text-wrap: balance;
+}
+
+.heading:not(.display) {
+  font-size: var(--text-h2);
+}
+
+/* Display / hero scale */
+.display {
+  font-size: var(--text-display);
+  font-weight: 500;
+  line-height: var(--leading-display);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+/* Arabic display: uppercase is meaningless and tracking harms the script */
+:lang(ar) .display {
+  text-transform: none;
+  letter-spacing: 0;
+}

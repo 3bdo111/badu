@@ -1,0 +1,198 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: flex-end;
+  animation: backdrop-fade var(--duration-base) var(--ease-out);
+}
+
+:lang(ar) .backdrop {
+  justify-content: flex-start;
+}
+
+.drawer {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  height: 100%;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  animation: drawer-slide var(--duration-base) var(--ease-out);
+}
+
+@keyframes backdrop-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drawer-slide {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+:lang(ar) .drawer {
+  animation-name: drawer-slide-rtl;
+}
+
+@keyframes drawer-slide-rtl {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.header {
+  padding: var(--space-5) var(--space-6);
+  border-block-end: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+:lang(ar) .title {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.closeBtn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  color: var(--color-muted);
+  padding: var(--space-2);
+  line-height: 1;
+  border-radius: var(--radius-sm);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.closeBtn:hover {
+  color: var(--color-foreground);
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding-inline: var(--space-6);
+  display: flex;
+  flex-direction: column;
+}
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--space-3);
+}
+
+.footer {
+  padding-inline: var(--space-6);
+  padding-block-start: var(--space-5);
+  padding-block-end: max(var(--space-5), env(safe-area-inset-bottom));
+  border-block-start: 1px solid var(--color-border);
+  background-color: var(--color-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.subtotalRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.subtotalLabel {
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+:lang(ar) .subtotalLabel {
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+.subtotalAmount {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.actionBtn {
+  width: 100%;
+  justify-content: center;
+}
+
+.checkoutBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.soonNotice {
+  font-size: var(--text-small);
+  color: var(--color-muted);
+  text-align: center;
+  margin: 0;
+}
+
+.continueLink {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--text-small);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-foreground-secondary);
+  text-align: center;
+  padding-block: var(--space-2);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+:lang(ar) .continueLink {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.continueLink:hover {
+  color: var(--color-foreground);
+}
+
+@media (max-width: 40rem) {
+  .drawer {
+    max-width: 100%;
+  }
+}

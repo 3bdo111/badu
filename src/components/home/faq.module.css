@@ -1,0 +1,18 @@
+.faq {
+  padding-block: var(--space-9);
+}
+
+.heading {
+  margin-block-start: var(--space-4);
+  font-size: var(--text-h1);
+}
+
+.list {
+  margin-block-start: var(--space-7);
+}
+
+@media (min-width: 64rem) {
+  .faq {
+    padding-block: var(--space-10);
+  }
+}

@@ -1,0 +1,210 @@
+.container {
+  width: 100%;
+}
+
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-background);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-small);
+  text-align: start;
+}
+
+.table th,
+.table td {
+  padding: var(--space-4) var(--space-5);
+  border-block-end: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.table thead th {
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-muted);
+  background-color: var(--color-secondary);
+}
+
+:lang(ar) .table thead th {
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 500;
+}
+
+.table tbody tr:last-child td {
+  border-block-end: none;
+}
+
+.productCell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.thumbFrame {
+  position: relative;
+  width: 3rem;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-secondary);
+  flex-shrink: 0;
+}
+
+.productMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.productTitle {
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+
+.productSlug {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+.priceCell {
+  font-family: var(--font-display);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.alignEnd {
+  text-align: end;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+:lang(ar) .badge {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.badgePrimary {
+  background-color: var(--color-secondary);
+  color: var(--color-foreground);
+}
+
+.badgeSuccess {
+  background-color: #6d7f57;
+  color: #ffffff;
+}
+
+.badgeMuted {
+  background-color: var(--color-border);
+  color: var(--color-muted);
+}
+
+.badgeText {
+  font-size: 0.75rem;
+  color: var(--color-foreground-secondary);
+}
+
+.actionsGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.editBtn {
+  font-size: var(--text-small);
+  color: var(--color-foreground);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.editBtn:hover {
+  color: var(--color-muted);
+}
+
+.deleteBtn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--text-small);
+  color: #a4574a;
+  padding: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.deleteBtn:hover {
+  opacity: 0.75;
+}
+
+.emptyState {
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--color-muted);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.cardsList {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.card {
+  padding: var(--space-4);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.cardBadges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-4);
+  border-block-start: 1px solid var(--color-border);
+  padding-block-start: var(--space-3);
+  margin-block-start: var(--space-1);
+}
+
+@media (max-width: 48rem) {
+  .tableWrap {
+    display: none;
+  }
+
+  .cardsList {
+    display: flex;
+  }
+}
