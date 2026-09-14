@@ -48,8 +48,9 @@ const DEFAULT_GROUPS: DynamicFooterGroup[] = [
 ];
 
 const DEFAULT_SOCIALS: DynamicSocialLink[] = [
-  { id: "ig", platform: "instagram", label: "Instagram", url: "https://instagram.com" },
-  { id: "tt", platform: "tiktok", label: "TikTok", url: "https://tiktok.com" },
+  { id: "ig", platform: "instagram", label: "Instagram", url: "https://www.instagram.com/badu_hoodie?stkn=a3RycWdocjB4YzU0" },
+  { id: "tt", platform: "tiktok", label: "TikTok", url: "https://www.tiktok.com/@z25662?_r=1&_t=ZS-99XBSM5c8Ky" },
+  { id: "fb", platform: "facebook", label: "Facebook", url: "https://www.facebook.com/share/1DU4rE5HDG/?mibextid=wwXIfr" },
 ];
 
 export function Footer() {
