@@ -14,12 +14,15 @@ import styles from "./size-guide.module.css";
  * Replace the placeholder values below once chest/length/sleeve
  * measurements are confirmed, ideally sourced from product data.
  */
-const PLACEHOLDER = "—";
+const SIZE_MEASUREMENTS = [
+  { size: "S", chest: "58 cm / 22.8\"", length: "68 cm / 26.8\"", sleeve: "61 cm / 24.0\"" },
+  { size: "M", chest: "61 cm / 24.0\"", length: "71 cm / 28.0\"", sleeve: "63 cm / 24.8\"" },
+  { size: "L", chest: "64 cm / 25.2\"", length: "74 cm / 29.1\"", sleeve: "65 cm / 25.6\"" },
+  { size: "XL", chest: "67 cm / 26.4\"", length: "77 cm / 30.3\"", sleeve: "67 cm / 26.4\"" },
+];
 
 export function SizeGuide() {
   const { t } = useI18n();
-  const product = getFeaturedProduct();
-  const sizes = product?.sizes ?? [];
 
   return (
     <section id="size" aria-labelledby="size-guide-heading" className={styles.sizeGuide}>
@@ -48,19 +51,21 @@ export function SizeGuide() {
                 </tr>
               </thead>
               <tbody>
-                {sizes.map((size) => (
-                  <tr key={size}>
-                    <th scope="row">{size}</th>
-                    <td>{PLACEHOLDER}</td>
-                    <td>{PLACEHOLDER}</td>
-                    <td>{PLACEHOLDER}</td>
+                {SIZE_MEASUREMENTS.map((m) => (
+                  <tr key={m.size}>
+                    <th scope="row">{m.size}</th>
+                    <td>{m.chest}</td>
+                    <td>{m.length}</td>
+                    <td>{m.sleeve}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className={styles.fitNote}>{t("sections.sizeGuide.fitNote")}</p>
-          <p className={styles.note}>{t("sections.sizeGuide.note")}</p>
+          <div className={styles.adviceCard}>
+            <span className={styles.adviceBadge}>FIT ADVICE</span>
+            <p className={styles.fitNote}>{t("sections.sizeGuide.fitNote")}</p>
+          </div>
         </Reveal>
       </Container>
     </section>

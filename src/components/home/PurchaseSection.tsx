@@ -208,9 +208,14 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
 
             <Reveal delay={220}>
               <div className={styles.optionBlock}>
-                <span className={styles.optionLabel} id="size-label">
-                  {t("product.sizeLabel")}
-                </span>
+                <div className={styles.sizeHeaderRow}>
+                  <span className={styles.optionLabel} id="size-label">
+                    {t("product.sizeLabel")}
+                  </span>
+                  <a href="#size" className={styles.sizeGuideLink}>
+                    📏 {locale === "ar" ? "جدول المقاسات" : "Size Guide"}
+                  </a>
+                </div>
                 <SizeSelector
                   sizes={product.sizes}
                   selected={size}
@@ -229,7 +234,7 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
                   size="lg"
                   onClick={handleAddToCart}
                   disabled={!product.available}
-                  className={feedback === "added" ? styles.addedButton : undefined}
+                  className={[styles.mainBuyBtn, feedback === "added" ? styles.addedButton : ""].join(" ")}
                 >
                   {feedback === "added"
                     ? t("sections.purchase.added")
@@ -238,6 +243,32 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
                 <span className={styles.feedback} aria-live="polite">
                   {feedbackMessage}
                 </span>
+              </div>
+            </Reveal>
+
+            <Reveal delay={280}>
+              <div className={styles.trustBadgesGrid}>
+                <div className={styles.trustBadgeItem}>
+                  <span className={styles.trustIcon}>💵</span>
+                  <div className={styles.trustText}>
+                    <strong>{locale === "ar" ? "الدفع عند الاستلام" : "Cash on Delivery"}</strong>
+                    <span>{locale === "ar" ? "ادفع عند استلام طلبك" : "Pay when your order arrives"}</span>
+                  </div>
+                </div>
+                <div className={styles.trustBadgeItem}>
+                  <span className={styles.trustIcon}>🚚</span>
+                  <div className={styles.trustText}>
+                    <strong>{locale === "ar" ? "شحن سريع" : "Express Delivery"}</strong>
+                    <span>{locale === "ar" ? "توصيل خلال 2-4 أيام" : "Delivered in 2-4 business days"}</span>
+                  </div>
+                </div>
+                <div className={styles.trustBadgeItem}>
+                  <span className={styles.trustIcon}>🔄</span>
+                  <div className={styles.trustText}>
+                    <strong>{locale === "ar" ? "إرجاع واستبدال" : "Easy Exchange"}</strong>
+                    <span>{locale === "ar" ? "سياسة إرجاع خلال 14 يوم" : "14-day hassle-free return policy"}</span>
+                  </div>
+                </div>
               </div>
             </Reveal>
 

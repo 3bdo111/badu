@@ -85,9 +85,7 @@ export function Header() {
 
         <div className={styles.actions}>
           <LanguageSwitcher />
-          <span className={styles.desktopCart}>
-            <CartButton />
-          </span>
+          <CartButton />
           <button
             type="button"
             className={styles.menuButton}
@@ -124,9 +122,6 @@ export function Header() {
                   </Link>
                 </li>
               ))}
-              <li className={styles.mobileCartItem}>
-                <CartButton />
-              </li>
             </ul>
           </Container>
         </nav>

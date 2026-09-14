@@ -6,6 +6,7 @@ import { getFeaturedProduct } from "@/data/products";
 import { productService } from "@/lib/services/product-service";
 import type { Product } from "@/lib/types/product";
 import type { StorefrontSectionRecord } from "@/lib/repositories/server-storefront-repository";
+import { formatPrice } from "@/lib/format";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
 import { Button } from "@/components/ui/Button";
@@ -46,7 +47,10 @@ export function Hero({ section, featuredProduct }: HeroProps) {
         <div className={styles.grid}>
           <div className={styles.copy}>
             <Reveal>
-              <p className="label">{t("hero.eyebrow")}</p>
+              <div className={styles.eyebrowBadge}>
+                <span className={styles.badgeDot} />
+                <span className={styles.badgeText}>{t("hero.eyebrow")}</span>
+              </div>
             </Reveal>
             <Reveal delay={80}>
               <Heading
@@ -61,14 +65,39 @@ export function Hero({ section, featuredProduct }: HeroProps) {
             <Reveal delay={160}>
               <p className={styles.subtitle}>{subtitle}</p>
             </Reveal>
+
+            {product && (
+              <Reveal delay={200}>
+                <div className={styles.productSpotlight}>
+                  <div className={styles.spotlightHeader}>
+                    <span className={styles.productName}>{product.translations[locale]?.name || product.translations.en.name}</span>
+                    <span className={styles.priceTag}>{formatPrice(product.price, product.currency, locale)}</span>
+                  </div>
+                  <div className={styles.highlightPills}>
+                    <span className={styles.pill}>480GSM Organic Cotton</span>
+                    <span className={styles.pill}>Heavyweight Embroidery</span>
+                    <span className={styles.pill}>Relaxed Fit</span>
+                  </div>
+                </div>
+              </Reveal>
+            )}
+
             <Reveal delay={240}>
               <div className={styles.ctaRow}>
-                <Button href={ctaUrl} size="lg">
+                <Button href={ctaUrl} size="lg" className={styles.primaryCta}>
                   {ctaLabel}
                 </Button>
                 <Button href="#story" size="lg" variant="ghost">
                   {t("hero.secondaryCta")}
                 </Button>
+              </div>
+            </Reveal>
+
+            <Reveal delay={280}>
+              <div className={styles.heroTrustRow}>
+                <span>💵 {locale === "ar" ? "الدفع عند الاستلام متاح" : "Cash on Delivery Available"}</span>
+                <span>•</span>
+                <span>🚚 {locale === "ar" ? "شحن سريع" : "Express Shipping"}</span>
               </div>
             </Reveal>
           </div>
@@ -83,6 +112,9 @@ export function Hero({ section, featuredProduct }: HeroProps) {
                     priority
                     sizes="(min-width: 64rem) 46vw, 100vw"
                   />
+                  <div className={styles.priceBadgeOverlay}>
+                    <span>{formatPrice(product.price, product.currency, locale)}</span>
+                  </div>
                 </div>
                 <span className={styles.index} aria-hidden="true">
                   {t("hero.index")}

@@ -63,11 +63,29 @@
   color: var(--color-muted);
 }
 
+.adviceCard {
+  margin-block-start: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  background-color: var(--color-secondary);
+  border-radius: var(--radius-md);
+  border-inline-start: 3px solid var(--color-foreground);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.adviceBadge {
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: var(--tracking-label);
+  color: var(--color-foreground);
+}
+
 .fitNote {
-  margin-block-start: var(--space-4);
   font-size: var(--text-body);
   color: var(--color-foreground-secondary);
   max-width: 50ch;
+  line-height: 1.5;
 }
 
 @media (min-width: 64rem) {
