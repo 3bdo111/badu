@@ -20,8 +20,51 @@ export interface ProductColor {
 }
 
 export interface ProductFeature {
+  id?: string;
   title: LocalizedString;
   body: LocalizedString;
+  icon?: string;
+  sortOrder?: number;
+  visible?: boolean;
+}
+
+export interface ProductFaq {
+  id?: string;
+  question: LocalizedString;
+  answer: LocalizedString;
+  sortOrder?: number;
+  visible?: boolean;
+}
+
+export interface ProductSizeGuide {
+  enabled: boolean;
+  title?: LocalizedString;
+  description?: LocalizedString;
+  unit: string; // e.g. "cm" or "in"
+  columns: string[]; // e.g. ["Size", "Chest", "Length", "Sleeve"]
+  rows: Array<Record<string, string>>; // e.g. [{ "Size": "S", "Chest": "58", "Length": "68", "Sleeve": "60" }]
+  notes?: LocalizedString;
+}
+
+export interface ProductStoryContent {
+  title: LocalizedString;
+  description: LocalizedString;
+  images: string[];
+}
+
+export interface ProductArtworkContent {
+  title: LocalizedString;
+  description: LocalizedString;
+  images: string[];
+  captions: LocalizedString[];
+}
+
+export interface ProductSeo {
+  title: LocalizedString;
+  metaDescription: LocalizedString;
+  ogImage?: string;
+  canonicalOverride?: string;
+  indexable: boolean;
 }
 
 /** Garment measurements in centimetres. Null = not yet available. */
@@ -50,6 +93,14 @@ export interface Product {
   /** e.g. { en: "Relaxed fit", ar: "قصة مريحة" } */
   fit: LocalizedString;
   features: ProductFeature[];
+  faqs?: ProductFaq[];
+  sizeGuide?: ProductSizeGuide;
+  storyContent?: ProductStoryContent;
+  artworkContent?: ProductArtworkContent;
+  seo?: ProductSeo;
+  /** Storefront status: DRAFT | PUBLISHED | ARCHIVED */
+  status?: "DRAFT" | "PUBLISHED" | "ARCHIVED";
+  sortOrder?: number;
   /** Populated once real measurements exist; UI falls back to placeholders. */
   measurements?: SizeMeasurement[];
   /** Storefront visibility toggle */

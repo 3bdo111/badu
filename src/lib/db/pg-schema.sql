@@ -131,3 +131,117 @@ CREATE TABLE IF NOT EXISTS storefront_sections (
   draft_visible INTEGER,
   draft_sort_order INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS site_settings (
+  key VARCHAR(255) PRIMARY KEY,
+  value_json TEXT NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS navigation_items (
+  id VARCHAR(255) PRIMARY KEY,
+  label_en VARCHAR(255) NOT NULL,
+  label_ar VARCHAR(255) NOT NULL,
+  url TEXT NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  visible INTEGER NOT NULL DEFAULT 1,
+  is_external INTEGER NOT NULL DEFAULT 0,
+  target_blank INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS footer_groups (
+  id VARCHAR(255) PRIMARY KEY,
+  title_en VARCHAR(255) NOT NULL,
+  title_ar VARCHAR(255) NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  visible INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS footer_links (
+  id VARCHAR(255) PRIMARY KEY,
+  group_id VARCHAR(255) NOT NULL REFERENCES footer_groups(id) ON DELETE CASCADE,
+  label_en VARCHAR(255) NOT NULL,
+  label_ar VARCHAR(255) NOT NULL,
+  url TEXT NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  visible INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS social_links (
+  id VARCHAR(255) PRIMARY KEY,
+  platform VARCHAR(255) NOT NULL,
+  label VARCHAR(255) NOT NULL,
+  url TEXT NOT NULL,
+  icon VARCHAR(255) NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  visible INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS product_size_guides (
+  product_id VARCHAR(255) PRIMARY KEY REFERENCES products(id) ON DELETE CASCADE,
+  enabled INTEGER NOT NULL DEFAULT 1,
+  title_en TEXT,
+  title_ar TEXT,
+  desc_en TEXT,
+  desc_ar TEXT,
+  unit VARCHAR(50) NOT NULL DEFAULT 'cm',
+  columns_json TEXT NOT NULL,
+  rows_json TEXT NOT NULL,
+  notes_en TEXT,
+  notes_ar TEXT
+);
+
+CREATE TABLE IF NOT EXISTS product_faqs (
+  id VARCHAR(255) PRIMARY KEY,
+  product_id VARCHAR(255) NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+  question_en TEXT NOT NULL,
+  question_ar TEXT NOT NULL,
+  answer_en TEXT NOT NULL,
+  answer_ar TEXT NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  visible INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS product_features (
+  id VARCHAR(255) PRIMARY KEY,
+  product_id VARCHAR(255) NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+  title_en TEXT NOT NULL,
+  title_ar TEXT NOT NULL,
+  body_en TEXT NOT NULL,
+  body_ar TEXT NOT NULL,
+  icon VARCHAR(255),
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  visible INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS product_story (
+  product_id VARCHAR(255) PRIMARY KEY REFERENCES products(id) ON DELETE CASCADE,
+  title_en TEXT NOT NULL,
+  title_ar TEXT NOT NULL,
+  desc_en TEXT NOT NULL,
+  desc_ar TEXT NOT NULL,
+  images_json TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS product_artwork (
+  product_id VARCHAR(255) PRIMARY KEY REFERENCES products(id) ON DELETE CASCADE,
+  title_en TEXT NOT NULL,
+  title_ar TEXT NOT NULL,
+  desc_en TEXT NOT NULL,
+  desc_ar TEXT NOT NULL,
+  images_json TEXT NOT NULL,
+  captions_en_json TEXT NOT NULL,
+  captions_ar_json TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS product_seo (
+  product_id VARCHAR(255) PRIMARY KEY REFERENCES products(id) ON DELETE CASCADE,
+  title_en TEXT NOT NULL,
+  title_ar TEXT NOT NULL,
+  meta_desc_en TEXT NOT NULL,
+  meta_desc_ar TEXT NOT NULL,
+  og_image TEXT,
+  canonical_override TEXT,
+  indexable INTEGER NOT NULL DEFAULT 1
+);
+

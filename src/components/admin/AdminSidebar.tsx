@@ -11,12 +11,22 @@ export function AdminSidebar({ onClose }: { onClose?: () => void }) {
   const { t } = useI18n();
   const pathname = usePathname();
 
-  const navItems = [
-    { label: t("admin.dashboard"), href: "/admin", exact: true },
-    { label: t("admin.products"), href: "/admin/products", exact: false },
-    { label: t("admin.orders"), href: "/admin/orders", exact: false },
-    { label: t("admin.storefront"), href: "/admin/storefront", exact: false },
-    { label: t("admin.settings"), href: "#", disabled: true, tag: t("admin.comingSoon") },
+  interface NavItem {
+    label: string;
+    href: string;
+    exact: boolean;
+    disabled?: boolean;
+    tag?: string;
+  }
+
+  const navItems: NavItem[] = [
+    { label: t("admin.dashboard") || "Dashboard", href: "/admin", exact: true },
+    { label: t("admin.products") || "Products", href: "/admin/products", exact: false },
+    { label: t("admin.storefront") || "Landing Page", href: "/admin/storefront", exact: false },
+    { label: "Header & Nav", href: "/admin/navigation", exact: false },
+    { label: "Footer & Social", href: "/admin/footer", exact: false },
+    { label: t("admin.settings") || "Global Settings", href: "/admin/settings", exact: false },
+    { label: t("admin.orders") || "Orders", href: "/admin/orders", exact: false },
   ];
 
   const isActive = (item: (typeof navItems)[number]) => {

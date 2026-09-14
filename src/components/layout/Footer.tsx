@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Container } from "@/components/ui/Container";
@@ -7,16 +8,75 @@ import { Logo } from "@/components/ui/Logo";
 import { Reveal } from "@/components/ui/Reveal";
 import styles from "./footer.module.css";
 
-const FOOTER_NAV = [
-  { key: "nav.home", href: "/" },
-  { key: "nav.store", href: "/store" },
-  { key: "nav.hoodie", href: "/#hoodie" },
-  { key: "nav.story", href: "/#story" },
-] as const;
+interface DynamicFooterLink {
+  id: string;
+  label: { en: string; ar: string };
+  url: string;
+}
+
+interface DynamicFooterGroup {
+  id: string;
+  title: { en: string; ar: string };
+  links: DynamicFooterLink[];
+}
+
+interface DynamicSocialLink {
+  id: string;
+  platform: string;
+  label: string;
+  url: string;
+}
+
+const DEFAULT_GROUPS: DynamicFooterGroup[] = [
+  {
+    id: "explore",
+    title: { en: "EXPLORE", ar: "استكشف" },
+    links: [
+      { id: "store", label: { en: "Store", ar: "المتجر" }, url: "/store" },
+      { id: "story", label: { en: "Our Story", ar: "قصتنا" }, url: "/#story" },
+      { id: "artwork", label: { en: "Artwork Symbolism", ar: "رمزية العمل الفني" }, url: "/#artwork" },
+    ],
+  },
+  {
+    id: "customer",
+    title: { en: "CUSTOMER CARE", ar: "خدمة العملاء" },
+    links: [
+      { id: "sizeguide", label: { en: "Size Guide", ar: "دليل المقاسات" }, url: "/#size-guide" },
+      { id: "faq", label: { en: "FAQ & Support", ar: "الأسئلة الشائعة" }, url: "/#faq" },
+    ],
+  },
+];
+
+const DEFAULT_SOCIALS: DynamicSocialLink[] = [
+  { id: "ig", platform: "instagram", label: "Instagram", url: "https://instagram.com" },
+  { id: "tt", platform: "tiktok", label: "TikTok", url: "https://tiktok.com" },
+];
 
 export function Footer() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const year = new Date().getFullYear();
+  const [groups, setGroups] = useState<DynamicFooterGroup[]>(DEFAULT_GROUPS);
+  const [socials, setSocials] = useState<DynamicSocialLink[]>(DEFAULT_SOCIALS);
+
+  useEffect(() => {
+    async function loadFooter() {
+      try {
+        const res = await fetch("/api/admin/footer");
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data.groups) && data.groups.length > 0) {
+            setGroups(data.groups);
+          }
+          if (Array.isArray(data.socialLinks) && data.socialLinks.length > 0) {
+            setSocials(data.socialLinks.filter((s: DynamicSocialLink) => (s as { visible?: boolean }).visible !== false));
+          }
+        }
+      } catch {
+        // Fall back to default
+      }
+    }
+    loadFooter();
+  }, []);
 
   return (
     <footer className={styles.footer}>
@@ -28,32 +88,38 @@ export function Footer() {
               <p className={styles.tagline}>{t("footer.tagline")}</p>
             </div>
 
-            <nav aria-label="Footer" className={styles.navColumn}>
-              <ul role="list" className={styles.navList}>
-                {FOOTER_NAV.map((item) => (
-                  <li key={item.key}>
-                    <Link href={item.href} className={styles.navLink}>
-                      {t(item.key)}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+            {groups.map((group) => (
+              <nav key={group.id} aria-label={group.title.en} className={styles.navColumn}>
+                <p style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--color-accent, #c8a77d)", marginBottom: "0.75rem" }}>
+                  {group.title[locale] || group.title.en}
+                </p>
+                <ul role="list" className={styles.navList}>
+                  {group.links.map((link) => (
+                    <li key={link.id}>
+                      <Link href={link.url} className={styles.navLink}>
+                        {link.label[locale] || link.label.en}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
 
             <div className={styles.social}>
               <p className={styles.socialLabel}>{t("footer.socialLabel")}</p>
-              {/* STEP 8/9: connect real profile URLs — intentionally inert until then */}
               <ul role="list" className={styles.socialList}>
-                <li>
-                  <span className={styles.socialPlaceholder} aria-disabled="true">
-                    {t("footer.instagram")}
-                  </span>
-                </li>
-                <li>
-                  <span className={styles.socialPlaceholder} aria-disabled="true">
-                    {t("footer.tiktok")}
-                  </span>
-                </li>
+                {socials.map((soc) => (
+                  <li key={soc.id}>
+                    <a
+                      href={soc.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.navLink}
+                    >
+                      {soc.label}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

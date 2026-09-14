@@ -10,12 +10,20 @@ import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { CartButton } from "@/components/cart/CartButton";
 import styles from "./header.module.css";
 
-const NAV_ITEMS = [
-  { key: "nav.home", href: "/" },
-  { key: "nav.store", href: "/store" },
-  { key: "nav.hoodie", href: "/#hoodie" },
-  { key: "nav.story", href: "/#story" },
-] as const;
+interface DynamicNavItem {
+  id: string;
+  label: { en: string; ar: string };
+  url: string;
+  isExternal?: boolean;
+  targetBlank?: boolean;
+}
+
+const DEFAULT_NAV: DynamicNavItem[] = [
+  { id: "home", label: { en: "Home", ar: "الرئيسية" }, url: "/" },
+  { id: "store", label: { en: "Store", ar: "المتجر" }, url: "/store" },
+  { id: "hoodie", label: { en: "The Hoodie", ar: "الهودي" }, url: "/#hoodie" },
+  { id: "story", label: { en: "Our Story", ar: "قصتنا" }, url: "/#story" },
+];
 
 /**
  * Minimal storefront header.
@@ -23,9 +31,27 @@ const NAV_ITEMS = [
  * Mobile: wordmark | switcher + menu button, nav in a light dropdown.
  */
 export function Header() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [items, setItems] = useState<DynamicNavItem[]>(DEFAULT_NAV);
+
+  useEffect(() => {
+    async function loadNav() {
+      try {
+        const res = await fetch("/api/admin/navigation");
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data.items) && data.items.length > 0) {
+            setItems(data.items.filter((item: DynamicNavItem) => (item as { visible?: boolean }).visible !== false));
+          }
+        }
+      } catch {
+        // Fall back to default
+      }
+    }
+    loadNav();
+  }, []);
 
   // Close on Escape key
   useEffect(() => {
@@ -58,24 +84,27 @@ export function Header() {
 
         <nav aria-label="Primary" className={styles.nav}>
           <ul role="list" className={styles.navList}>
-            {NAV_ITEMS.map((item) => {
+            {items.map((item) => {
+              const itemLabel = item.label[locale] || item.label.en;
               const isActive =
-                item.href === "/store"
+                item.url === "/store"
                   ? pathname.startsWith("/store") || pathname.startsWith("/products")
-                  : item.href === "/"
+                  : item.url === "/"
                   ? pathname === "/"
                   : false;
 
               return (
-                <li key={item.key}>
+                <li key={item.id}>
                   <Link
-                    href={item.href}
+                    href={item.url}
+                    target={item.targetBlank ? "_blank" : undefined}
+                    rel={item.targetBlank ? "noopener noreferrer" : undefined}
                     className={[
                       styles.navLink,
                       isActive ? styles.activeNavLink : "",
                     ].join(" ")}
                   >
-                    {t(item.key)}
+                    {itemLabel}
                   </Link>
                 </li>
               );
@@ -111,17 +140,22 @@ export function Header() {
         >
           <Container>
             <ul role="list" className={styles.mobileNavList}>
-              {NAV_ITEMS.map((item) => (
-                <li key={item.key}>
-                  <Link
-                    href={item.href}
-                    className={styles.mobileNavLink}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {t(item.key)}
-                  </Link>
-                </li>
-              ))}
+              {items.map((item) => {
+                const itemLabel = item.label[locale] || item.label.en;
+                return (
+                  <li key={item.id}>
+                    <Link
+                      href={item.url}
+                      target={item.targetBlank ? "_blank" : undefined}
+                      rel={item.targetBlank ? "noopener noreferrer" : undefined}
+                      className={styles.mobileNavLink}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {itemLabel}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </Container>
         </nav>

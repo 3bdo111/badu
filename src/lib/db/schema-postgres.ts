@@ -14,6 +14,8 @@ export const POSTGRES_SCHEMA = `
     currency TEXT NOT NULL DEFAULT 'USD',
     available INTEGER NOT NULL DEFAULT 1,
     featured INTEGER NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'PUBLISHED',
+    sort_order INTEGER NOT NULL DEFAULT 0,
     fit_en TEXT NOT NULL,
     fit_ar TEXT NOT NULL,
     name_en TEXT NOT NULL,
@@ -146,10 +148,126 @@ export const POSTGRES_SCHEMA = `
     created_at TEXT NOT NULL
   );
 
+  CREATE TABLE IF NOT EXISTS site_settings (
+    key TEXT PRIMARY KEY,
+    value_json TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS navigation_items (
+    id TEXT PRIMARY KEY,
+    label_en TEXT NOT NULL,
+    label_ar TEXT NOT NULL,
+    url TEXT NOT NULL,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    visible INTEGER NOT NULL DEFAULT 1,
+    is_external INTEGER NOT NULL DEFAULT 0,
+    target_blank INTEGER NOT NULL DEFAULT 0
+  );
+
+  CREATE TABLE IF NOT EXISTS footer_groups (
+    id TEXT PRIMARY KEY,
+    title_en TEXT NOT NULL,
+    title_ar TEXT NOT NULL,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    visible INTEGER NOT NULL DEFAULT 1
+  );
+
+  CREATE TABLE IF NOT EXISTS footer_links (
+    id TEXT PRIMARY KEY,
+    group_id TEXT NOT NULL REFERENCES footer_groups(id) ON DELETE CASCADE,
+    label_en TEXT NOT NULL,
+    label_ar TEXT NOT NULL,
+    url TEXT NOT NULL,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    visible INTEGER NOT NULL DEFAULT 1
+  );
+
+  CREATE TABLE IF NOT EXISTS social_links (
+    id TEXT PRIMARY KEY,
+    platform TEXT NOT NULL,
+    label TEXT NOT NULL,
+    url TEXT NOT NULL,
+    icon TEXT NOT NULL,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    visible INTEGER NOT NULL DEFAULT 1
+  );
+
+  CREATE TABLE IF NOT EXISTS product_size_guides (
+    product_id TEXT PRIMARY KEY REFERENCES products(id) ON DELETE CASCADE,
+    enabled INTEGER NOT NULL DEFAULT 1,
+    title_en TEXT,
+    title_ar TEXT,
+    desc_en TEXT,
+    desc_ar TEXT,
+    unit TEXT NOT NULL DEFAULT 'cm',
+    columns_json TEXT NOT NULL,
+    rows_json TEXT NOT NULL,
+    notes_en TEXT,
+    notes_ar TEXT
+  );
+
+  CREATE TABLE IF NOT EXISTS product_faqs (
+    id TEXT PRIMARY KEY,
+    product_id TEXT NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+    question_en TEXT NOT NULL,
+    question_ar TEXT NOT NULL,
+    answer_en TEXT NOT NULL,
+    answer_ar TEXT NOT NULL,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    visible INTEGER NOT NULL DEFAULT 1
+  );
+
+  CREATE TABLE IF NOT EXISTS product_features (
+    id TEXT PRIMARY KEY,
+    product_id TEXT NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+    title_en TEXT NOT NULL,
+    title_ar TEXT NOT NULL,
+    body_en TEXT NOT NULL,
+    body_ar TEXT NOT NULL,
+    icon TEXT,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    visible INTEGER NOT NULL DEFAULT 1
+  );
+
+  CREATE TABLE IF NOT EXISTS product_story (
+    product_id TEXT PRIMARY KEY REFERENCES products(id) ON DELETE CASCADE,
+    title_en TEXT NOT NULL,
+    title_ar TEXT NOT NULL,
+    desc_en TEXT NOT NULL,
+    desc_ar TEXT NOT NULL,
+    images_json TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS product_artwork (
+    product_id TEXT PRIMARY KEY REFERENCES products(id) ON DELETE CASCADE,
+    title_en TEXT NOT NULL,
+    title_ar TEXT NOT NULL,
+    desc_en TEXT NOT NULL,
+    desc_ar TEXT NOT NULL,
+    images_json TEXT NOT NULL,
+    captions_en_json TEXT NOT NULL,
+    captions_ar_json TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS product_seo (
+    product_id TEXT PRIMARY KEY REFERENCES products(id) ON DELETE CASCADE,
+    title_en TEXT NOT NULL,
+    title_ar TEXT NOT NULL,
+    meta_desc_en TEXT NOT NULL,
+    meta_desc_ar TEXT NOT NULL,
+    og_image TEXT,
+    canonical_override TEXT,
+    indexable INTEGER NOT NULL DEFAULT 1
+  );
+
   CREATE INDEX IF NOT EXISTS idx_product_images_product ON product_images(product_id);
   CREATE INDEX IF NOT EXISTS idx_product_colors_product ON product_colors(product_id);
   CREATE INDEX IF NOT EXISTS idx_product_stock_product ON product_stock(product_id);
   CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id);
   CREATE INDEX IF NOT EXISTS idx_admin_sessions_expires ON admin_sessions(expires_at);
   CREATE INDEX IF NOT EXISTS idx_order_idempotency_created ON order_idempotency(created_at);
+  CREATE INDEX IF NOT EXISTS idx_footer_links_group ON footer_links(group_id);
+  CREATE INDEX IF NOT EXISTS idx_product_faqs_product ON product_faqs(product_id);
+  CREATE INDEX IF NOT EXISTS idx_product_features_product ON product_features(product_id);
 `;
