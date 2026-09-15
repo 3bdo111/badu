@@ -53,12 +53,17 @@ export async function generateMetadata(): Promise<Metadata> {
     description: meta.description,
     keywords: [
       "BADU",
+      "BADU Store",
       "streetwear",
-      "desert inspired",
+      "desert streetwear",
       "heavyweight hoodie",
-      "modern apparel",
+      "oversized hoodie 480gsm",
+      "arabic calligraphy hoodie",
       "بادو",
-      "هودي",
+      "هودي بادو",
+      "ملابس الشارع",
+      "هودي واسع",
+      "هودي 480GSM",
     ],
     authors: [{ name: "BADU" }],
     creator: "BADU",
@@ -66,20 +71,31 @@ export async function generateMetadata(): Promise<Metadata> {
     robots: {
       index: true,
       follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
     alternates: {
       canonical: siteUrl,
+      languages: {
+        en: siteUrl,
+        ar: siteUrl,
+      },
     },
     openGraph: {
       title: meta.title,
       description: meta.description,
       url: siteUrl,
       siteName: SITE_CONFIG.name,
-      locale: locale === "ar" ? "ar_SA" : "en_US",
+      locale: locale === "ar" ? "ar_EG" : "en_US",
       type: "website",
       images: [
         {
-          url: getSiteUrl("/images/products/journey-hoodie-front.png"),
+          url: getSiteUrl("/images/products/badu-hoodie/front-v6.jpg"),
           width: 1200,
           height: 630,
           alt: meta.title,
@@ -91,7 +107,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: meta.title,
       description: meta.description,
       creator: SITE_CONFIG.twitterHandle,
-      images: [getSiteUrl("/images/products/journey-hoodie-front.png")],
+      images: [getSiteUrl("/images/products/badu-hoodie/front-v6.jpg")],
     },
     icons: {
       icon: "/favicon.ico",
@@ -101,6 +117,32 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getInitialLocale();
+  const siteUrl = getSiteUrl();
+
+  // JSON-LD Organization & Website Schema
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "BADU",
+    "url": siteUrl,
+    "logo": getSiteUrl("/images/products/badu-hoodie/front-v6.jpg"),
+    "sameAs": [
+      "https://instagram.com/badu.store",
+      "https://tiktok.com/@badu.store",
+    ],
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "BADU Store",
+    "url": siteUrl,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `${siteUrl}/store?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  };
 
   return (
     <html
@@ -109,6 +151,16 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
       className={`${fraunces.variable} ${inter.variable} ${plexArabic.variable}`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+      </head>
       <body suppressHydrationWarning>
         <I18nProvider initialLocale={locale}>
           <CartProvider>
