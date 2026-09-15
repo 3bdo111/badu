@@ -19,6 +19,7 @@ interface CrmMetrics {
 
 export default function AdminOverviewPage() {
   const { t, locale } = useI18n();
+  const isAr = locale === "ar";
   const [products, setProducts] = useState<Product[]>(() => productService.getProducts());
   const [deletingProduct, setDeletingProduct] = useState<Product | null>(null);
 
@@ -32,18 +33,16 @@ export default function AdminOverviewPage() {
   const [loadingMetrics, setLoadingMetrics] = useState(true);
 
   useEffect(() => {
-    // Subscribe to product state changes
     const unsubscribe = productService.subscribe(() => {
       setProducts([...productService.getProducts()]);
     });
 
-    // Fetch CRM & Order overview data
     async function fetchCrmOverview() {
       try {
         setLoadingMetrics(true);
         const [custRes, ordRes] = await Promise.all([
-          fetch('/api/admin/customers'),
-          fetch('/api/admin/orders'),
+          fetch("/api/admin/customers"),
+          fetch("/api/admin/orders"),
         ]);
 
         if (custRes.ok) {
@@ -60,7 +59,7 @@ export default function AdminOverviewPage() {
           }
         }
       } catch (err) {
-        console.error("Failed fetching CRM overview:", err);
+        console.error("Failed fetching overview metrics:", err);
       } finally {
         setLoadingMetrics(false);
       }
@@ -71,7 +70,6 @@ export default function AdminOverviewPage() {
     return () => unsubscribe();
   }, []);
 
-  // Product metrics
   const totalCount = products.length;
   const visibleCount = products.filter((p) => p.available).length;
   const outOfStockCount = products.filter((p) => !p.available).length;
@@ -89,60 +87,105 @@ export default function AdminOverviewPage() {
 
   return (
     <div className={styles.overviewContainer}>
-      {/* Executive CRM & Sales Metrics Row */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      {/* Quick Shortcuts Bar */}
+      <div
+        style={{
+          display: "flex",
+          gap: "0.5rem",
+          flexWrap: "wrap",
+          padding: "0.75rem 1rem",
+          backgroundColor: "var(--color-background)",
+          border: "1px solid var(--color-border)",
+          borderRadius: "var(--radius-md)",
+          alignItems: "center",
+        }}
+      >
+        <span
+          style={{
+            fontSize: "0.8rem",
+            fontWeight: 600,
+            color: "var(--color-muted)",
+            marginInlineEnd: "0.5rem",
+          }}
+        >
+          {isAr ? "اختصارات السريعة:" : "Quick Shortcuts:"}
+        </span>
+        <Button href="/admin/products/new" variant="outline" size="md">
+          + {t("admin.addProduct")}
+        </Button>
+        <Button href="/admin/orders" variant="outline" size="md">
+          {t("admin.orders")} ({ordersCount})
+        </Button>
+        <Button href="/admin/customers" variant="outline" size="md">
+          {t("admin.customers")} ({crmMetrics.totalCustomers})
+        </Button>
+        <Button href="/admin/storefront" variant="outline" size="md">
+          {t("admin.storefront")}
+        </Button>
+      </div>
+
+      {/* Sales & Customers Metrics */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <h2 className={styles.sectionTitle} style={{ margin: 0 }}>
-            🚀 نظرة عامة على المبيعات والعملاء (CRM)
+            {isAr ? "نظرة عامة على المبيعات والعملاء" : "Sales & Customers Overview"}
           </h2>
           <Link
             href="/admin/customers"
             style={{
-              fontSize: '0.85rem',
+              fontSize: "0.85rem",
               fontWeight: 600,
-              color: 'var(--color-primary)',
-              textDecoration: 'none',
+              color: "var(--color-primary)",
+              textDecoration: "none",
             }}
           >
-            فتح لوحة CRM الكاملة ←
+            {isAr ? "عرض سجل العملاء الكامل ←" : "View Customer Directory ←"}
           </Link>
         </div>
 
         <div className={styles.metricsGrid}>
           <div className={styles.metricCard}>
-            <span className={styles.metricLabel}>إجمالي إيرادات المبيعات</span>
+            <span className={styles.metricLabel}>
+              {isAr ? "إجمالي إنفاق العملاء" : "Total Customer Revenue"}
+            </span>
             <span className={styles.metricValue}>
-              {loadingMetrics ? '...' : `${crmMetrics.totalCrmRevenue.toLocaleString()} ج.م`}
+              {loadingMetrics ? "..." : `${crmMetrics.totalCrmRevenue.toLocaleString()} ج.م`}
             </span>
           </div>
 
           <div className={styles.metricCard}>
-            <span className={styles.metricLabel}>إجمالي العملاء المسجلين</span>
+            <span className={styles.metricLabel}>
+              {isAr ? "عدد العملاء" : "Total Customers"}
+            </span>
             <span className={styles.metricValue}>
-              {loadingMetrics ? '...' : crmMetrics.totalCustomers}
+              {loadingMetrics ? "..." : crmMetrics.totalCustomers}
             </span>
           </div>
 
           <div className={styles.metricCard}>
-            <span className={styles.metricLabel}>إجمالي طلبات المتجر</span>
+            <span className={styles.metricLabel}>
+              {isAr ? "إجمالي الطلبات" : "Total Orders"}
+            </span>
             <span className={styles.metricValue}>
-              {loadingMetrics ? '...' : ordersCount}
+              {loadingMetrics ? "..." : ordersCount}
             </span>
           </div>
 
           <div className={styles.metricCard}>
-            <span className={styles.metricLabel}>عملاء VIP المميزون</span>
+            <span className={styles.metricLabel}>
+              {isAr ? "العملاء المميزون" : "VIP Customers"}
+            </span>
             <span className={styles.metricValue}>
-              {loadingMetrics ? '...' : crmMetrics.vipCount}
+              {loadingMetrics ? "..." : crmMetrics.vipCount}
             </span>
           </div>
         </div>
       </div>
 
       {/* Product Catalog Overview Grid */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1rem' }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
         <h2 className={styles.sectionTitle} style={{ margin: 0 }}>
-          📦 إحصائيات المنتجات والمعروضات
+          {isAr ? "إحصائيات المنتجات والمعروضات" : "Products Overview"}
         </h2>
         <div className={styles.metricsGrid}>
           <div className={styles.metricCard}>
@@ -162,8 +205,8 @@ export default function AdminOverviewPage() {
         </div>
       </div>
 
-      {/* Quick Action & Header */}
-      <div className={styles.sectionHeader} style={{ marginTop: '1rem' }}>
+      {/* Section Header */}
+      <div className={styles.sectionHeader}>
         <h2 className={styles.sectionTitle}>{t("admin.products")}</h2>
         <div className={styles.quickActions}>
           <Button href="/admin/products/new" variant="primary" size="md">

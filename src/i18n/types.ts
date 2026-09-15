@@ -206,6 +206,7 @@ export interface Dictionary {
   admin: {
     dashboard: string;
     products: string;
+    customers: string;
     orders: string;
     settings: string;
     comingSoon: string;

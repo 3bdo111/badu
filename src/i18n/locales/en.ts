@@ -224,6 +224,7 @@ const en: Dictionary = {
   admin: {
     dashboard: "Dashboard",
     products: "Products",
+    customers: "Customers",
     orders: "Orders",
     settings: "Settings",
     comingSoon: "Coming Soon",

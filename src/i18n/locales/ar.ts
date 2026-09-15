@@ -224,6 +224,7 @@ const ar: Dictionary = {
   admin: {
     dashboard: "لوحة التحكم",
     products: "المنتجات",
+    customers: "العملاء",
     orders: "الطلبات",
     settings: "الإعدادات",
     comingSoon: "قريبًا",

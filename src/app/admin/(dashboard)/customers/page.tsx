@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useI18n } from '@/i18n/I18nProvider';
 import styles from './customers.module.css';
 
 interface OrderSummary {
@@ -24,7 +25,7 @@ interface CustomerProfile {
   orders: OrderSummary[];
 }
 
-interface CrmMetrics {
+interface CustomerMetrics {
   totalCustomers: number;
   vipCount: number;
   returningCount: number;
@@ -32,8 +33,11 @@ interface CrmMetrics {
 }
 
 export default function AdminCustomersPage() {
+  const { locale } = useI18n();
+  const isAr = locale === 'ar';
+
   const [customers, setCustomers] = useState<CustomerProfile[]>([]);
-  const [metrics, setMetrics] = useState<CrmMetrics>({
+  const [metrics, setMetrics] = useState<CustomerMetrics>({
     totalCustomers: 0,
     vipCount: 0,
     returningCount: 0,
@@ -57,7 +61,7 @@ export default function AdminCustomersPage() {
           }
         }
       } catch (err) {
-        console.error('Failed loading CRM customers:', err);
+        console.error('Failed loading customers:', err);
       } finally {
         setLoading(false);
       }
@@ -78,13 +82,13 @@ export default function AdminCustomersPage() {
   });
 
   const formatPrice = (amount: number) => {
-    return `${amount.toLocaleString()} ج.م`;
+    return isAr ? `${amount.toLocaleString()} ج.م` : `${amount.toLocaleString()} EGP`;
   };
 
   const formatDate = (dateStr: string) => {
     try {
       const d = new Date(dateStr);
-      return d.toLocaleDateString('ar-EG', {
+      return d.toLocaleDateString(isAr ? 'ar-EG' : 'en-US', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
@@ -96,12 +100,24 @@ export default function AdminCustomersPage() {
 
   const getTierBadge = (tier: 'VIP' | 'RETURNING' | 'NEW') => {
     if (tier === 'VIP') {
-      return <span className={`${styles.tierBadge} ${styles.tierVip}`}>👑 VIP عميل مميز</span>;
+      return (
+        <span className={`${styles.tierBadge} ${styles.tierVip}`}>
+          {isAr ? 'عميل مميز' : 'VIP Customer'}
+        </span>
+      );
     }
     if (tier === 'RETURNING') {
-      return <span className={`${styles.tierBadge} ${styles.tierReturning}`}>🔄 عميل متكرر</span>;
+      return (
+        <span className={`${styles.tierBadge} ${styles.tierReturning}`}>
+          {isAr ? 'عميل متكرر' : 'Returning Customer'}
+        </span>
+      );
     }
-    return <span className={`${styles.tierBadge} ${styles.tierNew}`}>✨ عميل جديد</span>;
+    return (
+      <span className={`${styles.tierBadge} ${styles.tierNew}`}>
+        {isAr ? 'عميل جديد' : 'New Customer'}
+      </span>
+    );
   };
 
   const getCleanPhone = (phone: string) => {
@@ -112,9 +128,13 @@ export default function AdminCustomersPage() {
     <div className={styles.pageContainer}>
       <div className={styles.headerRow}>
         <div>
-          <h1 className={styles.pageTitle}>إدارة العملاء والـ CRM</h1>
+          <h1 className={styles.pageTitle}>
+            {isAr ? 'إدارة العملاء' : 'Customer Management'}
+          </h1>
           <p className={styles.pageSubtitle}>
-            قاعدة بيانات العملاء، السجل الشرائي، وتحليلات القيمة الممتدة للعميل (LTV).
+            {isAr
+              ? 'دليل العملاء، السجل الشرائي، وإجمالي إنفاق كل عميل.'
+              : 'Customer directory, purchase history, and lifetime value analytics.'}
           </p>
         </div>
       </div>
@@ -122,26 +142,36 @@ export default function AdminCustomersPage() {
       {/* Metrics Row */}
       <div className={styles.metricsGrid}>
         <div className={styles.metricCard}>
-          <span className={styles.metricLabel}>إجمالي العملاء</span>
+          <span className={styles.metricLabel}>{isAr ? 'إجمالي العملاء' : 'Total Customers'}</span>
           <span className={styles.metricValue}>{loading ? '...' : metrics.totalCustomers}</span>
-          <span className={styles.metricSubtext}>عميل مسجل في النظام</span>
+          <span className={styles.metricSubtext}>
+            {isAr ? 'عميل مسجل في النظام' : 'Registered customers'}
+          </span>
         </div>
         <div className={styles.metricCard}>
-          <span className={styles.metricLabel}>عملاء VIP</span>
+          <span className={styles.metricLabel}>{isAr ? 'العملاء المميزون' : 'VIP Customers'}</span>
           <span className={styles.metricValue}>{loading ? '...' : metrics.vipCount}</span>
-          <span className={styles.metricSubtext}>أكثر من 3 طلبات أو 3,000 ج.م</span>
+          <span className={styles.metricSubtext}>
+            {isAr ? 'أكثر من 3 طلبات أو 3,000 ج.م' : '3+ orders or 3,000 EGP+'}
+          </span>
         </div>
         <div className={styles.metricCard}>
-          <span className={styles.metricLabel}>عملاء متكررين</span>
+          <span className={styles.metricLabel}>{isAr ? 'العملاء المتكررون' : 'Returning Customers'}</span>
           <span className={styles.metricValue}>{loading ? '...' : metrics.returningCount}</span>
-          <span className={styles.metricSubtext}>أكثر من طلب واحد</span>
+          <span className={styles.metricSubtext}>
+            {isAr ? 'أكثر من طلب واحد' : 'More than 1 order'}
+          </span>
         </div>
         <div className={styles.metricCard}>
-          <span className={styles.metricLabel}>إجمالي مبيعات CRM</span>
+          <span className={styles.metricLabel}>
+            {isAr ? 'إجمالي إنفاق العملاء' : 'Total Revenue'}
+          </span>
           <span className={styles.metricValue}>
             {loading ? '...' : formatPrice(metrics.totalCrmRevenue)}
           </span>
-          <span className={styles.metricSubtext}>إجمالي إنفاق كافة العملاء</span>
+          <span className={styles.metricSubtext}>
+            {isAr ? 'إجمالي مبيعات كافة العملاء' : 'Total customer spend'}
+          </span>
         </div>
       </div>
 
@@ -149,7 +179,11 @@ export default function AdminCustomersPage() {
       <div className={styles.searchBarRow}>
         <input
           type="text"
-          placeholder="ابحث باسم العميل، الهاتف، المحافظة، أو العنوان..."
+          placeholder={
+            isAr
+              ? 'ابحث باسم العميل، رقم الهاتف، المحافظة، أو العنوان...'
+              : 'Search by customer name, phone, city, or address...'
+          }
           className={styles.searchInput}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -159,25 +193,25 @@ export default function AdminCustomersPage() {
             className={`${styles.tabBtn} ${activeTier === 'ALL' ? styles.tabActive : ''}`}
             onClick={() => setActiveTier('ALL')}
           >
-            الكل ({customers.length})
+            {isAr ? 'الكل' : 'All'} ({customers.length})
           </button>
           <button
             className={`${styles.tabBtn} ${activeTier === 'VIP' ? styles.tabActive : ''}`}
             onClick={() => setActiveTier('VIP')}
           >
-            👑 VIP ({customers.filter((c) => c.tier === 'VIP').length})
+            {isAr ? 'المميزون' : 'VIP'} ({customers.filter((c) => c.tier === 'VIP').length})
           </button>
           <button
             className={`${styles.tabBtn} ${activeTier === 'RETURNING' ? styles.tabActive : ''}`}
             onClick={() => setActiveTier('RETURNING')}
           >
-            🔄 متكرر ({customers.filter((c) => c.tier === 'RETURNING').length})
+            {isAr ? 'المتكررون' : 'Returning'} ({customers.filter((c) => c.tier === 'RETURNING').length})
           </button>
           <button
             className={`${styles.tabBtn} ${activeTier === 'NEW' ? styles.tabActive : ''}`}
             onClick={() => setActiveTier('NEW')}
           >
-            ✨ جديد ({customers.filter((c) => c.tier === 'NEW').length})
+            {isAr ? 'الجدد' : 'New'} ({customers.filter((c) => c.tier === 'NEW').length})
           </button>
         </div>
       </div>
@@ -185,11 +219,11 @@ export default function AdminCustomersPage() {
       {/* Desktop Table View */}
       {loading ? (
         <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-muted)' }}>
-          جاري تحميل بيانات العملاء...
+          {isAr ? 'جاري تحميل بيانات العملاء...' : 'Loading customers...'}
         </div>
       ) : filteredCustomers.length === 0 ? (
         <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-muted)' }}>
-          لا يوجد عملاء يطابقون نتائج البحث.
+          {isAr ? 'لا يوجد عملاء يطابقون نتائج البحث.' : 'No customers match your search.'}
         </div>
       ) : (
         <>
@@ -197,24 +231,24 @@ export default function AdminCustomersPage() {
             <table className={styles.table}>
               <thead>
                 <tr>
-                  <th>العميل</th>
-                  <th>الهاتف</th>
-                  <th>المحافظة / المدينة</th>
-                  <th>تصنيف العميل</th>
-                  <th>عدد الطلبات</th>
-                  <th>إجمالي الإنفاق</th>
-                  <th>آخر طلب</th>
-                  <th>إجراءات</th>
+                  <th>{isAr ? 'العميل' : 'Customer'}</th>
+                  <th>{isAr ? 'الهاتف' : 'Phone'}</th>
+                  <th>{isAr ? 'المحافظة / المدينة' : 'City'}</th>
+                  <th>{isAr ? 'التصنيف' : 'Tier'}</th>
+                  <th>{isAr ? 'عدد الطلبات' : 'Orders'}</th>
+                  <th>{isAr ? 'إجمالي الإنفاق' : 'Total Spent'}</th>
+                  <th>{isAr ? 'آخر طلب' : 'Last Order'}</th>
+                  <th>{isAr ? 'إجراءات' : 'Actions'}</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredCustomers.map((customer) => (
                   <tr key={customer.phone}>
-                    <td style={{ fontWeight: 600 }}>{customer.name || 'عميل بدون اسم'}</td>
-                    <td dir="ltr" style={{ textAlign: 'end', fontFamily: 'monospace' }}>
+                    <td style={{ fontWeight: 600 }}>{customer.name || (isAr ? 'عميل بدون اسم' : 'Unnamed Customer')}</td>
+                    <td dir="ltr" style={{ textAlign: isAr ? 'end' : 'start', fontFamily: 'monospace' }}>
                       {customer.phone}
                     </td>
-                    <td>{customer.city || 'غير محدد'}</td>
+                    <td>{customer.city || (isAr ? 'غير محدد' : 'N/A')}</td>
                     <td>{getTierBadge(customer.tier)}</td>
                     <td style={{ fontWeight: 700 }}>{customer.totalOrders}</td>
                     <td style={{ fontWeight: 700, color: 'var(--color-foreground)' }}>
@@ -228,7 +262,7 @@ export default function AdminCustomersPage() {
                         className={styles.actionsBtn}
                         onClick={() => setSelectedCustomer(customer)}
                       >
-                        عرض السجل
+                        {isAr ? 'عرض السجل' : 'View Details'}
                       </button>
                     </td>
                   </tr>
@@ -243,9 +277,9 @@ export default function AdminCustomersPage() {
               <div key={customer.phone} className={styles.card}>
                 <div className={styles.cardHeader}>
                   <div>
-                    <h3 className={styles.cardTitle}>{customer.name || 'عميل بدون اسم'}</h3>
+                    <h3 className={styles.cardTitle}>{customer.name || (isAr ? 'عميل بدون اسم' : 'Unnamed Customer')}</h3>
                     <span className={styles.cardSub} dir="ltr">
-                      {customer.phone} • {customer.city || 'غير محدد'}
+                      {customer.phone} • {customer.city || (isAr ? 'غير محدد' : 'N/A')}
                     </span>
                   </div>
                   <div>{getTierBadge(customer.tier)}</div>
@@ -253,19 +287,23 @@ export default function AdminCustomersPage() {
 
                 <div className={styles.cardStats}>
                   <div>
-                    <span style={{ color: 'var(--color-muted)', display: 'block' }}>الطلبات</span>
+                    <span style={{ color: 'var(--color-muted)', display: 'block' }}>
+                      {isAr ? 'الطلبات' : 'Orders'}
+                    </span>
                     <strong style={{ fontSize: '1rem' }}>{customer.totalOrders}</strong>
                   </div>
                   <div>
                     <span style={{ color: 'var(--color-muted)', display: 'block' }}>
-                      إجمالي الإنفاق
+                      {isAr ? 'إجمالي الإنفاق' : 'Total Spent'}
                     </span>
                     <strong style={{ fontSize: '1rem', color: 'var(--color-foreground)' }}>
                       {formatPrice(customer.totalSpent)}
                     </strong>
                   </div>
                   <div>
-                    <span style={{ color: 'var(--color-muted)', display: 'block' }}>آخر طلب</span>
+                    <span style={{ color: 'var(--color-muted)', display: 'block' }}>
+                      {isAr ? 'آخر طلب' : 'Last Order'}
+                    </span>
                     <span style={{ fontSize: '0.8rem' }}>{formatDate(customer.lastOrderDate)}</span>
                   </div>
                 </div>
@@ -275,7 +313,7 @@ export default function AdminCustomersPage() {
                   style={{ width: '100%', textAlign: 'center' }}
                   onClick={() => setSelectedCustomer(customer)}
                 >
-                  عرض سجل طلبات العميل
+                  {isAr ? 'عرض سجل طلبات العميل' : 'View Customer History'}
                 </button>
               </div>
             ))}
@@ -290,14 +328,18 @@ export default function AdminCustomersPage() {
             <div className={styles.drawerHeader}>
               <div>
                 <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700 }}>
-                  ملف العميل: {selectedCustomer.name}
+                  {isAr ? `ملف العميل: ${selectedCustomer.name}` : `Customer: ${selectedCustomer.name}`}
                 </h2>
                 <span style={{ fontSize: '0.8rem', color: 'var(--color-muted)' }}>
-                  تاريخ العميل والسجل الشرائي
+                  {isAr ? 'تفاصيل السجل الشرائي والتواصل' : 'Purchase history and contact options'}
                 </span>
               </div>
-              <button className={styles.closeBtn} onClick={() => setSelectedCustomer(null)}>
-                ✕
+              <button
+                className={styles.closeBtn}
+                onClick={() => setSelectedCustomer(null)}
+                aria-label={isAr ? 'إغلاق' : 'Close'}
+              >
+                &times;
               </button>
             </div>
 
@@ -314,20 +356,28 @@ export default function AdminCustomersPage() {
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>تصنيف العميل</span>
+                <span style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>
+                  {isAr ? 'التصنيف' : 'Tier'}
+                </span>
                 {getTierBadge(selectedCustomer.tier)}
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>رقم الهاتف</span>
+                <span style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>
+                  {isAr ? 'رقم الهاتف' : 'Phone'}
+                </span>
                 <strong dir="ltr">{selectedCustomer.phone}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>المحافظة / المدينة</span>
+                <span style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>
+                  {isAr ? 'المحافظة / المدينة' : 'City'}
+                </span>
                 <span>{selectedCustomer.city}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>العنوان المسجل</span>
-                <span style={{ fontSize: '0.85rem', maxWidth: '60%', textAlign: 'end' }}>
+                <span style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>
+                  {isAr ? 'العنوان' : 'Address'}
+                </span>
+                <span style={{ fontSize: '0.85rem', maxWidth: '60%', textAlign: isAr ? 'end' : 'start' }}>
                   {selectedCustomer.address}
                 </span>
               </div>
@@ -346,14 +396,14 @@ export default function AdminCustomersPage() {
                     textDecoration: 'none',
                   }}
                 >
-                  💬 مراسلة واتساب
+                  {isAr ? 'مراسلة عبر واتساب' : 'WhatsApp'}
                 </a>
                 <a
                   href={`tel:${selectedCustomer.phone}`}
                   className={styles.actionsBtn}
                   style={{ flex: 1, textAlign: 'center', textDecoration: 'none' }}
                 >
-                  📞 اتصال هاتفي
+                  {isAr ? 'اتصال هاتفي' : 'Call'}
                 </a>
               </div>
             </div>
@@ -375,7 +425,7 @@ export default function AdminCustomersPage() {
                 }}
               >
                 <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', display: 'block' }}>
-                  الطلبات
+                  {isAr ? 'الطلبات' : 'Orders'}
                 </span>
                 <strong style={{ fontSize: '1.1rem' }}>{selectedCustomer.totalOrders}</strong>
               </div>
@@ -387,7 +437,7 @@ export default function AdminCustomersPage() {
                 }}
               >
                 <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', display: 'block' }}>
-                  إجمالي الإنفاق
+                  {isAr ? 'إجمالي الإنفاق' : 'Total Spent'}
                 </span>
                 <strong style={{ fontSize: '1.1rem' }}>
                   {formatPrice(selectedCustomer.totalSpent)}
@@ -401,7 +451,7 @@ export default function AdminCustomersPage() {
                 }}
               >
                 <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', display: 'block' }}>
-                  متوسط الطلب
+                  {isAr ? 'متوسط الطلب' : 'Average Order'}
                 </span>
                 <strong style={{ fontSize: '1.1rem' }}>
                   {formatPrice(
@@ -416,7 +466,9 @@ export default function AdminCustomersPage() {
             {/* Orders Timeline */}
             <div>
               <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '0.75rem' }}>
-                سجل الطلبات السابقة ({selectedCustomer.orders.length})
+                {isAr
+                  ? `سجل الطلبات السابقة (${selectedCustomer.orders.length})`
+                  : `Order History (${selectedCustomer.orders.length})`}
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {selectedCustomer.orders.map((ord) => (
@@ -454,7 +506,7 @@ export default function AdminCustomersPage() {
                         fontSize: '0.85rem',
                       }}
                     >
-                      <span>الحالة: {ord.status || 'PENDING'}</span>
+                      <span>{isAr ? `الحالة: ${ord.status || 'PENDING'}` : `Status: ${ord.status || 'PENDING'}`}</span>
                       <strong style={{ color: 'var(--color-foreground)' }}>
                         {formatPrice(ord.totalAmount)}
                       </strong>
@@ -473,8 +525,8 @@ export default function AdminCustomersPage() {
                       >
                         {ord.items.map((it: any, idx: number) => (
                           <div key={idx}>
-                            • {it.productName || it.name || 'منتج'} ({it.size || 'مقاس'} -{' '}
-                            {it.color || 'اللون'}) x{it.quantity || 1}
+                            • {it.productName || it.name || (isAr ? 'منتج' : 'Product')} ({it.size || (isAr ? 'المقاس' : 'Size')} -{' '}
+                            {it.color || (isAr ? 'اللون' : 'Color')}) x{it.quantity || 1}
                           </div>
                         ))}
                       </div>
