@@ -50,6 +50,11 @@ export function ProductForm({
   const [fitAr, setFitAr] = useState(product?.fit?.ar ?? "قصة مريحة");
   const [slug, setSlug] = useState(product?.slug ?? "");
   const [price, setPrice] = useState<string>(product?.price !== undefined ? String(product.price) : "120");
+  const [compareAtPrice, setCompareAtPrice] = useState<string>(
+    product?.compareAtPrice !== undefined && product?.compareAtPrice !== null
+      ? String(product.compareAtPrice)
+      : ""
+  );
   const [currency, setCurrency] = useState(product?.currency ?? "USD");
   const [available, setAvailable] = useState<boolean>(product?.available ?? true);
   const [featured, setFeatured] = useState<boolean>(product?.featured ?? true);
@@ -228,10 +233,16 @@ export function ProductForm({
       return;
     }
 
+    const parsedComparePrice =
+      compareAtPrice.trim() !== "" && !isNaN(Number(compareAtPrice))
+        ? Number(compareAtPrice)
+        : undefined;
+
     const payload: Partial<Product> = {
       id: product?.id,
       slug: slug || slugify(nameEn),
       price: Number(price),
+      compareAtPrice: parsedComparePrice,
       currency: currency || "USD",
       available: chosenStatus === "PUBLISHED" ? available : false,
       featured,
@@ -441,7 +452,7 @@ export function ProductForm({
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Price & Currency</label>
+              <label className={styles.label}>Selling Price & Currency (سعر البيع الحالي)</label>
               <div style={{ display: "flex", gap: "0.5rem" }}>
                 <input
                   type="number"
@@ -462,6 +473,46 @@ export function ProductForm({
                 />
               </div>
               {errors.price && <span className={styles.errorText}>{errors.price}</span>}
+            </div>
+
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>Original Price before Discount (السعر الأصلي قبل الخصم)</label>
+              <input
+                type="number"
+                min="0"
+                step="any"
+                placeholder="e.g. 150 (Leave empty if no discount)"
+                value={compareAtPrice}
+                onChange={(e) => setCompareAtPrice(e.target.value)}
+                className={styles.input}
+              />
+              {compareAtPrice.trim() !== "" &&
+                !isNaN(Number(compareAtPrice)) &&
+                !isNaN(Number(price)) &&
+                Number(compareAtPrice) > Number(price) && (
+                  <div
+                    style={{
+                      marginTop: "0.5rem",
+                      padding: "0.4rem 0.75rem",
+                      backgroundColor: "rgba(109, 127, 87, 0.15)",
+                      border: "1px solid #6d7f57",
+                      borderRadius: "var(--radius-sm)",
+                      fontSize: "0.85rem",
+                      color: "#6d7f57",
+                      fontWeight: 600,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                    }}
+                  >
+                    <span>🏷️ الخصم مفعل:</span>
+                    <span>
+                      خصم {Math.round(((Number(compareAtPrice) - Number(price)) / Number(compareAtPrice)) * 100)}%
+                      (توفير {Number(compareAtPrice) - Number(price)} {currency})
+                    </span>
+                  </div>
+                )}
+              {errors.compareAtPrice && <span className={styles.errorText}>{errors.compareAtPrice}</span>}
             </div>
 
             <div className={styles.fieldGroupFull}>

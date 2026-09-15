@@ -12,6 +12,7 @@ import { Heading } from "@/components/ui/Heading";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { ProductImage } from "@/components/product/ProductImage";
+import { ProductPriceDisplay } from "@/components/product/ProductPriceDisplay";
 import styles from "./hero.module.css";
 
 interface HeroProps {
@@ -71,7 +72,7 @@ export function Hero({ section, featuredProduct }: HeroProps) {
                 <div className={styles.productSpotlight}>
                   <div className={styles.spotlightHeader}>
                     <span className={styles.productName}>{product.translations[locale]?.name || product.translations.en.name}</span>
-                    <span className={styles.priceTag}>{formatPrice(product.price, product.currency, locale)}</span>
+                    <ProductPriceDisplay product={product} size="md" />
                   </div>
                   <div className={styles.highlightPills}>
                     <span className={styles.pill}>480GSM Organic Cotton</span>
@@ -113,7 +114,7 @@ export function Hero({ section, featuredProduct }: HeroProps) {
                     sizes="(min-width: 64rem) 46vw, 100vw"
                   />
                   <div className={styles.priceBadgeOverlay}>
-                    <span>{formatPrice(product.price, product.currency, locale)}</span>
+                    <ProductPriceDisplay product={product} size="sm" showBadge={false} />
                   </div>
                 </div>
                 <span className={styles.index} aria-hidden="true">

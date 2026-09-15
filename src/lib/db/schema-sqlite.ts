@@ -404,6 +404,9 @@ export function runSqliteMigrations(db: Database.Database): void {
     if (!productColNames.has("sort_order")) {
       db.exec("ALTER TABLE products ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0");
     }
+    if (!productColNames.has("compare_at_price")) {
+      db.exec("ALTER TABLE products ADD COLUMN compare_at_price REAL");
+    }
   } catch {
     // Migration check failsafe
   }

@@ -14,6 +14,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Accordion } from "@/components/ui/Accordion";
 import { ProductImage } from "@/components/product/ProductImage";
 import { SizeSelector } from "@/components/product/SizeSelector";
+import { ProductPriceDisplay } from "@/components/product/ProductPriceDisplay";
 import { MobileStickyBuyBar } from "./MobileStickyBuyBar";
 import styles from "./purchase-section.module.css";
 
@@ -162,9 +163,7 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
             </Reveal>
 
             <Reveal delay={100}>
-              <p className={styles.price}>
-                {formatPrice(product.price, product.currency, locale)}
-              </p>
+              <ProductPriceDisplay product={product} size="lg" />
             </Reveal>
 
             <Reveal delay={140}>

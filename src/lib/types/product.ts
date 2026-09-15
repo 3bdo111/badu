@@ -83,6 +83,8 @@ export interface Product {
   id: string;
   slug: string;
   price: number;
+  /** Original price before discount (optional). If greater than price, product is on sale. */
+  compareAtPrice?: number | null;
   /** ISO 4217 code, formatted with Intl.NumberFormat per locale. */
   currency: string;
   images: ProductImage[];
@@ -118,6 +120,33 @@ export interface Product {
       artwork: string;
     }
   >;
+}
+
+export interface DiscountInfo {
+  hasDiscount: boolean;
+  originalPrice: number;
+  discountedPrice: number;
+  savingsAmount: number;
+  discountPercent: number;
+}
+
+export function getDiscountInfo(product: Product): DiscountInfo | null {
+  if (
+    typeof product.compareAtPrice === "number" &&
+    !isNaN(product.compareAtPrice) &&
+    product.compareAtPrice > product.price
+  ) {
+    const savingsAmount = product.compareAtPrice - product.price;
+    const discountPercent = Math.round((savingsAmount / product.compareAtPrice) * 100);
+    return {
+      hasDiscount: true,
+      originalPrice: product.compareAtPrice,
+      discountedPrice: product.price,
+      savingsAmount,
+      discountPercent,
+    };
+  }
+  return null;
 }
 
 export function productName(product: Product, locale: Locale): string {

@@ -6,6 +6,7 @@ import { formatPrice } from "@/lib/format";
 import type { Product } from "@/lib/types/product";
 import { productName } from "@/lib/types/product";
 import { ProductImage } from "@/components/product/ProductImage";
+import { ProductPriceDisplay } from "@/components/product/ProductPriceDisplay";
 import styles from "./mobile-sticky-buy-bar.module.css";
 
 interface MobileStickyBuyBarProps {
@@ -98,9 +99,7 @@ export function MobileStickyBuyBar({
           <div className={styles.meta}>
             <span className={styles.title}>{productName(product, locale)}</span>
             <div className={styles.priceRow}>
-              <span className={styles.price}>
-                {formatPrice(product.price, product.currency, locale)}
-              </span>
+              <ProductPriceDisplay product={product} size="sm" showBadge={false} />
               <button
                 type="button"
                 className={styles.sizeBadge}

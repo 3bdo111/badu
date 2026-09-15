@@ -6,6 +6,7 @@ import type { Product } from "@/lib/types/product";
 import { productName } from "@/lib/types/product";
 import { formatPrice } from "@/lib/format";
 import { ProductImage } from "@/components/product/ProductImage";
+import { ProductPriceDisplay } from "@/components/product/ProductPriceDisplay";
 import styles from "./product-table.module.css";
 
 export function ProductTable({
@@ -65,7 +66,7 @@ export function ProductTable({
                     </div>
                   </td>
                   <td className={styles.priceCell}>
-                    {formatPrice(product.price, product.currency, locale)}
+                    <ProductPriceDisplay product={product} size="sm" />
                   </td>
                   <td>
                     <span
@@ -150,9 +151,9 @@ export function ProductTable({
                   <h4 className={styles.productTitle}>
                     {productName(product, locale)}
                   </h4>
-                  <span className={styles.priceCell}>
-                    {formatPrice(product.price, product.currency, locale)}
-                  </span>
+                  <div className={styles.priceCell}>
+                    <ProductPriceDisplay product={product} size="sm" />
+                  </div>
                 </div>
               </div>
 

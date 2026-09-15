@@ -16,6 +16,7 @@ interface DbProductRow {
   id: string;
   slug: string;
   price: number;
+  compare_at_price?: number | null;
   currency: string;
   available: number;
   featured: number;
@@ -278,6 +279,7 @@ function mapRowToProduct(
     id: p.id,
     slug: p.slug,
     price: p.price,
+    compareAtPrice: p.compare_at_price != null ? Number(p.compare_at_price) : undefined,
     currency: p.currency,
     available: Boolean(p.available),
     featured: Boolean(p.featured),
@@ -407,11 +409,11 @@ export const serverProductRepository = {
     await db.transaction(async (tx) => {
       await tx.run(
         `INSERT INTO products (
-          id, slug, price, currency, available, featured, status, sort_order,
+          id, slug, price, compare_at_price, currency, available, featured, status, sort_order,
           fit_en, fit_ar, name_en, name_ar, desc_en, desc_ar, artwork_en, artwork_ar,
           created_at, updated_at
         ) VALUES (
-          ?, ?, ?, ?, ?, ?, ?, ?,
+          ?, ?, ?, ?, ?, ?, ?, ?, ?,
           ?, ?, ?, ?, ?, ?, ?, ?,
           ?, ?
         )`,
@@ -419,6 +421,7 @@ export const serverProductRepository = {
           normalized.id,
           normalized.slug,
           normalized.price,
+          normalized.compareAtPrice ?? null,
           normalized.currency,
           normalized.available ? 1 : 0,
           normalized.featured ? 1 : 0,
@@ -636,13 +639,14 @@ export const serverProductRepository = {
     await db.transaction(async (tx) => {
       await tx.run(
         `UPDATE products SET
-          slug = ?, price = ?, currency = ?, available = ?, featured = ?, status = ?, sort_order = ?,
+          slug = ?, price = ?, compare_at_price = ?, currency = ?, available = ?, featured = ?, status = ?, sort_order = ?,
           fit_en = ?, fit_ar = ?, name_en = ?, name_ar = ?, desc_en = ?, desc_ar = ?,
           artwork_en = ?, artwork_ar = ?, updated_at = ?
         WHERE id = ?`,
         [
           normalized.slug,
           normalized.price,
+          normalized.compareAtPrice ?? null,
           normalized.currency,
           normalized.available ? 1 : 0,
           normalized.featured ? 1 : 0,

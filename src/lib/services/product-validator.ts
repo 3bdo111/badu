@@ -55,6 +55,17 @@ export function validateProduct(data: Partial<Product>): {
     };
   }
 
+  if (
+    data.compareAtPrice !== undefined &&
+    data.compareAtPrice !== null &&
+    (typeof data.compareAtPrice !== "number" || isNaN(data.compareAtPrice) || (typeof data.price === "number" && data.compareAtPrice <= data.price))
+  ) {
+    errors.compareAtPrice = {
+      en: "Original price (Compare-at price) must be greater than current price.",
+      ar: "السعر الأصلي (قبل الخصم) يجب أن يكون أكبر من سعر البيع الحالي.",
+    };
+  }
+
   if (!data.sizes || data.sizes.length === 0) {
     errors.sizes = {
       en: "At least one size must be selected.",
@@ -134,6 +145,7 @@ export function normalizeProduct(
     id,
     slug,
     price: typeof raw.price === "number" && !isNaN(raw.price) && raw.price >= 0 ? raw.price : 0,
+    compareAtPrice: typeof raw.compareAtPrice === "number" && !isNaN(raw.compareAtPrice) && raw.compareAtPrice > (raw.price ?? 0) ? raw.compareAtPrice : undefined,
     currency: raw.currency || "USD",
     images,
     sizes,

@@ -11,6 +11,7 @@ export const POSTGRES_SCHEMA = `
     id TEXT PRIMARY KEY,
     slug TEXT UNIQUE NOT NULL,
     price DOUBLE PRECISION NOT NULL CHECK(price >= 0),
+    compare_at_price DOUBLE PRECISION,
     currency TEXT NOT NULL DEFAULT 'USD',
     available INTEGER NOT NULL DEFAULT 1,
     featured INTEGER NOT NULL DEFAULT 0,
@@ -309,6 +310,7 @@ export const POSTGRES_MIGRATIONS = `
 
   ALTER TABLE products ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'PUBLISHED';
   ALTER TABLE products ADD COLUMN IF NOT EXISTS sort_order INTEGER NOT NULL DEFAULT 0;
+  ALTER TABLE products ADD COLUMN IF NOT EXISTS compare_at_price DOUBLE PRECISION;
 
   UPDATE storefront_sections SET
     draft_title_en = COALESCE(draft_title_en, title_en),
