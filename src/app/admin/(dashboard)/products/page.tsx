@@ -14,6 +14,8 @@ type FilterTab = "all" | "visible" | "hidden" | "inStock" | "outOfStock" | "feat
 
 export default function AdminProductsPage() {
   const { t, locale } = useI18n();
+  const isAr = locale === "ar";
+
   const [products, setProducts] = useState<Product[]>(() => productService.getProducts());
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -38,13 +40,35 @@ export default function AdminProductsPage() {
     }
   };
 
-  // Filter products by tab & search query
+  const checkInStock = (p: Product) => {
+    if (!p.available) return false;
+    if (!p.stock) return true;
+    return Object.values(p.stock).some((qty) => qty > 0);
+  };
+
+  const checkOutOfStock = (p: Product) => {
+    if (!p.available) return true;
+    if (!p.stock) return false;
+    return Object.values(p.stock).every((qty) => qty === 0);
+  };
+
+  // Live Counts per Tab
+  const counts = {
+    all: products.length,
+    visible: products.filter((p) => p.available).length,
+    hidden: products.filter((p) => !p.available).length,
+    inStock: products.filter(checkInStock).length,
+    outOfStock: products.filter(checkOutOfStock).length,
+    featured: products.filter((p) => p.featured).length,
+  };
+
+  // Filter products by active tab & search query
   const filteredProducts = products.filter((p) => {
     // Tab filtering
     if (activeTab === "visible" && !p.available) return false;
     if (activeTab === "hidden" && p.available) return false;
-    if (activeTab === "inStock" && !p.available) return false;
-    if (activeTab === "outOfStock" && p.available) return false;
+    if (activeTab === "inStock" && !checkInStock(p)) return false;
+    if (activeTab === "outOfStock" && !checkOutOfStock(p)) return false;
     if (activeTab === "featured" && !p.featured) return false;
 
     // Search query filtering
@@ -67,19 +91,26 @@ export default function AdminProductsPage() {
   });
 
   const tabs = [
-    { key: "all" as FilterTab, labelKey: "admin.filterAll" as const },
-    { key: "visible" as FilterTab, labelKey: "admin.filterVisible" as const },
-    { key: "hidden" as FilterTab, labelKey: "admin.filterHidden" as const },
-    { key: "inStock" as FilterTab, labelKey: "admin.filterInStock" as const },
-    { key: "outOfStock" as FilterTab, labelKey: "admin.filterOutOfStock" as const },
-    { key: "featured" as FilterTab, labelKey: "admin.filterFeatured" as const },
+    { key: "all" as FilterTab, labelKey: "admin.filterAll" as const, count: counts.all },
+    { key: "visible" as FilterTab, labelKey: "admin.filterVisible" as const, count: counts.visible },
+    { key: "hidden" as FilterTab, labelKey: "admin.filterHidden" as const, count: counts.hidden },
+    { key: "inStock" as FilterTab, labelKey: "admin.filterInStock" as const, count: counts.inStock },
+    { key: "outOfStock" as FilterTab, labelKey: "admin.filterOutOfStock" as const, count: counts.outOfStock },
+    { key: "featured" as FilterTab, labelKey: "admin.filterFeatured" as const, count: counts.featured },
   ];
 
   return (
     <div className={styles.pageContainer}>
       {/* Header Row */}
       <div className={styles.headerRow}>
-        <h1 className={styles.pageTitle}>{t("admin.products")}</h1>
+        <div>
+          <h1 className={styles.pageTitle}>{t("admin.products")}</h1>
+          <p style={{ fontSize: "0.85rem", color: "var(--color-muted)", margin: "0.2rem 0 0 0" }}>
+            {isAr
+              ? "إدارة كتالوج المنتجات، المقاسات المخزونة، وحالة العرض في المتجر."
+              : "Manage product catalog, sizes stock, and storefront visibility."}
+          </p>
+        </div>
         <Button href="/admin/products/new" variant="primary" size="md">
           + {t("admin.addProduct")}
         </Button>
@@ -98,7 +129,7 @@ export default function AdminProductsPage() {
                 activeTab === tab.key ? styles.tabActive : "",
               ].join(" ")}
             >
-              {t(tab.labelKey)}
+              {t(tab.labelKey)} ({tab.count})
             </button>
           ))}
         </div>
@@ -115,7 +146,11 @@ export default function AdminProductsPage() {
       </div>
 
       {/* Products Table */}
-      <ProductTable products={filteredProducts} onDelete={handleDeleteClick} />
+      <ProductTable
+        products={filteredProducts}
+        onDelete={handleDeleteClick}
+        onUpdateProduct={() => setProducts([...productService.getProducts()])}
+      />
 
       {/* Delete Confirmation Modal */}
       <DeleteConfirmModal

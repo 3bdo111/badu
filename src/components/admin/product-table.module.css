@@ -120,6 +120,41 @@
   color: var(--color-foreground-secondary);
 }
 
+.sizesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  max-width: 14rem;
+}
+
+.sizeChip {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.sizeChipOutOfStock {
+  opacity: 0.45;
+  border-color: rgba(255, 255, 255, 0.1);
+  text-decoration: line-through;
+}
+
+.toggleBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  display: inline-block;
+}
+
 .actionsGroup {
   display: inline-flex;
   align-items: center;
