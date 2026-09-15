@@ -21,12 +21,13 @@ export function AdminSidebar({ onClose }: { onClose?: () => void }) {
 
   const navItems: NavItem[] = [
     { label: t("admin.dashboard") || "Dashboard", href: "/admin", exact: true },
+    { label: t("admin.orders") || "Orders", href: "/admin/orders", exact: false },
+    { label: "👥 العملاء والـ CRM", href: "/admin/customers", exact: false },
     { label: t("admin.products") || "Products", href: "/admin/products", exact: false },
     { label: t("admin.storefront") || "Landing Page", href: "/admin/storefront", exact: false },
     { label: "Header & Nav", href: "/admin/navigation", exact: false },
     { label: "Footer & Social", href: "/admin/footer", exact: false },
     { label: t("admin.settings") || "Global Settings", href: "/admin/settings", exact: false },
-    { label: t("admin.orders") || "Orders", href: "/admin/orders", exact: false },
   ];
 
   const isActive = (item: (typeof navItems)[number]) => {

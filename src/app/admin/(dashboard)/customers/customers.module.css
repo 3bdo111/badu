@@ -1,0 +1,301 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.pageTitle {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-foreground);
+  margin: 0;
+}
+
+.pageSubtitle {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+  margin-top: 0.25rem;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+@media (max-width: 64rem) {
+  .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 36rem) {
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.metricCard {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.metricLabel {
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+:lang(ar) .metricLabel {
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 500;
+}
+
+.metricValue {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-foreground);
+}
+
+.metricSubtext {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+.searchBarRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  flex-wrap: wrap;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 15rem;
+  padding: 0.6rem 0.85rem;
+  background-color: var(--color-surface, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-foreground);
+  font-size: 0.875rem;
+}
+
+.filterTabs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.tabBtn {
+  padding: 0.5rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: none;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.tabActive {
+  background-color: var(--color-surface, rgba(255, 255, 255, 0.1));
+  color: var(--color-foreground);
+  border-color: var(--color-border);
+}
+
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-background);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  text-align: start;
+}
+
+.table th,
+.table td {
+  padding: 0.85rem 1rem;
+  border-block-end: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.table thead th {
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-muted);
+  background-color: var(--color-secondary);
+}
+
+:lang(ar) .table thead th {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.tierBadge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+}
+
+.tierVip {
+  background-color: rgba(234, 179, 8, 0.2);
+  color: #eab308;
+  border: 1px solid rgba(234, 179, 8, 0.4);
+}
+
+.tierReturning {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.tierNew {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.actionsBtn {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background-color: var(--color-surface, rgba(255, 255, 255, 0.08));
+  color: var(--color-foreground);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+/* Mobile cards */
+.cardsList {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.card {
+  padding: 1rem;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-foreground);
+  margin: 0;
+}
+
+.cardSub {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.cardStats {
+  display: flex;
+  justify-content: space-between;
+  padding-block: 0.5rem;
+  border-block-start: 1px solid var(--color-border);
+  border-block-end: 1px solid var(--color-border);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 48rem) {
+  .tableWrap {
+    display: none;
+  }
+  .cardsList {
+    display: flex;
+  }
+}
+
+/* Customer Drawer Modal */
+.drawerBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.drawerContent {
+  width: 28rem;
+  max-width: 100vw;
+  height: 100%;
+  background-color: var(--color-background);
+  border-inline-start: 1px solid var(--color-border);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 1.5rem;
+  gap: 1.25rem;
+}
+
+:lang(ar) .drawerContent {
+  border-inline-start: none;
+  border-inline-end: 1px solid var(--color-border);
+}
+
+.drawerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-block-end: 1px solid var(--color-border);
+  padding-block-end: 1rem;
+}
+
+.closeBtn {
+  border: none;
+  background: none;
+  font-size: 1.25rem;
+  color: var(--color-foreground);
+  cursor: pointer;
+}
