@@ -34,7 +34,7 @@
   }
 
   .content {
-    padding: var(--space-4);
+    padding: var(--space-4) var(--space-3);
   }
 
   .mobileBackdrop {
@@ -42,12 +42,40 @@
     position: fixed;
     inset: 0;
     z-index: 150;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    animation: fadeIn 200ms ease-out;
   }
 
   .mobileDrawer {
-    width: 16rem;
+    width: 17.5rem;
+    max-width: 85vw;
     height: 100%;
     background-color: var(--color-secondary);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+    animation: slideIn 250ms cubic-bezier(0.22, 1, 0.36, 1);
+    overflow-y: auto;
   }
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideInRtl {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+:global(html[dir="rtl"]) .mobileDrawer {
+  animation-name: slideInRtl;
+}
+
+
