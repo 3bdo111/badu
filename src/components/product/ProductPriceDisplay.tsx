@@ -10,6 +10,7 @@ interface ProductPriceDisplayProps {
   product: Product;
   size?: "sm" | "md" | "lg";
   showBadge?: boolean;
+  variant?: "default" | "inverse";
   className?: string;
 }
 
@@ -17,16 +18,20 @@ export function ProductPriceDisplay({
   product,
   size = "md",
   showBadge = true,
+  variant = "default",
   className,
 }: ProductPriceDisplayProps) {
   const { locale } = useI18n();
   const discount = getDiscountInfo(product);
 
   const formattedPrice = formatPrice(product.price, product.currency, locale);
+  const containerClasses = [styles.container, styles[size], styles[variant], className]
+    .filter(Boolean)
+    .join(" ");
 
   if (!discount) {
     return (
-      <div className={[styles.container, styles[size], className].filter(Boolean).join(" ")}>
+      <div className={containerClasses}>
         <span className={styles.currentPrice}>{formattedPrice}</span>
       </div>
     );
@@ -44,7 +49,7 @@ export function ProductPriceDisplay({
       : `${discount.discountPercent}% OFF`;
 
   return (
-    <div className={[styles.container, styles[size], className].filter(Boolean).join(" ")}>
+    <div className={containerClasses}>
       <span className={styles.currentPrice}>{formattedPrice}</span>
       <s className={styles.originalPrice}>{formattedOriginalPrice}</s>
       {showBadge && (
@@ -53,3 +58,4 @@ export function ProductPriceDisplay({
     </div>
   );
 }
+

@@ -19,6 +19,14 @@
   font-weight: 500;
 }
 
+.inverse .currentPrice {
+  color: #ffffff;
+}
+
+.inverse .originalPrice {
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .discountBadge {
   display: inline-flex;
   align-items: center;
@@ -32,6 +40,7 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
+
 
 :lang(ar) .discountBadge {
   letter-spacing: 0;

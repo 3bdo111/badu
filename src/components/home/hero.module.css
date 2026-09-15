@@ -208,14 +208,25 @@
   position: absolute;
   inset-block-start: var(--space-4);
   inset-inline-start: var(--space-4);
-  background-color: rgba(18, 17, 16, 0.92);
-  color: #fff;
-  padding: 0.4rem 0.9rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #121110;
+  padding: 0.35rem 0.85rem;
   border-radius: var(--radius-sm);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   z-index: 2;
 }
+
+.priceBadgeOverlay span,
+.priceBadgeOverlay s {
+  color: #121110 !important;
+}
+
+.priceBadgeOverlay s {
+  opacity: 0.65;
+}
+
 
 @media (min-width: 64rem) {
   .hero {
