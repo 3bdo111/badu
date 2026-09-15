@@ -1,31 +1,28 @@
 .reviews {
-  padding-block: var(--space-10);
+  padding-block: var(--space-8);
   background-color: var(--color-secondary);
-  text-align: center;
+  border-block-start: 1px solid var(--color-border);
+  border-block-end: 1px solid var(--color-border);
 }
 
 .center {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-2);
 }
 
 .sun {
-  width: 2.25rem;
+  width: 2rem;
   height: auto;
   color: var(--color-muted);
 }
 
-.center .label {
-  color: var(--color-muted);
-}
-
 .heading {
-  margin-block-start: var(--space-4);
-  font-size: var(--text-h1);
+  margin-block-start: var(--space-2);
+  font-size: var(--text-h2);
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  text-align: center;
 }
 
 :lang(ar) .heading {
@@ -33,68 +30,162 @@
   letter-spacing: 0;
 }
 
-.prelaunchCard {
-  margin-block-start: var(--space-6);
-  padding: var(--space-6) var(--space-8);
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius-md);
-  max-width: 36rem;
-  margin-inline: auto;
-  background-color: var(--color-background);
-}
-
-.body {
-  margin: 0;
-  color: var(--color-foreground-secondary);
-  font-size: var(--text-body);
-}
-
-.reviewList {
-  margin-block-start: var(--space-7);
+.ratingSummary {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  align-items: center;
+  gap: 4px;
+  margin-block: var(--space-4) var(--space-6);
+  text-align: center;
+}
+
+.bigRating {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ratingScore {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: 800;
+  color: var(--color-foreground);
+}
+
+.stars {
+  color: #c8a77d;
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+}
+
+.ratingSub {
+  font-size: var(--text-small);
+  color: var(--color-foreground-secondary);
+}
+
+.reviewGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-block-end: var(--space-7);
+}
+
+@media (min-width: 48rem) {
+  .reviewGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .reviewCard {
-  padding: var(--space-6);
+  padding: var(--space-5);
   border-radius: var(--radius-md);
   background-color: var(--color-background);
   border: 1px solid var(--color-border);
-  text-align: start;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  justify-content: space-between;
+  gap: var(--space-4);
+  box-shadow: var(--shadow-sm);
+  height: 100%;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .ratingRow {
   color: #c8a77d;
-  font-size: 1rem;
+  font-size: 1.1rem;
   letter-spacing: 0.1em;
 }
 
+.verifiedBadge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  background-color: rgba(109, 127, 87, 0.15);
+  color: #536440;
+}
+
 .reviewText {
-  font-size: var(--text-body);
+  font-size: 0.95rem;
   color: var(--color-foreground);
   line-height: 1.6;
+  margin: 0;
 }
 
 .authorRow {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  margin-block-start: var(--space-2);
+  justify-content: space-between;
+  border-block-start: 1px solid var(--color-border);
+  padding-block-start: var(--space-3);
+  margin-block-start: auto;
+}
+
+.authorMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .authorName {
-  font-weight: 600;
-  font-size: var(--text-small);
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--color-foreground);
 }
 
-.verifiedBadge {
-  font-size: var(--text-small);
+.authorLoc {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+.sizeBadge {
+  font-size: 0.75rem;
   padding: 0.15rem 0.5rem;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-sm);
   background-color: var(--color-secondary);
+  color: var(--color-foreground-secondary);
+  font-weight: 600;
+}
+
+.trustBanner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background-color: var(--color-background);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+@media (min-width: 48rem) {
+  .trustBanner {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.trustItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: start;
+}
+
+.trustIcon {
+  font-size: 1.5rem;
+}
+
+.trustItem strong {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--color-foreground);
+}
+
+.trustItem span {
+  font-size: 0.8rem;
   color: var(--color-foreground-secondary);
 }

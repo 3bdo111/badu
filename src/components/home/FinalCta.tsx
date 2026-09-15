@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { SunMark } from "@/components/ui/SunMark";
 import { getFeaturedProduct } from "@/data/products";
-import { formatPrice } from "@/lib/format";
 import { ProductImage } from "@/components/product/ProductImage";
+import { ProductPriceDisplay } from "@/components/product/ProductPriceDisplay";
 import styles from "./final-cta.module.css";
 
 export function FinalCta() {
   const { t, locale } = useI18n();
+  const isAr = locale === "ar";
   const product = getFeaturedProduct();
 
   return (
@@ -24,6 +25,7 @@ export function FinalCta() {
             <Heading level={2} display id="final-cta-heading" className={styles.heading}>
               {t("sections.finalCta.heading")}
             </Heading>
+
             {product && (
               <div className={styles.productSnippet}>
                 <div className={styles.snippetImageFrame}>
@@ -32,18 +34,43 @@ export function FinalCta() {
                   )}
                 </div>
                 <div className={styles.snippetDetails}>
-                  <span className={styles.snippetTitle}>{product.translations[locale]?.name || product.translations.en.name}</span>
-                  <span className={styles.snippetPrice}>{formatPrice(product.price, product.currency, locale)}</span>
-                  <span className={styles.snippetBadge}>💵 {locale === "ar" ? "الدفع عند الاستلام متاح" : "Cash on Delivery Available"}</span>
+                  <span className={styles.snippetTitle}>
+                    {product.translations[locale]?.name || product.translations.en.name}
+                  </span>
+                  <ProductPriceDisplay product={product} size="md" />
+                  <span className={styles.snippetBadge}>
+                    💵 {isAr ? "الدفع عند الاستلام متاح" : "Cash on Delivery Supported"}
+                  </span>
                 </div>
               </div>
             )}
+
             <Button href="#hoodie" size="lg" variant="inverse" className={styles.ctaButton}>
               {t("sections.finalCta.cta")}
             </Button>
+
+            <div className={styles.trustBadgesGrid}>
+              <div className={styles.trustBadgeItem}>
+                <span className={styles.badgeIcon}>🔒</span>
+                <span>{isAr ? "دفع آمن 100%" : "100% Secure Checkout"}</span>
+              </div>
+              <div className={styles.trustBadgeItem}>
+                <span className={styles.badgeIcon}>💵</span>
+                <span>{isAr ? "الدفع عند الاستلام" : "Cash on Delivery"}</span>
+              </div>
+              <div className={styles.trustBadgeItem}>
+                <span className={styles.badgeIcon}>🚚</span>
+                <span>{isAr ? "شحن 2-4 أيام عمل" : "Express 2-4 Day Delivery"}</span>
+              </div>
+              <div className={styles.trustBadgeItem}>
+                <span className={styles.badgeIcon}>🔄</span>
+                <span>{isAr ? "إرجاع مجاني خلال 14 يوم" : "14-Day Free Returns"}</span>
+              </div>
+            </div>
           </div>
         </Reveal>
       </Container>
     </section>
   );
 }
+

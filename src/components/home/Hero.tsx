@@ -6,7 +6,6 @@ import { getFeaturedProduct } from "@/data/products";
 import { productService } from "@/lib/services/product-service";
 import type { Product } from "@/lib/types/product";
 import type { StorefrontSectionRecord } from "@/lib/repositories/server-storefront-repository";
-import { formatPrice } from "@/lib/format";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
 import { Button } from "@/components/ui/Button";
@@ -48,11 +47,18 @@ export function Hero({ section, featuredProduct }: HeroProps) {
         <div className={styles.grid}>
           <div className={styles.copy}>
             <Reveal>
-              <div className={styles.eyebrowBadge}>
-                <span className={styles.badgeDot} />
-                <span className={styles.badgeText}>{t("hero.eyebrow")}</span>
+              <div className={styles.topMetaRow}>
+                <div className={styles.eyebrowBadge}>
+                  <span className={styles.badgeDot} />
+                  <span className={styles.badgeText}>{t("hero.eyebrow")}</span>
+                </div>
+                <div className={styles.ratingBadge}>
+                  <span className={styles.stars}>★★★★★</span>
+                  <span className={styles.ratingText}>5.0 (1,200+ {isAr ? "عميل راضٍ" : "Happy Customers"})</span>
+                </div>
               </div>
             </Reveal>
+
             <Reveal delay={80}>
               <Heading
                 level={1}
@@ -63,6 +69,7 @@ export function Hero({ section, featuredProduct }: HeroProps) {
                 {title}
               </Heading>
             </Reveal>
+
             <Reveal delay={160}>
               <p className={styles.subtitle}>{subtitle}</p>
             </Reveal>
@@ -71,13 +78,20 @@ export function Hero({ section, featuredProduct }: HeroProps) {
               <Reveal delay={200}>
                 <div className={styles.productSpotlight}>
                   <div className={styles.spotlightHeader}>
-                    <span className={styles.productName}>{product.translations[locale]?.name || product.translations.en.name}</span>
-                    <ProductPriceDisplay product={product} size="md" />
+                    <div className={styles.spotlightTitleBlock}>
+                      <span className={styles.productName}>
+                        {product.translations[locale]?.name || product.translations.en.name}
+                      </span>
+                      <span className={styles.modelPill}>
+                        📏 {isAr ? "الموديل: 185 سم | يرتدي مقاس L" : "Model: 185 cm | Wears Size L"}
+                      </span>
+                    </div>
+                    <ProductPriceDisplay product={product} size="lg" />
                   </div>
                   <div className={styles.highlightPills}>
-                    <span className={styles.pill}>480GSM Organic Cotton</span>
-                    <span className={styles.pill}>Heavyweight Embroidery</span>
-                    <span className={styles.pill}>Relaxed Fit</span>
+                    <span className={styles.pill}>🧵 480GSM {isAr ? "قطن عضوي ثقيل" : "Organic Cotton"}</span>
+                    <span className={styles.pill}>✨ {isAr ? "تطريز 3D عالي الكثافة" : "High-Density Embroidery"}</span>
+                    <span className={styles.pill}>✂️ {isAr ? "قصّة واسعة مريحة Oversized" : "Relaxed Oversized Fit"}</span>
                   </div>
                 </div>
               </Reveal>
@@ -96,9 +110,11 @@ export function Hero({ section, featuredProduct }: HeroProps) {
 
             <Reveal delay={280}>
               <div className={styles.heroTrustRow}>
-                <span>💵 {locale === "ar" ? "الدفع عند الاستلام متاح" : "Cash on Delivery Available"}</span>
+                <span>💵 {isAr ? "الدفع عند الاستلام (COD)" : "Cash on Delivery (COD)"}</span>
                 <span>•</span>
-                <span>🚚 {locale === "ar" ? "شحن سريع" : "Express Shipping"}</span>
+                <span>🚚 {isAr ? "شحن سريع خلال 2-4 أيام" : "Express 2-4 Day Shipping"}</span>
+                <span>•</span>
+                <span>🔄 {isAr ? "استبدال وإرجاع خلال 14 يوم" : "14-Day Free Returns"}</span>
               </div>
             </Reveal>
           </div>
@@ -114,7 +130,7 @@ export function Hero({ section, featuredProduct }: HeroProps) {
                     sizes="(min-width: 64rem) 46vw, 100vw"
                   />
                   <div className={styles.priceBadgeOverlay}>
-                    <ProductPriceDisplay product={product} size="sm" showBadge={false} />
+                    <ProductPriceDisplay product={product} size="md" showBadge={true} />
                   </div>
                 </div>
                 <span className={styles.index} aria-hidden="true">
@@ -128,3 +144,4 @@ export function Hero({ section, featuredProduct }: HeroProps) {
     </section>
   );
 }
+

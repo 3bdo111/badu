@@ -1,10 +1,10 @@
 .hero {
-  padding-block: var(--space-8) var(--space-9);
+  padding-block: var(--space-6) var(--space-8);
 }
 
 .grid {
   display: grid;
-  gap: var(--space-8);
+  gap: var(--space-6);
   align-items: center;
 }
 
@@ -12,17 +12,48 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-5);
+  gap: var(--space-4);
+}
+
+.topMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.ratingBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent-subtle, rgba(234, 179, 8, 0.1));
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}
+
+.stars {
+  color: #f59e0b;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.ratingText {
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: var(--color-foreground);
 }
 
 .title {
-  margin-block-start: var(--space-2);
+  margin-block-start: var(--space-1);
+  line-height: 1.15;
 }
 
 .subtitle {
   font-size: var(--text-body);
   color: var(--color-foreground-secondary);
-  max-width: 34rem;
+  max-width: 36rem;
+  line-height: 1.6;
 }
 
 .ctaRow {
@@ -30,7 +61,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-3);
-  margin-block-start: var(--space-3);
+  margin-block-start: var(--space-2);
 }
 
 .figure {
@@ -104,14 +135,23 @@
   background-color: var(--color-secondary);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
-  max-width: 34rem;
+  max-width: 36rem;
   width: 100%;
+  box-shadow: var(--shadow-sm);
 }
 
 .spotlightHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.spotlightTitleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .productName {
@@ -119,6 +159,12 @@
   font-size: var(--text-h3);
   font-weight: 700;
   color: var(--color-foreground);
+}
+
+.modelPill {
+  font-size: 0.8rem;
+  color: var(--color-foreground-secondary);
+  font-weight: 500;
 }
 
 .priceTag {
@@ -139,20 +185,22 @@
 }
 
 .pill {
-  font-size: var(--text-small);
-  color: var(--color-foreground-secondary);
+  font-size: 0.78rem;
+  color: var(--color-foreground);
   background-color: var(--color-background);
-  padding: 0.2rem 0.6rem;
+  padding: 0.25rem 0.65rem;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
+  font-weight: 500;
 }
 
 .heroTrustRow {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-3);
-  font-size: var(--text-small);
-  color: var(--color-muted);
+  gap: var(--space-2);
+  font-size: 0.82rem;
+  color: var(--color-foreground-secondary);
   margin-block-start: var(--space-1);
 }
 
@@ -160,21 +208,18 @@
   position: absolute;
   inset-block-start: var(--space-4);
   inset-inline-start: var(--space-4);
-  background-color: rgba(18, 17, 16, 0.88);
+  background-color: rgba(18, 17, 16, 0.92);
   color: #fff;
-  font-family: var(--font-display);
-  font-size: var(--text-h3);
-  font-weight: 700;
   padding: 0.4rem 0.9rem;
   border-radius: var(--radius-sm);
   backdrop-filter: blur(8px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   z-index: 2;
 }
 
 @media (min-width: 64rem) {
   .hero {
-    padding-block: var(--space-9) var(--space-10);
+    padding-block: var(--space-8) var(--space-9);
   }
 
   .grid {
@@ -182,3 +227,4 @@
     gap: var(--space-9);
   }
 }
+
