@@ -1,6 +1,7 @@
 import { serverStorefrontRepository, type StorefrontSectionRecord } from "@/lib/repositories/server-storefront-repository";
 import { serverProductRepository } from "@/lib/repositories/server-product-repository";
 import { Hero } from "@/components/home/Hero";
+import { QuickTrustBar } from "@/components/home/QuickTrustBar";
 import { ProductIntro } from "@/components/home/ProductIntro";
 import { ProductShowcase } from "@/components/home/ProductShowcase";
 import { BrandStory } from "@/components/home/BrandStory";
@@ -62,6 +63,7 @@ export default async function Home() {
   return (
     <>
       {heroSection && <Hero section={heroSection} featuredProduct={featuredProduct} />}
+      <QuickTrustBar />
       <ProductIntro />
       <ProductShowcase />
       {bodyCmsSections.map(renderCmsSection)}
@@ -72,4 +74,5 @@ export default async function Home() {
     </>
   );
 }
+
 

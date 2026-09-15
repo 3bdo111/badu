@@ -100,7 +100,7 @@ export function Hero({ section, featuredProduct }: HeroProps) {
             <Reveal delay={240}>
               <div className={styles.ctaRow}>
                 <Button href={ctaUrl} size="lg" className={styles.primaryCta}>
-                  {ctaLabel}
+                  {isAr ? "أطلب هودي بادو الصحراوي — تسوّق الآن" : "GET YOUR DESERT X HOODIE — SHOP NOW"}
                 </Button>
                 <Button href="#story" size="lg" variant="ghost">
                   {t("hero.secondaryCta")}

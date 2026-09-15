@@ -23,9 +23,9 @@
   --text-h1: clamp(2.25rem, 5vw, 3.75rem);
   --text-h2: clamp(1.75rem, 3.5vw, 2.5rem);
   --text-h3: clamp(1.25rem, 2vw, 1.5rem);
-  --text-body: clamp(1rem, 0.35vw + 0.9rem, 1.125rem);
-  --text-small: 0.875rem;
-  --text-label: 0.75rem;
+  --text-body: clamp(1.05rem, 0.5vw + 0.95rem, 1.25rem);
+  --text-small: clamp(0.925rem, 0.3vw + 0.875rem, 1rem);
+  --text-label: clamp(0.825rem, 0.2vw + 0.775rem, 0.9rem);
 
   --leading-display: 1.05;
   --leading-heading: 1.2;
