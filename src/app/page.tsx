@@ -68,7 +68,8 @@ export default async function Home() {
       <SizeGuide />
       <Reviews />
       <Faq />
-      <FinalCta />
+      <FinalCta featuredProduct={featuredProduct} />
     </>
   );
 }
+

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
@@ -7,14 +8,30 @@ import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { SunMark } from "@/components/ui/SunMark";
 import { getFeaturedProduct } from "@/data/products";
+import { productService } from "@/lib/services/product-service";
+import type { Product } from "@/lib/types/product";
 import { ProductImage } from "@/components/product/ProductImage";
 import { ProductPriceDisplay } from "@/components/product/ProductPriceDisplay";
 import styles from "./final-cta.module.css";
 
-export function FinalCta() {
+interface FinalCtaProps {
+  featuredProduct?: Product;
+}
+
+export function FinalCta({ featuredProduct }: FinalCtaProps) {
   const { t, locale } = useI18n();
   const isAr = locale === "ar";
-  const product = getFeaturedProduct();
+  const [product, setProduct] = useState<Product | undefined>(featuredProduct || getFeaturedProduct());
+
+  useEffect(() => {
+    if (!featuredProduct) {
+      return productService.subscribe(() => {
+        setProduct(getFeaturedProduct());
+      });
+    } else {
+      setProduct(featuredProduct);
+    }
+  }, [featuredProduct]);
 
   return (
     <section aria-labelledby="final-cta-heading" className={styles.finalCta}>
@@ -37,7 +54,7 @@ export function FinalCta() {
                   <span className={styles.snippetTitle}>
                     {product.translations[locale]?.name || product.translations.en.name}
                   </span>
-                  <ProductPriceDisplay product={product} size="md" />
+                  <ProductPriceDisplay product={product} size="md" variant="inverse" />
                   <span className={styles.snippetBadge}>
                     💵 {isAr ? "الدفع عند الاستلام متاح" : "Cash on Delivery Supported"}
                   </span>
@@ -73,4 +90,5 @@ export function FinalCta() {
     </section>
   );
 }
+
 
