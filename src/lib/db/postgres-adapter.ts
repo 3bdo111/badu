@@ -1,7 +1,7 @@
 import { Pool as NeonPool, PoolClient as NeonPoolClient } from "@neondatabase/serverless";
 import type { BaduDatabase, RunResult, SqlValue } from "./adapter";
 import { rewritePositionalParams } from "./adapter";
-import { POSTGRES_SCHEMA } from "./schema-postgres";
+import { POSTGRES_SCHEMA, POSTGRES_MIGRATIONS } from "./schema-postgres";
 
 export interface PostgresAdapterOptions {
   /** Postgres connection string, e.g. postgresql://... or postgres://... */
@@ -75,7 +75,9 @@ export function createPostgresAdapter(options: PostgresAdapterOptions): BaduData
   });
 
   // Ensure schema exists (idempotent, cheap) and surface connection errors early.
-  const ready = poolHandle.exec(POSTGRES_SCHEMA).then(() => undefined);
+  const ready = poolHandle.exec(POSTGRES_SCHEMA)
+    .then(() => poolHandle.exec(POSTGRES_MIGRATIONS))
+    .then(() => undefined);
 
   return {
     dialect: "postgres",

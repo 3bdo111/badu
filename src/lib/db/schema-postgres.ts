@@ -271,3 +271,59 @@ export const POSTGRES_SCHEMA = `
   CREATE INDEX IF NOT EXISTS idx_product_faqs_product ON product_faqs(product_id);
   CREATE INDEX IF NOT EXISTS idx_product_features_product ON product_features(product_id);
 `;
+
+export const POSTGRES_MIGRATIONS = `
+  ALTER TABLE orders ADD COLUMN IF NOT EXISTS subtotal_amount DOUBLE PRECISION NOT NULL DEFAULT 0;
+  ALTER TABLE orders ADD COLUMN IF NOT EXISTS total_amount DOUBLE PRECISION NOT NULL DEFAULT 0;
+  ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_method TEXT NOT NULL DEFAULT 'CASH_ON_DELIVERY';
+  ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status TEXT NOT NULL DEFAULT 'PENDING';
+  ALTER TABLE orders ADD COLUMN IF NOT EXISTS stock_restored INTEGER NOT NULL DEFAULT 0;
+  ALTER TABLE orders ADD COLUMN IF NOT EXISTS customer_name TEXT NOT NULL DEFAULT '';
+  ALTER TABLE orders ADD COLUMN IF NOT EXISTS customer_phone TEXT NOT NULL DEFAULT '';
+  ALTER TABLE orders ADD COLUMN IF NOT EXISTS customer_email TEXT;
+  ALTER TABLE orders ADD COLUMN IF NOT EXISTS shipping_address TEXT NOT NULL DEFAULT '';
+  ALTER TABLE orders ADD COLUMN IF NOT EXISTS city TEXT NOT NULL DEFAULT '';
+  ALTER TABLE orders ADD COLUMN IF NOT EXISTS country TEXT NOT NULL DEFAULT '';
+  ALTER TABLE orders ADD COLUMN IF NOT EXISTS notes TEXT;
+
+  ALTER TABLE order_items ADD COLUMN IF NOT EXISTS product_name_en TEXT NOT NULL DEFAULT '';
+  ALTER TABLE order_items ADD COLUMN IF NOT EXISTS product_name_ar TEXT NOT NULL DEFAULT '';
+  ALTER TABLE order_items ADD COLUMN IF NOT EXISTS color_name_en TEXT NOT NULL DEFAULT '';
+  ALTER TABLE order_items ADD COLUMN IF NOT EXISTS color_name_ar TEXT NOT NULL DEFAULT '';
+  ALTER TABLE order_items ADD COLUMN IF NOT EXISTS price_per_unit DOUBLE PRECISION NOT NULL DEFAULT 0;
+  ALTER TABLE order_items ADD COLUMN IF NOT EXISTS line_total DOUBLE PRECISION NOT NULL DEFAULT 0;
+
+  ALTER TABLE storefront_sections ADD COLUMN IF NOT EXISTS draft_title_en TEXT;
+  ALTER TABLE storefront_sections ADD COLUMN IF NOT EXISTS draft_title_ar TEXT;
+  ALTER TABLE storefront_sections ADD COLUMN IF NOT EXISTS draft_subtitle_en TEXT;
+  ALTER TABLE storefront_sections ADD COLUMN IF NOT EXISTS draft_subtitle_ar TEXT;
+  ALTER TABLE storefront_sections ADD COLUMN IF NOT EXISTS draft_body_en TEXT;
+  ALTER TABLE storefront_sections ADD COLUMN IF NOT EXISTS draft_body_ar TEXT;
+  ALTER TABLE storefront_sections ADD COLUMN IF NOT EXISTS draft_cta_label_en TEXT;
+  ALTER TABLE storefront_sections ADD COLUMN IF NOT EXISTS draft_cta_label_ar TEXT;
+  ALTER TABLE storefront_sections ADD COLUMN IF NOT EXISTS draft_cta_url TEXT;
+  ALTER TABLE storefront_sections ADD COLUMN IF NOT EXISTS draft_featured_product_id TEXT;
+  ALTER TABLE storefront_sections ADD COLUMN IF NOT EXISTS draft_image_url TEXT;
+  ALTER TABLE storefront_sections ADD COLUMN IF NOT EXISTS draft_visible INTEGER;
+  ALTER TABLE storefront_sections ADD COLUMN IF NOT EXISTS draft_sort_order INTEGER;
+
+  ALTER TABLE products ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'PUBLISHED';
+  ALTER TABLE products ADD COLUMN IF NOT EXISTS sort_order INTEGER NOT NULL DEFAULT 0;
+
+  UPDATE storefront_sections SET
+    draft_title_en = COALESCE(draft_title_en, title_en),
+    draft_title_ar = COALESCE(draft_title_ar, title_ar),
+    draft_subtitle_en = COALESCE(draft_subtitle_en, subtitle_en),
+    draft_subtitle_ar = COALESCE(draft_subtitle_ar, subtitle_ar),
+    draft_body_en = COALESCE(draft_body_en, body_en),
+    draft_body_ar = COALESCE(draft_body_ar, body_ar),
+    draft_cta_label_en = COALESCE(draft_cta_label_en, cta_label_en),
+    draft_cta_label_ar = COALESCE(draft_cta_label_ar, cta_label_ar),
+    draft_cta_url = COALESCE(draft_cta_url, cta_url),
+    draft_featured_product_id = COALESCE(draft_featured_product_id, featured_product_id),
+    draft_image_url = COALESCE(draft_image_url, image_url),
+    draft_visible = COALESCE(draft_visible, visible),
+    draft_sort_order = COALESCE(draft_sort_order, sort_order)
+  WHERE draft_title_en IS NULL;
+`;
+
