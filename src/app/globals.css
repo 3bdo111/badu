@@ -115,9 +115,15 @@ svg {
 input,
 button,
 textarea,
-select {
+select,
+a {
   font: inherit;
   color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  touch-action: manipulation;
 }
 
 ul[role="list"],

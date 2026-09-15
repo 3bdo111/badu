@@ -14,6 +14,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Accordion } from "@/components/ui/Accordion";
 import { ProductImage } from "@/components/product/ProductImage";
 import { SizeSelector } from "@/components/product/SizeSelector";
+import { MobileStickyBuyBar } from "./MobileStickyBuyBar";
 import styles from "./purchase-section.module.css";
 
 type Feedback = "none" | "error" | "added";
@@ -284,6 +285,14 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
           </div>
         </div>
       </Container>
+
+      <MobileStickyBuyBar
+        product={product}
+        selectedSize={size}
+        onSelectSize={handleSelect}
+        onAddToCart={handleAddToCart}
+        isAdded={feedback === "added"}
+      />
     </section>
   );
 }

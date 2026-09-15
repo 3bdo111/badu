@@ -1,0 +1,200 @@
+.stickyContainer {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  z-index: 45;
+  background-color: color-mix(in srgb, var(--color-background) 94%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-block-start: 1px solid var(--color-border);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  animation: slideUp 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.sizeDrawer {
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-secondary);
+  border-block-end: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  animation: fadeIn 200ms ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sizeDrawerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: var(--color-foreground-secondary);
+}
+
+.closePicker {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--color-foreground);
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.sizePills {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding-block: var(--space-1);
+}
+
+.sizePill {
+  min-width: 3rem;
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-background);
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: var(--color-foreground);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: all 150ms ease;
+}
+
+.sizePill:active {
+  transform: scale(0.95);
+}
+
+.activePill {
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+  border-color: var(--color-foreground);
+}
+
+.barContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0.65rem var(--space-4);
+  max-width: var(--container);
+  margin-inline: auto;
+}
+
+.productBrief {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  overflow: hidden;
+}
+
+.thumbWrap {
+  position: relative;
+  width: 2.75rem;
+  height: 3.25rem;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background-color: var(--color-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.price {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-foreground);
+}
+
+.sizeBadge {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.ctaButton {
+  min-height: 2.75rem;
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+  font-weight: 700;
+  font-size: 0.825rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+  touch-action: manipulation;
+  transition: transform 120ms ease, background-color 200ms ease;
+}
+
+:lang(ar) .ctaButton {
+  letter-spacing: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.ctaButton:active {
+  transform: scale(0.96);
+}
+
+.addedCta {
+  background-color: #6d7f57 !important;
+}
+
+/* Hide on desktop devices where sticky buy is unnecessary */
+@media (min-width: 64rem) {
+  .stickyContainer {
+    display: none;
+  }
+}

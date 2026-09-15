@@ -27,7 +27,15 @@
   display: flex;
   gap: var(--space-3);
   overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
   padding-block-end: var(--space-2);
+  touch-action: pan-x;
+}
+
+.thumbnails::-webkit-scrollbar {
+  display: none;
 }
 
 .thumbBtn {
@@ -36,7 +44,15 @@
   background: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: border-color var(--duration-base) var(--ease-out);
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color var(--duration-base) var(--ease-out), transform 120ms ease;
+}
+
+.thumbBtn:active {
+  transform: scale(0.94);
 }
 
 .activeThumb {
