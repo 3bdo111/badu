@@ -1,4 +1,5 @@
-import { Pool as NeonPool, PoolClient as NeonPoolClient } from "@neondatabase/serverless";
+import { Pool as NeonPool, PoolClient as NeonPoolClient, neonConfig } from "@neondatabase/serverless";
+import ws from "ws";
 import type { BaduDatabase, RunResult, SqlValue } from "./adapter";
 import { rewritePositionalParams } from "./adapter";
 import { POSTGRES_SCHEMA, POSTGRES_MIGRATIONS } from "./schema-postgres";
@@ -61,10 +62,18 @@ function createClientHandle(dialectClient: PgClient): BaduDatabase {
  * instances reuse connections instead of creating one per request.
  */
 export function createPostgresAdapter(options: PostgresAdapterOptions): BaduDatabase {
+  if (typeof window === "undefined" && options.connectionString && options.connectionString.startsWith("postgres")) {
+    neonConfig.webSocketConstructor = ws;
+  }
+
   const pool = new NeonPool({
     connectionString: options.connectionString,
     max: options.max ?? Number(process.env.PGPOOL_MAX ?? 5),
-    // Neon requires TLS; sslmode is part of the connection string.
+  });
+
+  // Attach error handler to prevent unhandled ErrorEvent crashes in Node 24 / Vercel serverless
+  pool.on("error", (err: unknown) => {
+    console.error("[NeonPool] Connection pool background error:", err);
   });
 
   const poolHandle = createClientHandle({
@@ -75,9 +84,13 @@ export function createPostgresAdapter(options: PostgresAdapterOptions): BaduData
   });
 
   // Ensure schema exists (idempotent, cheap) and surface connection errors early.
-  const ready = poolHandle.exec(POSTGRES_SCHEMA)
+  const ready = poolHandle
+    .exec(POSTGRES_SCHEMA)
     .then(() => poolHandle.exec(POSTGRES_MIGRATIONS))
-    .then(() => undefined);
+    .then(() => undefined)
+    .catch((err) => {
+      console.error("[NeonPool] Schema initialization warning:", err);
+    });
 
   return {
     dialect: "postgres",

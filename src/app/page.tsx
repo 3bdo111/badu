@@ -1,5 +1,6 @@
 import { serverStorefrontRepository, type StorefrontSectionRecord } from "@/lib/repositories/server-storefront-repository";
 import { serverProductRepository } from "@/lib/repositories/server-product-repository";
+import type { Product } from "@/lib/types/product";
 import { Hero } from "@/components/home/Hero";
 import { QuickTrustBar } from "@/components/home/QuickTrustBar";
 import { ProductIntro } from "@/components/home/ProductIntro";
@@ -14,8 +15,15 @@ import { Faq } from "@/components/home/Faq";
 import { FinalCta } from "@/components/home/FinalCta";
 
 export default async function Home() {
-  const publicSections = await serverStorefrontRepository.getPublicSections();
-  const allProducts = await serverProductRepository.getVisible();
+  let publicSections: StorefrontSectionRecord[] = [];
+  let allProducts: Product[] = [];
+
+  try {
+    publicSections = await serverStorefrontRepository.getPublicSections();
+    allProducts = await serverProductRepository.getVisible();
+  } catch (error) {
+    console.error("[Home Page] Error fetching storefront data:", error);
+  }
 
   const heroSection = publicSections.find((s) => s.sectionKey === "hero");
   const featuredProductSection = publicSections.find((s) => s.sectionKey === "featured_product");
@@ -26,8 +34,12 @@ export default async function Home() {
     featuredProductSection?.featuredProductId || heroSection?.featuredProductId;
 
   if (targetProdId) {
-    featuredProduct = await serverProductRepository.getById(targetProdId);
-    if (featuredProduct && !featuredProduct.available) {
+    try {
+      featuredProduct = await serverProductRepository.getById(targetProdId);
+      if (featuredProduct && !featuredProduct.available) {
+        featuredProduct = undefined;
+      }
+    } catch {
       featuredProduct = undefined;
     }
   }
@@ -62,7 +74,7 @@ export default async function Home() {
 
   return (
     <>
-      {heroSection && <Hero section={heroSection} featuredProduct={featuredProduct} />}
+      <Hero section={heroSection} featuredProduct={featuredProduct} />
       <QuickTrustBar />
       <ProductIntro />
       <ProductShowcase />
@@ -74,5 +86,6 @@ export default async function Home() {
     </>
   );
 }
+
 
 
