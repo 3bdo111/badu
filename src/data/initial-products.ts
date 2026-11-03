@@ -1,6 +1,8 @@
 import type { Product } from "@/lib/types/product";
 
 const IMAGE_BASE = "/images/products/badu-hoodie";
+const BLOB_BASE =
+  "https://fvidz2mv6avjliic.public.blob.vercel-storage.com/products/badu-hoodie";
 
 export const initialProducts: Product[] = [
   {
@@ -64,6 +66,85 @@ export const initialProducts: Product[] = [
         sortOrder: 4,
         colorKey: "black",
       },
+      {
+        id: "img-001-blue-front",
+        src: `${BLOB_BASE}/blue-front.jpg`,
+        alt: { en: "BADU Slate Blue hoodie front", ar: "هودي بادو أزرق سليت من الأمام" },
+        isPrimary: false,
+        sortOrder: 5,
+        colorKey: "slate-blue",
+      },
+      {
+        id: "img-001-blue-back",
+        src: `${BLOB_BASE}/blue-back.jpg`,
+        alt: {
+          en: "BADU Slate Blue hoodie back with camel embroidery",
+          ar: "تطريز الظهر لهودي بادو أزرق سليت",
+        },
+        isPrimary: false,
+        sortOrder: 6,
+        colorKey: "slate-blue",
+      },
+      {
+        id: "img-001-black-front",
+        src: `${BLOB_BASE}/black-front.jpg`,
+        alt: {
+          en: "BADU Black hoodie front with dune embroidery",
+          ar: "هودي بادو أسود من الأمام بتطريز الكثبان",
+        },
+        isPrimary: false,
+        sortOrder: 7,
+        colorKey: "black",
+      },
+      {
+        id: "img-001-black-back",
+        src: `${BLOB_BASE}/black-back.jpg`,
+        alt: {
+          en: "BADU Black hoodie back with dune and sun embroidery",
+          ar: "تطريز الظهر لهودي بادو الأسود",
+        },
+        isPrimary: false,
+        sortOrder: 8,
+        colorKey: "black",
+      },
+      {
+        id: "img-001-black-side",
+        src: `${BLOB_BASE}/black-side.jpg`,
+        alt: { en: "BADU Black hoodie side view", ar: "هودي بادو أسود من الجانب" },
+        isPrimary: false,
+        sortOrder: 9,
+        colorKey: "black",
+      },
+      {
+        id: "img-001-brown-front",
+        src: `${BLOB_BASE}/brown-front.jpg`,
+        alt: {
+          en: "BADU Earth Brown hoodie front with dune embroidery",
+          ar: "هودي بادو بني ترابي من الأمام",
+        },
+        isPrimary: false,
+        sortOrder: 10,
+        colorKey: "earth-brown",
+      },
+      {
+        id: "img-001-brown-back",
+        src: `${BLOB_BASE}/brown-back.jpg`,
+        alt: {
+          en: "BADU Earth Brown hoodie back with sun and birds embroidery",
+          ar: "تطريز الظهر لهودي بادو البني الترابي",
+        },
+        isPrimary: false,
+        sortOrder: 11,
+        colorKey: "earth-brown",
+      },
+      {
+        id: "img-001-brown-back2",
+        src: `${BLOB_BASE}/brown-back-2.jpg`,
+        alt: { en: "BADU Earth Brown hoodie back view", ar: "هودي بادو بني ترابي من الخلف" },
+        isPrimary: false,
+        sortOrder: 12,
+        colorKey: "earth-brown",
+      },
     ],
     sizes: ["S", "M", "L", "XL"],
     stock: {
@@ -80,6 +161,14 @@ export const initialProducts: Product[] = [
       {
         name: { en: "Black", ar: "أسود" },
         hex: "#1C1A17",
+      },
+      {
+        name: { en: "Slate Blue", ar: "أزرق سليت" },
+        hex: "#7E96A6",
+      },
+      {
+        name: { en: "Earth Brown", ar: "بني ترابي" },
+        hex: "#5B4A3C",
       },
     ],
     fit: { en: "Relaxed fit", ar: "قصة مريحة" },

@@ -44,8 +44,8 @@ export async function seedDatabase(db: BaduDatabase): Promise<void> {
 
         for (const [idx, img] of p.images.entries()) {
           await tx.run(
-            `INSERT INTO product_images (id, product_id, src, alt_en, alt_ar, sort_order, is_primary)
-             VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO product_images (id, product_id, src, alt_en, alt_ar, sort_order, is_primary, color_key)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
             [
               img.id || `img-${p.id}-${idx}`,
               p.id,
@@ -54,6 +54,7 @@ export async function seedDatabase(db: BaduDatabase): Promise<void> {
               img.alt.ar,
               img.sortOrder ?? idx,
               img.isPrimary ? 1 : 0,
+              img.colorKey ?? null,
             ]
           );
         }
