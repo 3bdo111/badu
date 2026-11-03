@@ -11,43 +11,58 @@ export const initialProducts: Product[] = [
     images: [
       {
         id: "img-001-front",
-        src: `${IMAGE_BASE}/front-v6.jpg`,
+        src: `${IMAGE_BASE}/front-v6.webp`,
         alt: {
           en: "BADU Desert Sand hoodie front",
           ar: "هودي BADU باللون الرملي من الأمام",
         },
         isPrimary: true,
         sortOrder: 0,
+        colorKey: "desert-sand",
       },
       {
         id: "img-001-back",
-        src: `${IMAGE_BASE}/back-v6.jpg`,
+        src: `${IMAGE_BASE}/back-v6.webp`,
         alt: {
           en: "BADU Desert Sand hoodie back embroidery",
           ar: "تطريز ظهر هودي BADU باللون الرملي",
         },
         isPrimary: false,
         sortOrder: 1,
+        colorKey: "desert-sand",
       },
       {
         id: "img-001-detail1",
-        src: `${IMAGE_BASE}/detail-1-v2.jpg`,
+        src: `${IMAGE_BASE}/detail-1-v2.webp`,
         alt: {
           en: "BADU Desert Sand hoodie chest sun embroidery macro close-up",
           ar: "تفاصيل ماكرو لتطريز الشمس على الصدر لهودي BADU",
         },
         isPrimary: false,
         sortOrder: 2,
+        colorKey: "desert-sand",
       },
       {
         id: "img-001-detail2",
-        src: `${IMAGE_BASE}/detail-2-v2.jpg`,
+        src: `${IMAGE_BASE}/detail-2-v2.webp`,
         alt: {
           en: "BADU Desert Sand hoodie back embroidery macro close-up",
           ar: "تفاصيل ماكرو لتطريز الظهر الصحراوي لهودي BADU",
         },
         isPrimary: false,
         sortOrder: 3,
+        colorKey: "desert-sand",
+      },
+      {
+        id: "img-001-black",
+        src: "/images/campaign/model-black.jpg",
+        alt: {
+          en: "BADU hoodie in Black worn by model",
+          ar: "هودي BADU باللون الأسود على الموديل",
+        },
+        isPrimary: false,
+        sortOrder: 4,
+        colorKey: "black",
       },
     ],
     sizes: ["S", "M", "L", "XL"],
@@ -61,6 +76,10 @@ export const initialProducts: Product[] = [
       {
         name: { en: "Desert Sand", ar: "رمال الصحراء" },
         hex: "#C8A77D",
+      },
+      {
+        name: { en: "Black", ar: "أسود" },
+        hex: "#1C1A17",
       },
     ],
     fit: { en: "Relaxed fit", ar: "قصة مريحة" },

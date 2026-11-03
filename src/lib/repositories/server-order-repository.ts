@@ -7,7 +7,8 @@ export type OrderStatus =
   | "PROCESSING"
   | "SHIPPED"
   | "DELIVERED"
-  | "CANCELLED";
+  | "CANCELLED"
+  | "ARCHIVED";
 
 export interface OrderCustomerInfo {
   name: string;
@@ -140,12 +141,13 @@ export class OrderTransitionError extends Error {
 }
 
 const ALLOWED_ORDER_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
-  PENDING: ["CONFIRMED", "CANCELLED"],
-  CONFIRMED: ["PROCESSING", "CANCELLED"],
-  PROCESSING: ["SHIPPED", "CANCELLED"],
-  SHIPPED: ["DELIVERED", "CANCELLED"],
-  DELIVERED: [],
-  CANCELLED: [],
+  PENDING: ["CONFIRMED", "CANCELLED", "ARCHIVED"],
+  CONFIRMED: ["PROCESSING", "CANCELLED", "ARCHIVED"],
+  PROCESSING: ["SHIPPED", "CANCELLED", "ARCHIVED"],
+  SHIPPED: ["DELIVERED", "CANCELLED", "ARCHIVED"],
+  DELIVERED: ["ARCHIVED"],
+  CANCELLED: ["ARCHIVED"],
+  ARCHIVED: ["PENDING", "CONFIRMED", "CANCELLED"],
 };
 
 export const serverOrderRepository = {
@@ -293,6 +295,9 @@ export const serverOrderRepository = {
     if (statusFilter && statusFilter !== "ALL") {
       sql += " AND status = ?";
       params.push(statusFilter);
+    } else {
+      // By default (when statusFilter is not specified or is "ALL"), exclude archived orders
+      sql += " AND status != 'ARCHIVED'";
     }
 
     if (query && query.trim()) {
@@ -334,10 +339,8 @@ export const serverOrderRepository = {
     const ord = await this.getOrderById(id);
     if (!ord) return undefined;
 
-    // Idempotent same-status update
     if (ord.status === newStatus) return ord;
 
-    // State machine transition validation
     const allowed = ALLOWED_ORDER_TRANSITIONS[ord.status] || [];
     if (!allowed.includes(newStatus)) {
       throw new OrderTransitionError(ord.status, newStatus);
@@ -347,8 +350,8 @@ export const serverOrderRepository = {
     const db = await getDb();
 
     await db.transaction(async (tx) => {
-      // Idempotent stock restoration on cancellation
-      if (newStatus === "CANCELLED" && !ord.stockRestored) {
+      // Restore stock when order is CANCELLED or ARCHIVED
+      if ((newStatus === "CANCELLED" || newStatus === "ARCHIVED") && !ord.stockRestored) {
         for (const item of ord.items) {
           await tx.run(
             `UPDATE product_stock
@@ -360,7 +363,6 @@ export const serverOrderRepository = {
         await tx.run("UPDATE orders SET stock_restored = 1 WHERE id = ?", [id]);
       }
 
-      // If status changes to DELIVERED, set paymentStatus to PAID for COD
       const paymentStatus = newStatus === "DELIVERED" ? "PAID" : ord.paymentStatus;
 
       await tx.run(
@@ -372,5 +374,29 @@ export const serverOrderRepository = {
     });
 
     return this.getOrderById(id);
+  },
+
+  async deleteOrderPermanently(id: string): Promise<boolean> {
+    const db = await getDb();
+    const ord = await this.getOrderById(id);
+    if (!ord) return false;
+
+    await db.transaction(async (tx) => {
+      // Restore stock if not already restored
+      if (!ord.stockRestored && ord.status !== "CANCELLED") {
+        for (const item of ord.items) {
+          await tx.run(
+            `UPDATE product_stock
+             SET quantity = quantity + ?
+             WHERE product_id = ? AND size = ?`,
+            [item.quantity, item.productId, item.size]
+          );
+        }
+      }
+      await tx.run("DELETE FROM order_items WHERE order_id = ?", [ord.id]);
+      await tx.run("DELETE FROM orders WHERE id = ?", [ord.id]);
+    });
+
+    return true;
   },
 };

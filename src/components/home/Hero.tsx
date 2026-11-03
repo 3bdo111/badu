@@ -32,13 +32,18 @@ export function Hero({ section, featuredProduct }: HeroProps) {
     }
   }, [featuredProduct]);
 
-  const title = section ? (isAr ? section.titleAr : section.titleEn) : t("hero.title");
-  const subtitle = section ? (isAr ? section.subtitleAr : section.subtitleEn) : t("hero.subtitle");
-  const ctaLabel = section
-    ? isAr
-      ? section.ctaLabelAr || t("hero.cta")
-      : section.ctaLabelEn || t("hero.cta")
-    : t("hero.cta");
+  const title = section
+    ? (isAr ? section.titleAr || t("hero.title") : section.titleEn || t("hero.title"))
+    : t("hero.title");
+  const subtitle = section
+    ? (isAr ? section.subtitleAr || t("hero.subtitle") : section.subtitleEn || t("hero.subtitle"))
+    : t("hero.subtitle");
+  const ctaLabel =
+    (section
+      ? isAr
+        ? section.ctaLabelAr || t("hero.cta")
+        : section.ctaLabelEn || t("hero.cta")
+      : t("hero.cta")) || (isAr ? "أطلب هودي بادو الصحراوي — تسوّق الآن" : "GET YOUR DESERT X HOODIE — SHOP NOW");
   const ctaUrl = section?.ctaUrl || "#hoodie";
 
   return (
@@ -53,8 +58,10 @@ export function Hero({ section, featuredProduct }: HeroProps) {
                   <span className={styles.badgeText}>{t("hero.eyebrow")}</span>
                 </div>
                 <div className={styles.ratingBadge}>
-                  <span className={styles.stars}>★★★★★</span>
-                  <span className={styles.ratingText}>5.0 (1,200+ {isAr ? "عميل راضٍ" : "Happy Customers"})</span>
+                  <span className={styles.stars}>💵</span>
+                  <span className={styles.ratingText}>
+                    {isAr ? "الدفع عند الاستلام متاح" : "Cash on Delivery Available"}
+                  </span>
                 </div>
               </div>
             </Reveal>
@@ -100,7 +107,7 @@ export function Hero({ section, featuredProduct }: HeroProps) {
             <Reveal delay={240}>
               <div className={styles.ctaRow}>
                 <Button href={ctaUrl} size="lg" className={styles.primaryCta}>
-                  {isAr ? "أطلب هودي بادو الصحراوي — تسوّق الآن" : "GET YOUR DESERT X HOODIE — SHOP NOW"}
+                  {ctaLabel}
                 </Button>
                 <Button href="#story" size="lg" variant="ghost">
                   {t("hero.secondaryCta")}

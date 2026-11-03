@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS product_images (
   alt_en TEXT NOT NULL,
   alt_ar TEXT NOT NULL,
   sort_order INTEGER NOT NULL DEFAULT 0,
-  is_primary INTEGER NOT NULL DEFAULT 0
+  is_primary INTEGER NOT NULL DEFAULT 0,
+  color_key VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS product_colors (

@@ -46,6 +46,7 @@ export async function PATCH(
       "SHIPPED",
       "DELIVERED",
       "CANCELLED",
+      "ARCHIVED",
     ];
 
     if (!status || typeof status !== "string" || !allowedStatuses.includes(status as OrderStatus)) {
@@ -66,5 +67,28 @@ export async function PATCH(
       return NextResponse.json({ error: (err as Error).message }, { status: 400 });
     }
     return NextResponse.json({ error: "Failed to update order status." }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const admin = await verifyAdminSession();
+    if (!admin) {
+      return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+    }
+
+    const { id } = await params;
+    const deleted = await serverOrderRepository.deleteOrderPermanently(id);
+
+    if (!deleted) {
+      return NextResponse.json({ error: "Order not found." }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, message: "Order permanently deleted." });
+  } catch {
+    return NextResponse.json({ error: "Failed to delete order permanently." }, { status: 500 });
   }
 }

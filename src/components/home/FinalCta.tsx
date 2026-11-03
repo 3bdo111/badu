@@ -12,26 +12,32 @@ import { productService } from "@/lib/services/product-service";
 import type { Product } from "@/lib/types/product";
 import { ProductImage } from "@/components/product/ProductImage";
 import { ProductPriceDisplay } from "@/components/product/ProductPriceDisplay";
+import type { StorefrontSectionRecord } from "@/lib/repositories/server-storefront-repository";
 import styles from "./final-cta.module.css";
 
 interface FinalCtaProps {
   featuredProduct?: Product;
+  section?: StorefrontSectionRecord;
 }
 
-export function FinalCta({ featuredProduct }: FinalCtaProps) {
+export function FinalCta({ featuredProduct, section }: FinalCtaProps) {
   const { t, locale } = useI18n();
   const isAr = locale === "ar";
-  const [product, setProduct] = useState<Product | undefined>(featuredProduct || getFeaturedProduct());
+  const [syncedProduct, setSyncedProduct] = useState<Product | undefined>(undefined);
 
   useEffect(() => {
-    if (!featuredProduct) {
-      return productService.subscribe(() => {
-        setProduct(getFeaturedProduct());
-      });
-    } else {
-      setProduct(featuredProduct);
-    }
+    if (featuredProduct) return;
+    return productService.subscribe(() => {
+      setSyncedProduct(getFeaturedProduct());
+    });
   }, [featuredProduct]);
+
+  const product = featuredProduct || syncedProduct || getFeaturedProduct();
+
+  const headingText = (isAr ? section?.titleAr : section?.titleEn) || t("sections.finalCta.heading");
+  const supportingText = isAr ? section?.subtitleAr : section?.subtitleEn;
+  const ctaLabel = (isAr ? section?.ctaLabelAr : section?.ctaLabelEn) || t("sections.finalCta.cta");
+  const ctaUrl = section?.ctaUrl || "#hoodie";
 
   return (
     <section aria-labelledby="final-cta-heading" className={styles.finalCta}>
@@ -40,8 +46,10 @@ export function FinalCta({ featuredProduct }: FinalCtaProps) {
           <div className={styles.inner}>
             <SunMark className={styles.sun} />
             <Heading level={2} display id="final-cta-heading" className={styles.heading}>
-              {t("sections.finalCta.heading")}
+              {headingText}
             </Heading>
+
+            {supportingText && <p className={styles.supportingText}>{supportingText}</p>}
 
             {product && (
               <div className={styles.productSnippet}>
@@ -62,8 +70,8 @@ export function FinalCta({ featuredProduct }: FinalCtaProps) {
               </div>
             )}
 
-            <Button href="#hoodie" size="lg" variant="inverse" className={styles.ctaButton}>
-              {t("sections.finalCta.cta")}
+            <Button href={ctaUrl} size="lg" variant="inverse" className={styles.ctaButton}>
+              {ctaLabel}
             </Button>
 
             <div className={styles.trustBadgesGrid}>

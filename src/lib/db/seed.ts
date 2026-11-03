@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import type { BaduDatabase } from "./adapter";
 import { initialProducts } from "@/data/initial-products";
+import { LANDING_SECTIONS, LANDING_SECTION_ORDER } from "@/lib/storefront/section-definitions";
 
 /**
  * Seeds a fresh database (SQLite or PostgreSQL) with the initial catalogue,
@@ -252,5 +253,102 @@ export async function seedDatabase(db: BaduDatabase): Promise<void> {
         );
       }
     });
+  }
+
+  // 4. Ensure every landing-page section exists (idempotent).
+  //    Older databases only contain the 5 originally seeded CMS sections;
+  //    this creates rows for the previously hard-coded sections so the admin
+  //    gains full control (content, visibility, order) over the whole page.
+  await ensureLandingSections(db);
+
+  // 5. Lightweight column migrations (idempotent) — keep existing databases
+  //    in sync with the canonical schema without manual scripts.
+  await ensureColumn(db, "product_images", "color_key", "TEXT");
+}
+
+/**
+ * Add a column to a table when it is missing. No-op when the column exists.
+ */
+async function ensureColumn(
+  db: BaduDatabase,
+  table: string,
+  column: string,
+  ddlType: string
+): Promise<void> {
+  const dialect = db.dialect;
+  let hasColumn = false;
+
+  if (dialect === "postgres") {
+    const row = await db.get<{ count: number }>(
+      `SELECT COUNT(*) as count FROM information_schema.columns
+       WHERE table_name = '${table}' AND column_name = '${column}'`
+    );
+    hasColumn = Boolean(row && row.count > 0);
+  } else {
+    const rows = await db.all<{ name: string }>(`PRAGMA table_info(${table})`);
+    hasColumn = rows.some((r) => r.name === column);
+  }
+
+  if (!hasColumn) {
+    await db.run(`ALTER TABLE ${table} ADD COLUMN ${column} ${ddlType}`);
+  }
+}
+
+/**
+ * Create any missing `storefront_sections` rows from the canonical registry
+ * and (re)number all sections to the canonical order. Existing content is
+ * never overwritten — only rows whose key is absent are inserted, and only
+ * `sort_order` is adjusted for existing rows (draft content is untouched).
+ */
+async function ensureLandingSections(db: BaduDatabase): Promise<void> {
+  const rows = await db.all<{ section_key: string }>("SELECT section_key FROM storefront_sections");
+  const existing = new Set(rows.map((r) => r.section_key));
+  const missing = LANDING_SECTION_ORDER.filter((key) => !existing.has(key));
+
+  if (missing.length === 0) return;
+
+  const now = new Date().toISOString();
+
+  for (const [index, key] of LANDING_SECTION_ORDER.entries()) {
+    const order = index + 1;
+    const def = LANDING_SECTIONS.find((s) => s.key === key);
+    if (!def) continue;
+
+    if (existing.has(key)) {
+      await db.run(
+        "UPDATE storefront_sections SET sort_order = ?, draft_sort_order = NULL WHERE section_key = ?",
+        [order, key]
+      );
+      continue;
+    }
+
+    await db.run(
+      `INSERT INTO storefront_sections (
+        id, section_key, title_en, title_ar, subtitle_en, subtitle_ar,
+        body_en, body_ar, cta_label_en, cta_label_ar, cta_url,
+        featured_product_id, image_url, visible, status, sort_order,
+        created_at, updated_at, published_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'PUBLISHED', ?, ?, ?, ?)`,
+      [
+        `sec-${key}`,
+        key,
+        def.defaults.titleEn,
+        def.defaults.titleAr,
+        def.defaults.subtitleEn || null,
+        def.defaults.subtitleAr || null,
+        def.defaults.bodyEn || null,
+        def.defaults.bodyAr || null,
+        def.defaults.ctaLabelEn || null,
+        def.defaults.ctaLabelAr || null,
+        def.defaults.ctaUrl || null,
+        null,
+        def.defaults.imageUrl || null,
+        1,
+        order,
+        now,
+        now,
+        now,
+      ]
+    );
   }
 }

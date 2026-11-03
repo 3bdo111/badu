@@ -42,6 +42,7 @@ interface DbImageRow {
   alt_ar: string;
   sort_order: number;
   is_primary: number;
+  color_key?: string | null;
 }
 
 interface DbColorRow {
@@ -148,6 +149,7 @@ function mapRowToProduct(
       alt: { en: img.alt_en, ar: img.alt_ar },
       isPrimary: Boolean(img.is_primary),
       sortOrder: img.sort_order,
+      colorKey: img.color_key || null,
     }));
 
   const colorList: ProductColor[] = colors
@@ -443,8 +445,8 @@ export const serverProductRepository = {
       for (let idx = 0; idx < normalized.images.length; idx++) {
         const img = normalized.images[idx];
         await tx.run(
-          `INSERT INTO product_images (id, product_id, src, alt_en, alt_ar, sort_order, is_primary)
-           VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO product_images (id, product_id, src, alt_en, alt_ar, sort_order, is_primary, color_key)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             img.id || `img-${normalized.id}-${idx}`,
             normalized.id,
@@ -453,6 +455,7 @@ export const serverProductRepository = {
             img.alt.ar,
             img.sortOrder ?? idx,
             img.isPrimary ? 1 : 0,
+            img.colorKey || null,
           ]
         );
       }
@@ -679,8 +682,8 @@ export const serverProductRepository = {
       for (let idx = 0; idx < normalized.images.length; idx++) {
         const img = normalized.images[idx];
         await tx.run(
-          `INSERT INTO product_images (id, product_id, src, alt_en, alt_ar, sort_order, is_primary)
-           VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO product_images (id, product_id, src, alt_en, alt_ar, sort_order, is_primary, color_key)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             img.id || `img-${id}-${idx}`,
             id,
@@ -689,6 +692,7 @@ export const serverProductRepository = {
             img.alt.ar,
             img.sortOrder ?? idx,
             img.isPrimary ? 1 : 0,
+            img.colorKey || null,
           ]
         );
       }

@@ -17,6 +17,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
   defaultLanguage: "en",
   supportedLanguages: ["en", "ar"],
   currency: "USD",
+  whatsappNumber: "",
   copyrightText: {
     en: "© 2026 BADU. All rights reserved.",
     ar: "© 2026 بادو. جميع الحقوق محفوظة.",

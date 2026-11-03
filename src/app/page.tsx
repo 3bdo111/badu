@@ -5,15 +5,22 @@ import { Hero } from "@/components/home/Hero";
 import { QuickTrustBar } from "@/components/home/QuickTrustBar";
 import { ProductIntro } from "@/components/home/ProductIntro";
 import { ProductShowcase } from "@/components/home/ProductShowcase";
+import { FeaturedProductsGrid } from "@/components/home/FeaturedProductsGrid";
 import { BrandStory } from "@/components/home/BrandStory";
 import { ArtworkStory } from "@/components/home/ArtworkStory";
-import { CraftFeatures } from "@/components/home/CraftFeatures";
+import { LifestyleCampaign } from "@/components/home/LifestyleCampaign";
 import { PurchaseSection } from "@/components/home/PurchaseSection";
+import { CraftFeatures } from "@/components/home/CraftFeatures";
 import { SizeGuide } from "@/components/home/SizeGuide";
 import { Reviews } from "@/components/home/Reviews";
 import { Faq } from "@/components/home/Faq";
 import { FinalCta } from "@/components/home/FinalCta";
 
+/**
+ * Landing page — every section is rendered from the CMS `storefront_sections`
+ * table (published + visible, in admin-controlled order). The admin
+ * storefront editor controls each section's content, visibility and order.
+ */
 export default async function Home() {
   let publicSections: StorefrontSectionRecord[] = [];
   let allProducts: Product[] = [];
@@ -48,17 +55,24 @@ export default async function Home() {
     featuredProduct = allProducts[0];
   }
 
-  // Filter out hero for the body sections list since Hero is pinned at top
-  const bodyCmsSections = publicSections.filter((s) => s.sectionKey !== "hero");
-
-  const renderCmsSection = (sec: StorefrontSectionRecord) => {
+  const renderSection = (sec: StorefrontSectionRecord) => {
     switch (sec.sectionKey) {
+      case "hero":
+        return <Hero key="hero" section={sec} featuredProduct={featuredProduct} />;
+      case "trust_bar":
+        return <QuickTrustBar key="trust_bar" section={sec} />;
+      case "product_intro":
+        return <ProductIntro key="product_intro" section={sec} />;
+      case "product_showcase":
+        return <ProductShowcase key="product_showcase" section={sec} />;
+      case "product_grid":
+        return <FeaturedProductsGrid key="product_grid" section={sec} products={allProducts} />;
       case "story":
         return <BrandStory key="story" section={sec} />;
       case "artwork":
         return <ArtworkStory key="artwork" section={sec} />;
-      case "features":
-        return <CraftFeatures key="features" section={sec} />;
+      case "campaign":
+        return <LifestyleCampaign key="campaign" section={sec} />;
       case "featured_product":
         return (
           <PurchaseSection
@@ -67,25 +81,41 @@ export default async function Home() {
             featuredProduct={featuredProduct}
           />
         );
+      case "features":
+        return <CraftFeatures key="features" section={sec} />;
+      case "size_guide":
+        return <SizeGuide key="size_guide" section={sec} />;
+      case "reviews":
+        return <Reviews key="reviews" section={sec} />;
+      case "faq":
+        return <Faq key="faq" section={sec} />;
+      case "final_cta":
+        return <FinalCta key="final_cta" section={sec} featuredProduct={featuredProduct} />;
       default:
         return null;
     }
   };
 
-  return (
-    <>
-      <Hero section={heroSection} featuredProduct={featuredProduct} />
-      <QuickTrustBar />
-      <ProductIntro />
-      <ProductShowcase />
-      {bodyCmsSections.map(renderCmsSection)}
-      <SizeGuide />
-      <Reviews />
-      <Faq />
-      <FinalCta featuredProduct={featuredProduct} />
-    </>
-  );
+  // Fallback (e.g. database unavailable): render the canonical sections so
+  // the storefront never comes up blank.
+  if (publicSections.length === 0) {
+    return (
+      <>
+        <Hero featuredProduct={featuredProduct} />
+        <QuickTrustBar />
+        <ProductIntro />
+        <ProductShowcase />
+        <BrandStory />
+        <ArtworkStory />
+        <PurchaseSection featuredProduct={featuredProduct} />
+        <CraftFeatures />
+        <SizeGuide />
+        <Reviews />
+        <Faq />
+        <FinalCta featuredProduct={featuredProduct} />
+      </>
+    );
+  }
+
+  return <>{publicSections.map(renderSection)}</>;
 }
-
-
-

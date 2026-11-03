@@ -1,0 +1,100 @@
+.gridSection {
+  padding-block: var(--space-8);
+}
+
+.headerRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-block-end: var(--space-6);
+}
+
+.heading {
+  margin-block-start: var(--space-2);
+}
+
+.viewAllLink {
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-muted);
+  text-decoration: none;
+  border-block-end: 1px solid var(--color-border);
+  padding-block-end: 2px;
+  transition: color 160ms ease, border-color 160ms ease;
+  white-space: nowrap;
+}
+
+.viewAllLink:hover {
+  color: var(--color-foreground);
+  border-color: var(--color-foreground);
+}
+
+:lang(ar) .viewAllLink {
+  letter-spacing: 0;
+  font-size: var(--text-small);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: inherit;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background-color: var(--color-secondary);
+}
+
+/* Refined hover: the photography gently scales, nothing else moves. */
+.frame > * {
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card:hover .frame > *,
+.card:focus-visible .frame > * {
+  transform: scale(1.04);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+
+@media (min-width: 48rem) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-5);
+  }
+}
+
+@media (min-width: 64rem) {
+  .gridSection {
+    padding-block: var(--space-9);
+  }
+
+  .grid {
+    gap: var(--space-6);
+  }
+}

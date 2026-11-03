@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useI18n } from "@/i18n/I18nProvider";
 import { SunMark } from "@/components/ui/SunMark";
@@ -17,6 +17,26 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
 
   const isAr = locale === "ar";
+
+  // Already authenticated → go straight to the dashboard
+  useEffect(() => {
+    let isMounted = true;
+    async function checkSession() {
+      try {
+        const res = await fetch("/api/admin/auth/me");
+        if (res.ok && isMounted) {
+          router.push("/admin");
+          router.refresh();
+        }
+      } catch {
+        // Not authenticated — stay on the login page
+      }
+    }
+    checkSession();
+    return () => {
+      isMounted = false;
+    };
+  }, [router]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

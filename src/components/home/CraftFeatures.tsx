@@ -2,6 +2,7 @@
 
 import { useI18n } from "@/i18n/I18nProvider";
 import type { StorefrontSectionRecord } from "@/lib/repositories/server-storefront-repository";
+import { parseSectionBodyLines } from "@/lib/storefront/section-definitions";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
@@ -23,6 +24,16 @@ export function CraftFeatures({ section }: CraftFeaturesProps = {}) {
     ? (isAr ? section.titleAr || t("sections.craft.heading") : section.titleEn || t("sections.craft.heading"))
     : t("sections.craft.heading");
 
+  // Admin-managed features (one per line: "Title | Body"); fall back to the
+  // built-in translated feature list.
+  const cmsRows = parseSectionBodyLines(isAr ? section?.bodyAr : section?.bodyEn);
+  const cmsFeatures = cmsRows
+    .map((cells) => ({ title: cells[0] || "", body: cells.slice(1).join(" | ") }))
+    .filter((f) => f.title.length > 0 && f.body.length > 0);
+
+  const features =
+    cmsFeatures.length > 0 ? cmsFeatures : (dict.sections.craft?.features ?? []);
+
   return (
     <section
       id="details"
@@ -40,7 +51,7 @@ export function CraftFeatures({ section }: CraftFeaturesProps = {}) {
         </Reveal>
 
         <div className={styles.features}>
-          {(dict.sections.craft?.features ?? []).map((feature, index) => (
+          {features.map((feature, index) => (
             <Reveal key={feature.title} delay={index * 80}>
               <div className={styles.feature}>
                 <span className={styles.number} aria-hidden="true">

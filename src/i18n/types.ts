@@ -86,6 +86,9 @@ export interface Dictionary {
     orderNumber: string;
     backToShop: string;
     orderNotFound: string;
+    whatsappOrder: string;
+    whatsappNote: string;
+    whatsappUnavailable: string;
   };
   languageSwitcher: {
     label: string;

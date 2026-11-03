@@ -117,11 +117,11 @@ export function normalizeProduct(
     ? raw.images
     : [
         {
-          src: "/images/products/badu-hoodie/front-v6.jpg",
+          src: "/images/products/badu-hoodie/front-v6.webp",
           alt: { en: "BADU Product front", ar: "منتج BADU من الأمام" },
         },
         {
-          src: "/images/products/badu-hoodie/back-v6.jpg",
+          src: "/images/products/badu-hoodie/back-v6.webp",
           alt: { en: "BADU Product back", ar: "منتج BADU من الخلف" },
         },
       ];
@@ -135,6 +135,7 @@ export function normalizeProduct(
     },
     isPrimary: idx === 0,
     sortOrder: idx,
+    colorKey: img.colorKey || null,
   }));
 
   const colors = Array.isArray(raw.colors) && raw.colors.length > 0

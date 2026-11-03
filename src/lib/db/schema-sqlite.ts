@@ -41,6 +41,7 @@ export const SQLITE_SCHEMA = `
     alt_ar TEXT NOT NULL,
     sort_order INTEGER NOT NULL DEFAULT 0,
     is_primary INTEGER NOT NULL DEFAULT 0,
+    color_key TEXT,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
   );
 

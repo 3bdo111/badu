@@ -11,12 +11,27 @@ export interface ProductImage {
   alt: LocalizedString;
   isPrimary?: boolean;
   sortOrder?: number;
+  /**
+   * Optional color tag (slug of the color's English name, e.g. "desert-sand").
+   * When set, selecting that color in the storefront filters the gallery to
+   * this image. Untagged images show for every color.
+   */
+  colorKey?: string | null;
 }
 
 export interface ProductColor {
   name: LocalizedString;
   /** Representative swatch of the garment color. */
   hex: string;
+}
+
+/** Stable color identifier derived from the English color name. */
+export function colorKeyFromName(nameEn: string): string {
+  return nameEn
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 export interface ProductFeature {

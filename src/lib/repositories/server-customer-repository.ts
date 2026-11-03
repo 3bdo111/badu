@@ -1,4 +1,3 @@
-import { getDb } from "@/lib/db/db";
 import { serverOrderRepository, type OrderRecord } from "./server-order-repository";
 
 export interface CustomerProfileRecord {

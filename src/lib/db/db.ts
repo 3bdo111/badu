@@ -14,7 +14,11 @@ export type { BaduDatabase, SqlValue, RunResult } from "./adapter";
 async function createDatabase(): Promise<BaduDatabase> {
   const databaseUrl = process.env.DATABASE_URL;
 
-  if (databaseUrl && databaseUrl.trim()) {
+  if (
+    databaseUrl &&
+    databaseUrl.trim() &&
+    (databaseUrl.startsWith("postgres://") || databaseUrl.startsWith("postgresql://"))
+  ) {
     const db = createPostgresAdapter({ connectionString: databaseUrl });
     await seedDatabase(db);
     return db;

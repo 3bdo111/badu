@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -30,9 +30,36 @@ export function CheckoutForm() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [idempotencyKey] = useState(() => `idempotent_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`);
+  const [whatsappNumber, setWhatsappNumber] = useState<string>("");
 
   const isAr = locale === "ar";
-  const currency = "USD";
+  // Currency comes from the actual products in the cart, not a hardcoded value.
+  const currency =
+    (items.length > 0 &&
+      productRepository.getProductById(items[0].productId)?.currency) ||
+    "USD";
+
+  // Load the store's WhatsApp number (public storefront settings)
+  useEffect(() => {
+    let isMounted = true;
+    async function loadContactSettings() {
+      try {
+        const res = await fetch("/api/storefront/settings");
+        if (res.ok && isMounted) {
+          const data = await res.json();
+          if (typeof data?.whatsappNumber === "string") {
+            setWhatsappNumber(data.whatsappNumber);
+          }
+        }
+      } catch {
+        // WhatsApp ordering stays hidden when settings cannot load
+      }
+    }
+    loadContactSettings();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   if (items.length === 0) {
     return (
@@ -73,15 +100,11 @@ export function CheckoutForm() {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (submitting) return;
-    setServerError(null);
-
-    if (!validateForm()) return;
-
-    setSubmitting(true);
-
+  /** Shared order placement — creates the persistent backend order record. */
+  const placeOrder = async (): Promise<
+    | { ok: true; orderNumber: string }
+    | { ok: false }
+  > => {
     try {
       const payload = {
         idempotencyKey,
@@ -116,18 +139,92 @@ export function CheckoutForm() {
         setServerError(
           data.message?.[locale] || data.message?.en || (isAr ? "تعذر إتمام الطلب." : "Order creation failed.")
         );
-        setSubmitting(false);
-        return;
+        return { ok: false };
       }
 
-      clearCart();
-      router.push(`/checkout/confirmation/${data.orderNumber}`);
+      return { ok: true, orderNumber: String(data.orderNumber) };
     } catch {
       setServerError(
         isAr ? "حدث خطأ في الاتصال بالخادم. يرجى المحاولة مرة أخرى." : "Connection error. Please try again."
       );
-      setSubmitting(false);
+      return { ok: false };
     }
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (submitting) return;
+    setServerError(null);
+
+    if (!validateForm()) return;
+
+    setSubmitting(true);
+    const result = await placeOrder();
+    if (!result.ok) {
+      setSubmitting(false);
+      return;
+    }
+
+    clearCart();
+    router.push(`/checkout/confirmation/${result.orderNumber}`);
+  };
+
+  /**
+   * WhatsApp path: validate → persist the order server-side first → then
+   * redirect the customer to WhatsApp with a pre-filled confirmation message.
+   */
+  const handleWhatsAppOrder = async () => {
+    if (submitting) return;
+    setServerError(null);
+
+    if (!whatsappNumber) {
+      setServerError(t("checkout.whatsappUnavailable"));
+      return;
+    }
+
+    if (!validateForm()) return;
+
+    setSubmitting(true);
+    const result = await placeOrder();
+    if (!result.ok) {
+      setSubmitting(false);
+      return;
+    }
+
+    const orderLines = items.map((item) => {
+      const product =
+        productRepository.getProductById(item.productId) ||
+        productRepository.getProductBySlug(item.slug);
+      const label = product ? productName(product, locale) : item.slug;
+      const unitPrice = product?.price ?? 0;
+      return isAr
+        ? `• ${label} — مقاس ${item.size} — كمية ${item.quantity} — ${formatPrice(unitPrice * item.quantity, currency, locale)}`
+        : `• ${label} — Size ${item.size} — Qty ${item.quantity} — ${formatPrice(unitPrice * item.quantity, currency, locale)}`;
+    });
+
+    const message = [
+      isAr ? "طلب جديد من متجر BADU" : "New order — BADU store",
+      `${isAr ? "رقم الطلب" : "Order"}: ${result.orderNumber}`,
+      "",
+      ...(isAr ? "المنتجات:" : "Items:"),
+      ...orderLines,
+      "",
+      `${isAr ? "الإجمالي" : "Total"}: ${formatPrice(subtotal, currency, locale)} (COD)`,
+      "",
+      isAr ? "بيانات العميل:" : "Customer:",
+      `${isAr ? "الاسم" : "Name"}: ${name}`,
+      `${isAr ? "الهاتف" : "Phone"}: ${phone}`,
+      `${isAr ? "العنوان" : "Address"}: ${address}, ${city}, ${country}`,
+      notes ? `${isAr ? "ملاحظات" : "Notes"}: ${notes}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const waUrl = `https://wa.me/${whatsappNumber.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, "_blank", "noopener,noreferrer");
+
+    clearCart();
+    router.push(`/checkout/confirmation/${result.orderNumber}`);
   };
 
   return (
@@ -335,6 +432,20 @@ export function CheckoutForm() {
             >
               {submitting ? t("checkout.submitting") : t("checkout.placeOrder")}
             </Button>
+
+            {whatsappNumber && (
+              <div style={{ marginTop: "0.75rem" }}>
+                <button
+                  type="button"
+                  onClick={handleWhatsAppOrder}
+                  disabled={submitting}
+                  className={styles.whatsappBtn}
+                >
+                  {submitting ? t("checkout.submitting") : `🟢 ${t("checkout.whatsappOrder")}`}
+                </button>
+                <p className={styles.whatsappNote}>{t("checkout.whatsappNote")}</p>
+              </div>
+            )}
 
             <div style={{ textAlign: "center", marginTop: "0.5rem" }}>
               <Link

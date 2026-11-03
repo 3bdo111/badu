@@ -9,6 +9,7 @@ export function SettingsEditor() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ text: string; error?: boolean } | null>(null);
+  const [whatsappError, setWhatsappError] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
@@ -30,6 +31,10 @@ export function SettingsEditor() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!settings) return;
+    if (whatsappError) {
+      setMessage({ text: "Please fix the WhatsApp number format before saving.", error: true });
+      return;
+    }
     setSaving(true);
     setMessage(null);
 
@@ -107,6 +112,38 @@ export function SettingsEditor() {
               placeholder="USD, SAR, AED..."
               required
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Contact & WhatsApp Ordering */}
+      <section className={styles.sectionCard}>
+        <h2 className={styles.sectionHeading}>Contact & WhatsApp Ordering</h2>
+        <div className={styles.fieldGrid}>
+          <div className={styles.fieldGroup}>
+            <label className={styles.label}>WhatsApp Business Number</label>
+            <input
+              type="tel"
+              dir="ltr"
+              value={settings.whatsappNumber || ""}
+              onChange={(e) => {
+                const value = e.target.value;
+                setSettings({ ...settings, whatsappNumber: value });
+                const cleaned = value.trim();
+                setWhatsappError(
+                  cleaned !== "" && !/^\+?[0-9][0-9\s\-()]{5,18}$/.test(cleaned)
+                    ? "Invalid format. Use international format, e.g. +201001234567"
+                    : null
+                );
+              }}
+              className={styles.input}
+              placeholder="+201001234567"
+            />
+            {whatsappError && <span className={styles.errorText}>{whatsappError}</span>}
+            <span className={styles.helpText}>
+              International format with country code. Leave empty to disable the &quot;Order via WhatsApp&quot;
+              option at checkout. Customers will be redirected to WhatsApp to confirm their order.
+            </span>
           </div>
         </div>
       </section>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { serverProductRepository } from "@/lib/repositories/server-product-repository";
 import { productName, productDescription } from "@/lib/types/product";
 import { getSiteUrl } from "@/lib/config/site";
@@ -92,6 +93,12 @@ export default async function ProductDetailPage({
   const resolvedParams = await params;
   const product = await serverProductRepository.getBySlug(resolvedParams.slug);
 
+  // Missing, unavailable or draft products must 404 so search engines never
+  // index dead catalogue URLs.
+  if (!product || !product.available || (product.status && product.status !== "PUBLISHED")) {
+    notFound();
+  }
+
   const siteUrl = getSiteUrl();
   const productUrl = getSiteUrl(`/products/${resolvedParams.slug}`);
 
@@ -157,11 +164,6 @@ export default async function ProductDetailPage({
           },
         },
       },
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "1280",
     },
   } : null;
 

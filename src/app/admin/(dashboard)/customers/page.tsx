@@ -4,24 +4,37 @@ import React, { useEffect, useState } from 'react';
 import { useI18n } from '@/i18n/I18nProvider';
 import styles from './customers.module.css';
 
+interface CustomerOrderItem {
+  productNameEn: string;
+  productNameAr: string;
+  size: string;
+  colorNameEn: string;
+  colorNameAr: string;
+  quantity: number;
+}
+
 interface OrderSummary {
   id: string;
-  items: string | any[];
+  orderNumber: string;
+  items: CustomerOrderItem[];
   totalAmount: number;
   status: string;
   createdAt: string;
-  governorate: string;
 }
 
 interface CustomerProfile {
-  phone: string;
+  id: string;
   name: string;
+  phone: string;
+  email: string;
   city: string;
   address: string;
-  totalOrders: number;
+  ordersCount: number;
   totalSpent: number;
-  tier: 'VIP' | 'RETURNING' | 'NEW';
-  lastOrderDate: string;
+  currency: string;
+  customerTier: 'VIP' | 'RETURNING' | 'NEW';
+  lastOrderAt: string;
+  firstOrderAt: string;
   orders: OrderSummary[];
 }
 
@@ -29,6 +42,7 @@ interface CustomerMetrics {
   totalCustomers: number;
   vipCount: number;
   returningCount: number;
+  newCount: number;
   totalCrmRevenue: number;
 }
 
@@ -41,6 +55,7 @@ export default function AdminCustomersPage() {
     totalCustomers: 0,
     vipCount: 0,
     returningCount: 0,
+    newCount: 0,
     totalCrmRevenue: 0,
   });
   const [loading, setLoading] = useState(true);
@@ -70,7 +85,7 @@ export default function AdminCustomersPage() {
   }, []);
 
   const filteredCustomers = customers.filter((c) => {
-    const matchesTier = activeTier === 'ALL' || c.tier === activeTier;
+    const matchesTier = activeTier === 'ALL' || c.customerTier === activeTier;
     const query = search.trim().toLowerCase();
     const matchesSearch =
       !query ||
@@ -86,16 +101,14 @@ export default function AdminCustomersPage() {
   };
 
   const formatDate = (dateStr: string) => {
-    try {
-      const d = new Date(dateStr);
-      return d.toLocaleDateString(isAr ? 'ar-EG' : 'en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
-    } catch {
-      return dateStr;
-    }
+    if (!dateStr) return '—';
+    const d = new Date(dateStr);
+    if (Number.isNaN(d.getTime())) return '—';
+    return d.toLocaleDateString(isAr ? 'ar-EG' : 'en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
   };
 
   const getTierBadge = (tier: 'VIP' | 'RETURNING' | 'NEW') => {
@@ -199,19 +212,19 @@ export default function AdminCustomersPage() {
             className={`${styles.tabBtn} ${activeTier === 'VIP' ? styles.tabActive : ''}`}
             onClick={() => setActiveTier('VIP')}
           >
-            {isAr ? 'المميزون' : 'VIP'} ({customers.filter((c) => c.tier === 'VIP').length})
+            {isAr ? 'المميزون' : 'VIP'} ({customers.filter((c) => c.customerTier === 'VIP').length})
           </button>
           <button
             className={`${styles.tabBtn} ${activeTier === 'RETURNING' ? styles.tabActive : ''}`}
             onClick={() => setActiveTier('RETURNING')}
           >
-            {isAr ? 'المتكررون' : 'Returning'} ({customers.filter((c) => c.tier === 'RETURNING').length})
+            {isAr ? 'المتكررون' : 'Returning'} ({customers.filter((c) => c.customerTier === 'RETURNING').length})
           </button>
           <button
             className={`${styles.tabBtn} ${activeTier === 'NEW' ? styles.tabActive : ''}`}
             onClick={() => setActiveTier('NEW')}
           >
-            {isAr ? 'الجدد' : 'New'} ({customers.filter((c) => c.tier === 'NEW').length})
+            {isAr ? 'الجدد' : 'New'} ({customers.filter((c) => c.customerTier === 'NEW').length})
           </button>
         </div>
       </div>
@@ -249,13 +262,13 @@ export default function AdminCustomersPage() {
                       {customer.phone}
                     </td>
                     <td>{customer.city || (isAr ? 'غير محدد' : 'N/A')}</td>
-                    <td>{getTierBadge(customer.tier)}</td>
-                    <td style={{ fontWeight: 700 }}>{customer.totalOrders}</td>
+                    <td>{getTierBadge(customer.customerTier)}</td>
+                    <td style={{ fontWeight: 700 }}>{customer.ordersCount}</td>
                     <td style={{ fontWeight: 700, color: 'var(--color-foreground)' }}>
                       {formatPrice(customer.totalSpent)}
                     </td>
                     <td style={{ fontSize: '0.8rem', color: 'var(--color-muted)' }}>
-                      {formatDate(customer.lastOrderDate)}
+                      {formatDate(customer.lastOrderAt)}
                     </td>
                     <td>
                       <button
@@ -282,7 +295,7 @@ export default function AdminCustomersPage() {
                       {customer.phone} • {customer.city || (isAr ? 'غير محدد' : 'N/A')}
                     </span>
                   </div>
-                  <div>{getTierBadge(customer.tier)}</div>
+                  <div>{getTierBadge(customer.customerTier)}</div>
                 </div>
 
                 <div className={styles.cardStats}>
@@ -290,7 +303,7 @@ export default function AdminCustomersPage() {
                     <span style={{ color: 'var(--color-muted)', display: 'block' }}>
                       {isAr ? 'الطلبات' : 'Orders'}
                     </span>
-                    <strong style={{ fontSize: '1rem' }}>{customer.totalOrders}</strong>
+                    <strong style={{ fontSize: '1rem' }}>{customer.ordersCount}</strong>
                   </div>
                   <div>
                     <span style={{ color: 'var(--color-muted)', display: 'block' }}>
@@ -304,7 +317,7 @@ export default function AdminCustomersPage() {
                     <span style={{ color: 'var(--color-muted)', display: 'block' }}>
                       {isAr ? 'آخر طلب' : 'Last Order'}
                     </span>
-                    <span style={{ fontSize: '0.8rem' }}>{formatDate(customer.lastOrderDate)}</span>
+                    <span style={{ fontSize: '0.8rem' }}>{formatDate(customer.lastOrderAt)}</span>
                   </div>
                 </div>
 
@@ -359,7 +372,7 @@ export default function AdminCustomersPage() {
                 <span style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>
                   {isAr ? 'التصنيف' : 'Tier'}
                 </span>
-                {getTierBadge(selectedCustomer.tier)}
+                {getTierBadge(selectedCustomer.customerTier)}
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>
@@ -427,7 +440,7 @@ export default function AdminCustomersPage() {
                 <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', display: 'block' }}>
                   {isAr ? 'الطلبات' : 'Orders'}
                 </span>
-                <strong style={{ fontSize: '1.1rem' }}>{selectedCustomer.totalOrders}</strong>
+                <strong style={{ fontSize: '1.1rem' }}>{selectedCustomer.ordersCount}</strong>
               </div>
               <div
                 style={{
@@ -455,8 +468,8 @@ export default function AdminCustomersPage() {
                 </span>
                 <strong style={{ fontSize: '1.1rem' }}>
                   {formatPrice(
-                    selectedCustomer.totalOrders > 0
-                      ? Math.round(selectedCustomer.totalSpent / selectedCustomer.totalOrders)
+                    selectedCustomer.ordersCount > 0
+                      ? Math.round(selectedCustomer.totalSpent / selectedCustomer.ordersCount)
                       : 0
                   )}
                 </strong>
@@ -492,7 +505,7 @@ export default function AdminCustomersPage() {
                         fontSize: '0.85rem',
                       }}
                     >
-                      <strong dir="ltr">#{ord.id.slice(0, 8)}</strong>
+                      <strong dir="ltr">{ord.orderNumber || `#${ord.id.slice(0, 8)}`}</strong>
                       <span style={{ fontSize: '0.78rem', color: 'var(--color-muted)' }}>
                         {formatDate(ord.createdAt)}
                       </span>
@@ -523,10 +536,10 @@ export default function AdminCustomersPage() {
                           marginTop: '0.2rem',
                         }}
                       >
-                        {ord.items.map((it: any, idx: number) => (
+                        {ord.items.map((it, idx: number) => (
                           <div key={idx}>
-                            • {it.productName || it.name || (isAr ? 'منتج' : 'Product')} ({it.size || (isAr ? 'المقاس' : 'Size')} -{' '}
-                            {it.color || (isAr ? 'اللون' : 'Color')}) x{it.quantity || 1}
+                            • {isAr ? it.productNameAr || it.productNameEn : it.productNameEn || it.productNameAr} ({it.size} -{' '}
+                            {isAr ? it.colorNameAr || it.colorNameEn : it.colorNameEn || it.colorNameAr}) x{it.quantity || 1}
                           </div>
                         ))}
                       </div>

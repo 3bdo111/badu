@@ -188,6 +188,37 @@
   margin-top: var(--space-2);
 }
 
+.whatsappBtn {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background-color: #25d366;
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.whatsappBtn:hover:not(:disabled) {
+  background-color: #1fb457;
+}
+
+.whatsappBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.whatsappNote {
+  margin-top: var(--space-2);
+  font-size: var(--text-label);
+  color: var(--color-muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
 .errorBanner {
   padding: var(--space-3) var(--space-4);
   background-color: rgba(164, 87, 74, 0.1);

@@ -1,8 +1,17 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { verifyAdminSession } from "@/lib/auth/admin-auth";
 import { serverCustomerRepository } from "@/lib/repositories/server-customer-repository";
 
 export async function GET(request: NextRequest) {
   try {
+    const admin = await verifyAdminSession();
+    if (!admin) {
+      return NextResponse.json(
+        { error: "Unauthorized. Admin authentication required." },
+        { status: 401 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const query = searchParams.get("query") || undefined;
     const city = searchParams.get("city") || undefined;

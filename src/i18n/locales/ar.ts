@@ -61,6 +61,9 @@ const ar: Dictionary = {
     orderNumber: "رقم الطلب",
     backToShop: "العودة للمتجر",
     orderNotFound: "تعذر العثور على تفاصيل الطلب.",
+    whatsappOrder: "اطلب عبر واتساب",
+    whatsappNote: "نحفظ طلبك أولاً — ثم نحوّلك إلى واتساب لتأكيده مع فريقنا.",
+    whatsappUnavailable: "الطلب عبر واتساب غير متاح حالياً. يرجى تأكيد الطلب بالطريقة العادية.",
   },
   languageSwitcher: {
     label: "اللغة",

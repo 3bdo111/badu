@@ -5,9 +5,9 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { useCart } from "@/components/cart/CartProvider";
 import { getFeaturedProduct } from "@/data/products";
 import { productService } from "@/lib/services/product-service";
-import { formatPrice } from "@/lib/format";
+import { colorSelectionStore } from "@/lib/services/color-selection";
 import type { Product } from "@/lib/types/product";
-import { isSizeAvailable, productDescription, productName } from "@/lib/types/product";
+import { colorKeyFromName, isSizeAvailable, productDescription, productName } from "@/lib/types/product";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
@@ -45,14 +45,43 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
   }, [featuredProduct]);
 
   const [activeImgIndex, setActiveImgIndex] = useState<number>(0);
+  const [selectedColorIdx, setSelectedColorIdx] = useState<number>(0);
   const [size, setSize] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<Feedback>("none");
   const resetTimer = useRef<number | undefined>(undefined);
 
+  // Publish the default color so sibling sections (showcase etc.) follow it.
+  useEffect(() => {
+    if (!product) return;
+    colorSelectionStore.set(colorKeyFromName(product.colors[0]?.name?.en || ""));
+    // Re-publish only when the loaded product changes, not every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product?.id]);
+
   if (!product) return null;
 
-  const color = product.colors[0];
-  const activeImage = product.images[activeImgIndex] ?? product.images[0];
+  const selIdx = Math.min(selectedColorIdx, product.colors.length - 1);
+  const color = product.colors[selIdx] ?? product.colors[0];
+  const selectedColorKey = colorKeyFromName(color?.name?.en || "");
+
+  // Color-tagged gallery: once any image carries a colorKey, the gallery
+  // shows only the images for the selected color (plus untagged ones).
+  const hasColorTaggedImages = product.images.some((img) => img.colorKey);
+  const visibleImages = hasColorTaggedImages
+    ? product.images.filter(
+        (img) => !img.colorKey || img.colorKey === selectedColorKey
+      )
+    : product.images;
+  const galleryImages =
+    visibleImages.length > 0 ? visibleImages : product.images;
+  const activeImage = galleryImages[activeImgIndex] ?? galleryImages[0];
+
+  const handleSelectColor = (idx: number) => {
+    setSelectedColorIdx(idx);
+    setActiveImgIndex(0);
+    const next = product.colors[idx];
+    colorSelectionStore.set(colorKeyFromName(next?.name?.en || ""));
+  };
 
   const handleSelect = (next: string) => {
     setSize(next);
@@ -118,9 +147,9 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
                 />
               </div>
 
-              {product.images.length > 1 && (
+              {galleryImages.length > 1 && (
                 <div className={styles.thumbnails} role="region" aria-label="Product thumbnails">
-                  {product.images.map((img, idx) => (
+                  {galleryImages.map((img, idx) => (
                     <button
                       key={img.src}
                       type="button"
@@ -195,14 +224,43 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
                 <span className={styles.optionLabel}>
                   {t("product.colorLabel")}
                 </span>
-                <span className={styles.colorValue}>
-                  <span
-                    className={styles.swatch}
-                    style={{ backgroundColor: color.hex }}
-                    aria-hidden="true"
-                  />
-                  {color.name[locale]}
-                </span>
+                {product.colors.length > 1 ? (
+                  <div
+                    className={styles.colorSwatches}
+                    role="radiogroup"
+                    aria-label={t("product.colorLabel")}
+                  >
+                    {product.colors.map((c, idx) => (
+                      <button
+                        key={`${colorKeyFromName(c.name.en)}-${idx}`}
+                        type="button"
+                        role="radio"
+                        aria-checked={idx === selIdx}
+                        onClick={() => handleSelectColor(idx)}
+                        className={[
+                          styles.colorSwatchBtn,
+                          idx === selIdx ? styles.colorSwatchBtnSelected : "",
+                        ].join(" ")}
+                      >
+                        <span
+                          className={styles.swatch}
+                          style={{ backgroundColor: c.hex }}
+                          aria-hidden="true"
+                        />
+                        {c.name[locale]}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <span className={styles.colorValue}>
+                    <span
+                      className={styles.swatch}
+                      style={{ backgroundColor: color.hex }}
+                      aria-hidden="true"
+                    />
+                    {color.name[locale]}
+                  </span>
+                )}
               </div>
             </Reveal>
 

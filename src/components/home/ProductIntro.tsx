@@ -6,12 +6,17 @@ import { getFeaturedProduct } from "@/data/products";
 import { productService } from "@/lib/services/product-service";
 import type { Product } from "@/lib/types/product";
 import { productName, productDescription } from "@/lib/types/product";
+import type { StorefrontSectionRecord } from "@/lib/repositories/server-storefront-repository";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
 import styles from "./product-intro.module.css";
 
-export function ProductIntro() {
+interface ProductIntroProps {
+  section?: StorefrontSectionRecord;
+}
+
+export function ProductIntro({ section }: ProductIntroProps = {}) {
   const { t, locale } = useI18n();
   const [product, setProduct] = useState<Product | undefined>(getFeaturedProduct);
 
@@ -21,8 +26,12 @@ export function ProductIntro() {
     });
   }, []);
 
+  const cmsHeading = locale === "ar" ? section?.titleAr : section?.titleEn;
+  const cmsBody = locale === "ar" ? section?.bodyAr : section?.bodyEn;
+
   const labelText = product ? productName(product, locale) : t("sections.intro.label");
-  const bodyText = product ? productDescription(product, locale) : t("sections.intro.body");
+  const headingText = cmsHeading || t("sections.intro.heading");
+  const bodyText = cmsBody || (product ? productDescription(product, locale) : t("sections.intro.body"));
 
   return (
     <section aria-labelledby="intro-heading" className={styles.intro}>
@@ -32,7 +41,7 @@ export function ProductIntro() {
         </Reveal>
         <Reveal delay={80}>
           <Heading level={2} id="intro-heading" className={styles.heading}>
-            {t("sections.intro.heading")}
+            {headingText}
           </Heading>
         </Reveal>
         <Reveal delay={160}>

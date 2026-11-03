@@ -10,6 +10,8 @@ export interface SiteSettings {
   defaultLanguage: string;
   supportedLanguages: string[];
   currency: string;
+  /** WhatsApp business number in international format, e.g. "+201001234567". Empty disables WhatsApp ordering. */
+  whatsappNumber?: string;
   copyrightText: LocalizedString;
   announcementBanner?: {
     enabled: boolean;

@@ -42,7 +42,7 @@ export default function AdminOverviewPage() {
         setLoadingMetrics(true);
         const [custRes, ordRes] = await Promise.all([
           fetch("/api/admin/customers"),
-          fetch("/api/admin/orders"),
+          fetch("/api/orders"),
         ]);
 
         if (custRes.ok) {
@@ -54,8 +54,8 @@ export default function AdminOverviewPage() {
 
         if (ordRes.ok) {
           const ordData = await ordRes.json();
-          if (Array.isArray(ordData.orders)) {
-            setOrdersCount(ordData.orders.length);
+          if (Array.isArray(ordData)) {
+            setOrdersCount(ordData.length);
           }
         }
       } catch (err) {

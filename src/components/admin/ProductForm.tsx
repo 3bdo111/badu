@@ -56,7 +56,6 @@ export function ProductForm({
       : ""
   );
   const [currency, setCurrency] = useState(product?.currency ?? "USD");
-  const [available, setAvailable] = useState<boolean>(product?.available ?? true);
   const [featured, setFeatured] = useState<boolean>(product?.featured ?? true);
   const [status, setStatus] = useState<"DRAFT" | "PUBLISHED" | "ARCHIVED">(product?.status ?? "PUBLISHED");
 
@@ -244,7 +243,7 @@ export function ProductForm({
       price: Number(price),
       compareAtPrice: parsedComparePrice,
       currency: currency || "USD",
-      available: chosenStatus === "PUBLISHED" ? available : false,
+      available: chosenStatus === "PUBLISHED",
       featured,
       status: chosenStatus,
       sizes,
@@ -588,7 +587,7 @@ export function ProductForm({
       {activeTab === "media" && (
         <section className={styles.sectionCard}>
           <h2 className={styles.sectionHeading}>Product Media & Photography</h2>
-          <ImageManager images={images} onChange={setImages} />
+          <ImageManager images={images} onChange={setImages} colors={colors} />
         </section>
       )}
 
@@ -1088,6 +1087,20 @@ export function ProductForm({
                 onChange={(e) => setSeoDescAr(e.target.value)}
                 className={styles.textarea}
               />
+            </div>
+
+            <div className={styles.fieldGroupFull}>
+              <label className={styles.label}>Social Share Image (OG Image URL)</label>
+              <input
+                type="text"
+                value={seoOgImage}
+                onChange={(e) => setSeoOgImage(e.target.value)}
+                className={styles.input}
+                placeholder={images[0]?.src ?? "/images/products/…"}
+              />
+              <span style={{ fontSize: "0.75rem", color: "var(--color-muted)", marginTop: "0.25rem", display: "block" }}>
+                Leave empty to use the primary product image automatically.
+              </span>
             </div>
 
             <div className={styles.fieldGroup}>

@@ -28,6 +28,7 @@ export function AdminSidebar({ onClose }: { onClose?: () => void }) {
     { label: "Header & Nav", href: "/admin/navigation", exact: false },
     { label: "Footer & Social", href: "/admin/footer", exact: false },
     { label: t("admin.settings") || "Global Settings", href: "/admin/settings", exact: false },
+    { label: "دليل الاستخدام", href: "/admin/guide", exact: false },
   ];
 
   const isActive = (item: (typeof navItems)[number]) => {

@@ -58,3 +58,6 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# local dev server output
+dev-server.log

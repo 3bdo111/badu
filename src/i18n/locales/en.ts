@@ -61,6 +61,9 @@ const en: Dictionary = {
     orderNumber: "ORDER NUMBER",
     backToShop: "RETURN TO STORE",
     orderNotFound: "Order details could not be found.",
+    whatsappOrder: "ORDER VIA WHATSAPP",
+    whatsappNote: "Your order is saved first — then you'll be redirected to WhatsApp to confirm it with our team.",
+    whatsappUnavailable: "WhatsApp ordering is currently unavailable. Please place a standard order.",
   },
   languageSwitcher: {
     label: "Language",

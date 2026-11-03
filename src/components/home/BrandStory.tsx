@@ -25,8 +25,12 @@ export function BrandStory({ section }: BrandStoryProps) {
   const primaryDetailImg = product.images[2] ?? product.images[0];
   const secondaryDetailImg = product.images[3] ?? product.images[1];
 
-  const title = section ? (isAr ? section.titleAr : section.titleEn) : t("sections.story.heading");
-  const body = section ? (isAr ? section.bodyAr : section.bodyEn) : t("sections.story.body");
+  const title = section
+    ? (isAr ? section.titleAr || t("sections.story.heading") : section.titleEn || t("sections.story.heading"))
+    : t("sections.story.heading");
+  const body = section
+    ? (isAr ? section.bodyAr || t("sections.story.body") : section.bodyEn || t("sections.story.body"))
+    : t("sections.story.body");
 
   return (
     <section id="story" aria-labelledby="story-heading" className={styles.story}>

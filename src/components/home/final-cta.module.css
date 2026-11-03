@@ -18,6 +18,14 @@
   color: var(--color-primary);
 }
 
+.supportingText {
+  max-width: 34rem;
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.82);
+}
+
 .productSnippet {
   display: flex;
   align-items: center;
