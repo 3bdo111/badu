@@ -83,11 +83,21 @@ export function ArtworkStory({ section }: ArtworkStoryProps = {}) {
           <Reveal delay={120}>
             <figure className={styles.figure}>
               <div className={styles.frame}>
-                <ProductImage
-                  product={product}
-                  image={backImage}
-                  sizes="(min-width: 64rem) 44vw, 100vw"
-                />
+                {section?.imageUrl ? (
+                  <Image
+                    src={section.imageUrl}
+                    alt={statement}
+                    fill
+                    sizes="(min-width: 64rem) 44vw, 100vw"
+                    style={{ objectFit: "cover" }}
+                  />
+                ) : (
+                  <ProductImage
+                    product={product}
+                    image={backImage}
+                    sizes="(min-width: 64rem) 44vw, 100vw"
+                  />
+                )}
               </div>
               <figcaption className={styles.caption}>
                 {t("sections.artwork.caption")}

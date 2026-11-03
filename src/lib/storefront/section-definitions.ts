@@ -127,8 +127,8 @@ export const LANDING_SECTIONS: LandingSectionDefinition[] = [
     hasImage: false,
     hasFeaturedProduct: false,
     bodyFormat: "plain",
-    bodyHintEn: "Title overrides the small section label above the photo grid.",
-    bodyHintAr: "العنوان يستبدل التسمية الصغيرة أعلى شبكة الصور.",
+    bodyHintEn: "Title overrides the small section label. Photos come from the featured product's gallery — edit them on the Products page (تعديل المنتج).",
+    bodyHintAr: "العنوان يستبدل التسمية الصغيرة أعلى الشبكة. الصور نفسها من معرض صور المنتج المميز — عدّلها من صفحة المنتجات.",
   },
   {
     key: "product_grid",
@@ -171,8 +171,8 @@ export const LANDING_SECTIONS: LandingSectionDefinition[] = [
     hasImage: true,
     hasFeaturedProduct: false,
     bodyFormat: "plain",
-    bodyHintEn: "Title = statement heading; body = description under it.",
-    bodyHintAr: "العنوان = ترويسة العبارة؛ النص = الوصف أسفلها.",
+    bodyHintEn: "Title = statement heading; body = description under it. The section image REPLACES the main artwork photo (default: product gallery).",
+    bodyHintAr: "العنوان = ترويسة العبارة؛ النص = الوصف أسفلها. صورة القسم تستبدل صورة التطريز الرئيسية (الافتراضي: معرض صور المنتج).",
   },
   {
     key: "campaign",
