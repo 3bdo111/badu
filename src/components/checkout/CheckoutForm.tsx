@@ -184,10 +184,16 @@ export function CheckoutForm() {
 
     if (!validateForm()) return;
 
+    // Open the tab synchronously inside the click gesture so popup blockers
+    // don't kill it (the awaited order request below breaks the gesture
+    // context). We navigate it to WhatsApp once the order is persisted.
+    const waTab = window.open("about:blank", "_blank");
+
     setSubmitting(true);
     const result = await placeOrder();
     if (!result.ok) {
       setSubmitting(false);
+      waTab?.close();
       return;
     }
 
@@ -206,7 +212,7 @@ export function CheckoutForm() {
       isAr ? "طلب جديد من متجر BADU" : "New order — BADU store",
       `${isAr ? "رقم الطلب" : "Order"}: ${result.orderNumber}`,
       "",
-      ...(isAr ? "المنتجات:" : "Items:"),
+      ...(isAr ? ["المنتجات:"] : ["Items:"]),
       ...orderLines,
       "",
       `${isAr ? "الإجمالي" : "Total"}: ${formatPrice(subtotal, currency, locale)} (COD)`,
@@ -221,7 +227,13 @@ export function CheckoutForm() {
       .join("\n");
 
     const waUrl = `https://wa.me/${whatsappNumber.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
-    window.open(waUrl, "_blank", "noopener,noreferrer");
+    if (waTab) {
+      waTab.location.href = waUrl;
+    } else {
+      // Popup blocked: take the customer to WhatsApp in this tab. The order
+      // is already persisted server-side, so nothing is lost.
+      window.open(waUrl, "_self");
+    }
 
     clearCart();
     router.push(`/checkout/confirmation/${result.orderNumber}`);
