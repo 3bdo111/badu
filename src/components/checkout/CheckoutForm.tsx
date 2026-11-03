@@ -229,14 +229,13 @@ export function CheckoutForm() {
     const waUrl = `https://wa.me/${whatsappNumber.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
     if (waTab) {
       waTab.location.href = waUrl;
-    } else {
-      // Popup blocked: take the customer to WhatsApp in this tab. The order
-      // is already persisted server-side, so nothing is lost.
-      window.open(waUrl, "_self");
     }
+    // If the popup was blocked, the confirmation page shows a WhatsApp
+    // confirm button (the customer reaches it via ?wa=1), so the order is
+    // never lost and WhatsApp stays one click away.
 
     clearCart();
-    router.push(`/checkout/confirmation/${result.orderNumber}`);
+    router.push(`/checkout/confirmation/${result.orderNumber}?wa=1`);
   };
 
   return (

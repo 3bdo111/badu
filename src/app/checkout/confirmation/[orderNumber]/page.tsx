@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { serverOrderRepository } from "@/lib/repositories/server-order-repository";
+import { serverSettingsRepository } from "@/lib/repositories/server-settings-repository";
 import { verifyAdminSession } from "@/lib/auth/admin-auth";
 import { formatPrice } from "@/lib/format";
 import { dictionaries, defaultLocale } from "@/i18n/dictionaries";
@@ -25,11 +26,14 @@ function isLocale(val?: string): val is Locale {
 
 export default async function OrderConfirmationPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ orderNumber: string }>;
+  searchParams: Promise<{ wa?: string }>;
 }) {
   const resolvedParams = await params;
   const orderNumber = resolvedParams.orderNumber;
+  const { wa } = await searchParams;
 
   const cookieStore = await cookies();
   const rawLocale = cookieStore.get(LOCALE_COOKIE)?.value;
@@ -41,6 +45,39 @@ export default async function OrderConfirmationPage({
 
   const isAuthorized = Boolean(accessCookie || adminSession);
   const order = isAuthorized ? await serverOrderRepository.getOrderByNumber(orderNumber) : undefined;
+
+  // WhatsApp deep-link: when the checkout arrived here from the WhatsApp
+  // flow, offer a permanent confirm button (covers blocked popups — the
+  // customer clicks it with a real gesture, so it always opens).
+  let waUrl: string | null = null;
+  if (order && wa === "1") {
+    const settings = await serverSettingsRepository.getSettings();
+    const whatsappNumber = settings.whatsappNumber?.replace(/\D/g, "");
+    if (whatsappNumber) {
+      const lines = [
+        locale === "ar" ? "طلب جديد من متجر BADU" : "New order — BADU store",
+        `${locale === "ar" ? "رقم الطلب" : "Order"}: ${order.orderNumber}`,
+        "",
+        locale === "ar" ? "المنتجات:" : "Items:",
+        ...order.items.map((item) =>
+          locale === "ar"
+            ? `• ${item.productNameAr} — مقاس ${item.size} — كمية ${item.quantity} — ${formatPrice(item.lineTotal, order.currency, locale)}`
+            : `• ${item.productNameEn} — Size ${item.size} — Qty ${item.quantity} — ${formatPrice(item.lineTotal, order.currency, locale)}`
+        ),
+        "",
+        `${locale === "ar" ? "الإجمالي" : "Total"}: ${formatPrice(order.totalAmount, order.currency, locale)} (COD)`,
+        "",
+        locale === "ar" ? "بيانات العميل:" : "Customer:",
+        `${locale === "ar" ? "الاسم" : "Name"}: ${order.customerName}`,
+        `${locale === "ar" ? "الهاتف" : "Phone"}: ${order.customerPhone}`,
+        `${locale === "ar" ? "العنوان" : "Address"}: ${order.shippingAddress}, ${order.city}, ${order.country}`,
+        order.notes ? `${locale === "ar" ? "ملاحظات" : "Notes"}: ${order.notes}` : "",
+      ]
+        .filter(Boolean)
+        .join("\n");
+      waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(lines)}`;
+    }
+  }
 
   if (!order) {
     return (
@@ -137,6 +174,16 @@ export default async function OrderConfirmationPage({
           </div>
 
           <div className={styles.actions}>
+            {waUrl && (
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.whatsappConfirmBtn}
+              >
+                {locale === "ar" ? "🟢 تأكيد الطلب عبر واتساب" : "🟢 Confirm order via WhatsApp"}
+              </a>
+            )}
             <Button href="/" variant="primary" size="lg" className={styles.actionBtn}>
               {dict.checkout.backToShop}
             </Button>

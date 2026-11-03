@@ -130,8 +130,28 @@
 .actions {
   margin-top: var(--space-8);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 }
 
 .actionBtn {
   width: 100%;
+}
+
+.whatsappConfirmBtn {
+  display: block;
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  border-radius: var(--radius-md, 8px);
+  background: #1faa53;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.whatsappConfirmBtn:hover {
+  background: #178f45;
 }
