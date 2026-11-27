@@ -56,12 +56,23 @@ export default async function Home() {
     featuredProduct = allProducts[0];
   }
 
+  // The hero's "from" line advertises the cheapest visible product, so the
+  // first price a visitor sees is never higher than the shop's entry price.
+  // Display only: no product price is read into or written back to the store.
+  const visiblePrices = allProducts
+    .filter((product) => product.available)
+    .map((product) => product.price);
+  const fromPrice =
+    visiblePrices.length > 0
+      ? Math.min(...visiblePrices)
+      : featuredProduct?.price;
+
   const renderSection = (sec: StorefrontSectionRecord) => {
     switch (sec.sectionKey) {
       case "hero":
         return (
           <div key="hero">
-            <HookHero featuredProduct={featuredProduct} />
+            <HookHero featuredProduct={featuredProduct} fromPrice={fromPrice} />
             <Marquee />
           </div>
         );
@@ -107,7 +118,7 @@ export default async function Home() {
   if (publicSections.length === 0) {
     return (
       <>
-        <HookHero featuredProduct={featuredProduct} />
+        <HookHero featuredProduct={featuredProduct} fromPrice={fromPrice} />
         <Marquee />
         <QuickTrustBar />
         <ProductIntro />
