@@ -32,36 +32,145 @@
   max-width: 34rem;
 }
 
-.grid {
+/* ---------- movement 1: asymmetric opener ---------- */
+.opener {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.75rem;
 }
 
-.cell {
-  position: relative;
+.openerSide {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
 }
 
 .frame {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: var(--radius-md);
   background-color: var(--color-surface);
+  aspect-ratio: 4 / 5;
+}
+
+.openerMain .frame {
+  aspect-ratio: 4 / 5;
+}
+
+.openerSecond .frame {
+  aspect-ratio: 1 / 1;
 }
 
 .image {
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.cell:hover .image {
+.frame:hover .image {
   transform: scale(1.03);
 }
 
+.panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  height: 100%;
+  min-height: 11rem;
+  padding: 1.25rem 1.25rem 1.5rem;
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+  border-radius: var(--radius-md);
+}
+
+.panelIndex {
+  font-family: var(--font-inter);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  opacity: 0.65;
+}
+
+.panelRule {
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0.35;
+  margin: 0.25rem 0;
+}
+
+.panelLabel {
+  font-family: var(--font-inter);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.panelMeta {
+  font-family: var(--font-inter);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* ---------- movement 2: the backs ---------- */
+.movementLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: clamp(1.75rem, 4vw, 2.75rem) 0 1rem;
+  font-family: var(--font-inter);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.movementLabel::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border);
+}
+
+.duet {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.duetItem .frame {
+  aspect-ratio: 3 / 4;
+}
+
+/* ---------- movement 3: the details ---------- */
+.strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.stripItem .frame {
+  aspect-ratio: 1 / 1;
+}
+
 @media (min-width: 48rem) {
-  .grid {
+  .opener {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 1rem;
+  }
+
+  .openerSide {
+    gap: 1rem;
+  }
+
+  .duet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .strip {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1rem;
   }
@@ -71,7 +180,7 @@
   .image {
     transition: none;
   }
-  .cell:hover .image {
+  .frame:hover .image {
     transform: none;
   }
 }
