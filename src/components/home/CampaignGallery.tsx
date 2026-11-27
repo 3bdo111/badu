@@ -8,28 +8,10 @@ import styles from "./campaign-gallery.module.css";
 
 const SHOTS = [
   {
-    src: "/images/campaign/2026/boy-black-back.jpg",
-    altEn: "Black Journey hoodie from the back, camel embroidery, pyramids at sunset",
-    altAr: "هودي الرحلة الأسود من ورا، تطريز الجمل، الأهرامات وقت الغروب",
-    size: "large",
-  },
-  {
     src: "/images/campaign/2026/girl-blue-back.jpg",
     altEn: "Slate blue hoodie from the back against sandstone",
     altAr: "الهودي الأزرق من ورا على حجر رملي",
     size: "tall",
-  },
-  {
-    src: "/images/campaign/2026/boy-black-desert.jpg",
-    altEn: "Black hoodie in the desert at golden hour",
-    altAr: "هودي أسود في الصحرا وقت الغروب",
-    size: "standard",
-  },
-  {
-    src: "/images/campaign/2026/girl-blue-street.jpg",
-    altEn: "Slate blue hoodie against a sandstone wall",
-    altAr: "الهودي الأزرق على حيطة حجر رملي",
-    size: "standard",
   },
   {
     src: "/images/campaign/2026/embroidery-gold.jpg",
