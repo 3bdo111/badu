@@ -57,7 +57,7 @@ export function ProductDetailClient({
             </h1>
             <p style={{ color: "var(--color-muted)", marginBottom: "2rem" }}>
               {locale === "ar"
-                ? "قد يكون تم إخفاء هذا المنتج أو إزالته من المتجر."
+                ? "يمكن المنتج ده اتشال أو اتخفي من المتجر."
                 : "This product may have been hidden or removed from the storefront."}
             </p>
             <Link

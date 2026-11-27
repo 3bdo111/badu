@@ -37,21 +37,21 @@ export function validateProduct(data: Partial<Product>): {
   if (!nameEn) {
     errors.nameEn = {
       en: "English product name is required.",
-      ar: "اسم المنتج بالإنجليزية مطلوب.",
+      ar: "اسم المنتج بالإنجليزي مطلوب.",
     };
   }
 
   if (!nameAr) {
     errors.nameAr = {
       en: "Arabic product name is required.",
-      ar: "اسم المنتج بالعربية مطلوب.",
+      ar: "اسم المنتج بالعربي مطلوب.",
     };
   }
 
   if (typeof data.price !== "number" || isNaN(data.price) || data.price < 0) {
     errors.price = {
       en: "Price must be a valid number greater than or equal to 0.",
-      ar: "يجب أن يكون السعر رقمًا صحيحًا أكبر من أو يساوي 0.",
+      ar: "السعر لازم يكون رقم أكبر من أو يساوي 0.",
     };
   }
 
@@ -62,14 +62,14 @@ export function validateProduct(data: Partial<Product>): {
   ) {
     errors.compareAtPrice = {
       en: "Original price (Compare-at price) must be greater than current price.",
-      ar: "السعر الأصلي (قبل الخصم) يجب أن يكون أكبر من سعر البيع الحالي.",
+      ar: "السعر قبل الخصم لازم يكون أكبر من سعر البيع.",
     };
   }
 
   if (!data.sizes || data.sizes.length === 0) {
     errors.sizes = {
       en: "At least one size must be selected.",
-      ar: "يجب اختيار مقاس واحد على الأقل.",
+      ar: "لازم تختار مقاس واحد على الأقل.",
     };
   }
 
@@ -78,7 +78,7 @@ export function validateProduct(data: Partial<Product>): {
       if (typeof qty !== "number" || isNaN(qty) || qty < 0 || !Number.isInteger(qty)) {
         errors[`stock_${sizeKey}`] = {
           en: `Stock quantity for size ${sizeKey} must be a non-negative integer.`,
-          ar: `كمية المخزون للمقاس ${sizeKey} يجب أن تكون رقمًا صحيحًا غير سالب.`,
+          ar: `مخزون مقاس ${sizeKey} لازم يكون رقم صحيح مش سالب.`,
         };
       }
     }

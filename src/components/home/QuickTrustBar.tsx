@@ -12,11 +12,11 @@ interface QuickTrustBarProps {
 }
 
 const DEFAULT_TRUST_ITEMS = [
-  { icon: "🧵", textAr: "قطن عضوي ثقيل 480GSM", textEn: "480GSM Organic Cotton Fleece" },
-  { icon: "🚚", textAr: "شحن سريع خلال 2-4 أيام", textEn: "Express 2-4 Day Delivery" },
-  { icon: "🔄", textAr: "استبدال وإرجاع مجاني 14 يومًا", textEn: "14-Day Free Returns & Exchange" },
-  { icon: "💵", textAr: "الدفع عند الاستلام متاح (COD)", textEn: "Cash on Delivery Available" },
-  { icon: "🔒", textAr: "ضمان الجودة والرضا التام", textEn: "100% Premium Quality Guarantee" },
+  { icon: "🧵", textAr: "قطن عضوي تقيل 480 جرام", textEn: "480GSM Organic Cotton Fleece" },
+  { icon: "🚚", textAr: "الشحن في 2-4 أيام", textEn: "Express 2-4 Day Delivery" },
+  { icon: "🔄", textAr: "استبدال واسترجاع مجاني 14 يوم", textEn: "14-Day Free Returns & Exchange" },
+  { icon: "💵", textAr: "الدفع عند الاستلام متاح", textEn: "Cash on Delivery Available" },
+  { icon: "🔒", textAr: "ضمان الجودة", textEn: "100% Premium Quality Guarantee" },
 ];
 
 export function QuickTrustBar({ section }: QuickTrustBarProps = {}) {

@@ -30,19 +30,19 @@ interface DynamicSocialLink {
 const DEFAULT_GROUPS: DynamicFooterGroup[] = [
   {
     id: "explore",
-    title: { en: "EXPLORE", ar: "استكشف" },
+    title: { en: "EXPLORE", ar: "اتفرج" },
     links: [
       { id: "store", label: { en: "Store", ar: "المتجر" }, url: "/store" },
-      { id: "story", label: { en: "Our Story", ar: "قصتنا" }, url: "/#story" },
-      { id: "artwork", label: { en: "Artwork Symbolism", ar: "رمزية العمل الفني" }, url: "/#artwork" },
+      { id: "story", label: { en: "Our Story", ar: "حكايتنا" }, url: "/#story" },
+      { id: "artwork", label: { en: "Artwork Symbolism", ar: "معنى التطريز" }, url: "/#artwork" },
     ],
   },
   {
     id: "customer",
     title: { en: "CUSTOMER CARE", ar: "خدمة العملاء" },
     links: [
-      { id: "sizeguide", label: { en: "Size Guide", ar: "دليل المقاسات" }, url: "/#size-guide" },
-      { id: "faq", label: { en: "FAQ & Support", ar: "الأسئلة الشائعة" }, url: "/#faq" },
+      { id: "sizeguide", label: { en: "Size Guide", ar: "جدول المقاسات" }, url: "/#size-guide" },
+      { id: "faq", label: { en: "FAQ & Support", ar: "أسئلة بتتكرر" }, url: "/#faq" },
     ],
   },
 ];

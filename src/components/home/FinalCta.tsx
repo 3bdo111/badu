@@ -85,11 +85,11 @@ export function FinalCta({ featuredProduct, section }: FinalCtaProps) {
               </div>
               <div className={styles.trustBadgeItem}>
                 <span className={styles.badgeIcon}>🚚</span>
-                <span>{isAr ? "شحن 2-4 أيام عمل" : "Express 2-4 Day Delivery"}</span>
+                <span>{isAr ? "الشحن في 2-4 أيام عمل" : "Express 2-4 Day Delivery"}</span>
               </div>
               <div className={styles.trustBadgeItem}>
                 <span className={styles.badgeIcon}>🔄</span>
-                <span>{isAr ? "إرجاع مجاني خلال 14 يوم" : "14-Day Free Returns"}</span>
+                <span>{isAr ? "استرجاع مجاني خلال 14 يوم" : "14-Day Free Returns"}</span>
               </div>
             </div>
           </div>

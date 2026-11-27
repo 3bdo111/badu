@@ -25,21 +25,21 @@ function TrustBanner() {
         <span className={styles.trustIcon}>💵</span>
         <div>
           <strong>{isAr ? "الدفع عند الاستلام" : "Cash on Delivery"}</strong>
-          <span>{isAr ? "ادفع عند استلام طلبك ومعاينته" : "Inspect & pay upon arrival"}</span>
+          <span>{isAr ? "بتدفع لما يوصلك وتشوفه" : "Inspect & pay upon arrival"}</span>
         </div>
       </div>
       <div className={styles.trustItem}>
         <span className={styles.trustIcon}>🔄</span>
         <div>
           <strong>{isAr ? "استبدال واسترجاع مجاني" : "14-Day Hassle-Free Returns"}</strong>
-          <span>{isAr ? "سياسة استبدال خلال 14 يوماً" : "14-day exchange & return policy"}</span>
+          <span>{isAr ? "خلال 14 يوم من الاستلام" : "14-day exchange & return policy"}</span>
         </div>
       </div>
       <div className={styles.trustItem}>
         <span className={styles.trustIcon}>🚚</span>
         <div>
-          <strong>{isAr ? "شحن سريع آمن" : "Express Fast Shipping"}</strong>
-          <span>{isAr ? "توصيل خلال 2-4 أيام عمل" : "Delivered in 2-4 business days"}</span>
+          <strong>{isAr ? "شحن سريع" : "Express Fast Shipping"}</strong>
+          <span>{isAr ? "بيوصلك في 2-4 أيام عمل" : "Delivered in 2-4 business days"}</span>
         </div>
       </div>
     </div>
@@ -73,7 +73,7 @@ export function Reviews({ section }: ReviewsProps = {}) {
 
   const headingText =
     (isAr ? section?.titleAr : section?.titleEn) ||
-    (isAr ? "آراء من مجتمعنا" : "COMMUNITY REVIEWS");
+    (isAr ? "كلام من الناس" : "COMMUNITY REVIEWS");
 
   // Only render social proof when genuine review data exists. Fabricated
   // ratings, purchase counts, or "verified" badges are never shown.
@@ -95,7 +95,7 @@ export function Reviews({ section }: ReviewsProps = {}) {
         <Reveal>
           <div className={styles.center}>
             <SunMark className={styles.sun} />
-            <p className="label">{isAr ? "٠٧ — آراء العملاء" : "07 — CUSTOMER REVIEWS"}</p>
+            <p className="label">{isAr ? "٠٧ — كلام العملاء" : "07 — CUSTOMER REVIEWS"}</p>
           </div>
         </Reveal>
 

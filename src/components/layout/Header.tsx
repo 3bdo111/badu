@@ -22,7 +22,7 @@ const DEFAULT_NAV: DynamicNavItem[] = [
   { id: "home", label: { en: "Home", ar: "الرئيسية" }, url: "/" },
   { id: "store", label: { en: "Store", ar: "المتجر" }, url: "/store" },
   { id: "hoodie", label: { en: "The Hoodie", ar: "الهودي" }, url: "/#hoodie" },
-  { id: "story", label: { en: "Our Story", ar: "قصتنا" }, url: "/#story" },
+  { id: "story", label: { en: "Our Story", ar: "حكايتنا" }, url: "/#story" },
 ];
 
 /**

@@ -124,7 +124,7 @@ export function MobileStickyBuyBar({
             : selectedSize
             ? t("sections.purchase.addToCart")
             : locale === "ar"
-            ? "اختر المقاس"
+            ? "اختار المقاس"
             : "SELECT SIZE"}
         </button>
       </div>

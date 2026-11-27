@@ -91,11 +91,11 @@ export function CheckoutForm() {
 
   const validateForm = () => {
     const errs: Record<string, string> = {};
-    if (!name.trim()) errs.name = isAr ? "الاسم الكامل مطلوب." : "Full name is required.";
-    if (!phone.trim()) errs.phone = isAr ? "رقم الهاتف مطلوب." : "Phone number is required.";
-    if (!address.trim()) errs.address = isAr ? "عنوان التوصيل مطلوب." : "Delivery address is required.";
-    if (!city.trim()) errs.city = isAr ? "المدينة مطلوبة." : "City is required.";
-    if (!country.trim()) errs.country = isAr ? "الدولة مطلوبة." : "Country is required.";
+    if (!name.trim()) errs.name = isAr ? "اكتب اسمك بالكامل." : "Full name is required.";
+    if (!phone.trim()) errs.phone = isAr ? "اكتب رقم الموبايل." : "Phone number is required.";
+    if (!address.trim()) errs.address = isAr ? "اكتب العنوان بالتفصيل." : "Delivery address is required.";
+    if (!city.trim()) errs.city = isAr ? "اكتب المدينة." : "City is required.";
+    if (!country.trim()) errs.country = isAr ? "اكتب الدولة." : "Country is required.";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -137,7 +137,7 @@ export function CheckoutForm() {
 
       if (!res.ok || !data.success) {
         setServerError(
-          data.message?.[locale] || data.message?.en || (isAr ? "تعذر إتمام الطلب." : "Order creation failed.")
+          data.message?.[locale] || data.message?.en || (isAr ? "مش عارفين نكمل الطلب." : "Order creation failed.")
         );
         return { ok: false };
       }
@@ -145,7 +145,7 @@ export function CheckoutForm() {
       return { ok: true, orderNumber: String(data.orderNumber) };
     } catch {
       setServerError(
-        isAr ? "حدث خطأ في الاتصال بالخادم. يرجى المحاولة مرة أخرى." : "Connection error. Please try again."
+        isAr ? "في مشكلة في الاتصال. جرّب تاني." : "Connection error. Please try again."
       );
       return { ok: false };
     }

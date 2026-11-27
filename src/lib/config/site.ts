@@ -4,11 +4,11 @@ export const SITE_CONFIG = {
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://badu.store",
   defaultTitle: {
     en: "BADU — Made for the Journey",
-    ar: "بادو — صُنِعَ للرحلة",
+    ar: "بادو — اتعمل للرحلة",
   },
   defaultDescription: {
     en: "A modern desert-inspired hoodie shaped by the road, the desert, and the stories that travel with us.",
-    ar: "هودي عصري مستوحى من الصحراء، والطريق، والحكايات التي ترافقنا في كل رحلة.",
+    ar: "هودي عصري مستوحى من الصحرا والطريق والحكايات اللي بتروح معانا في كل رحلة.",
   },
   twitterHandle: "@badustore",
   ogImage: "/images/og-image.jpg",

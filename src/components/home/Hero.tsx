@@ -43,11 +43,11 @@ export function Hero({ section, featuredProduct }: HeroProps) {
       ? isAr
         ? section.ctaLabelAr || t("hero.cta")
         : section.ctaLabelEn || t("hero.cta")
-      : t("hero.cta")) || (isAr ? "تسوّق الآن" : "SHOP NOW");
+      : t("hero.cta")) || (isAr ? "اطلب دلوقتي" : "SHOP NOW");
   const ctaUrl = section?.ctaUrl || "#hoodie";
 
   const trustItems = isAr
-    ? ["الدفع عند الاستلام", "توصيل 2-4 أيام", "استبدال 14 يوم"]
+    ? ["الدفع عند الاستلام", "توصيل في 2-4 أيام", "استبدال خلال 14 يوم"]
     : ["Cash on Delivery", "2-4 Day Delivery", "14-Day Exchange"];
 
   return (

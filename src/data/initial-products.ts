@@ -171,34 +171,34 @@ export const initialProducts: Product[] = [
         hex: "#5B4A3C",
       },
     ],
-    fit: { en: "Relaxed fit", ar: "قصة مريحة" },
+    fit: { en: "Relaxed fit", ar: "قصة واسعة" },
     features: [
       {
-        title: { en: "HEAVYWEIGHT FABRIC", ar: "قماش ثقيل" },
+        title: { en: "HEAVYWEIGHT FABRIC", ar: "قماش تقيل" },
         body: {
           en: "A substantial feel designed for everyday comfort and structure.",
-          ar: "خامة ذات إحساس متين، مصممة للراحة والشكل في الاستخدام اليومي.",
+          ar: "خامة تقيلة بتدّي شكل حلو وراحة في اللبس اليومي.",
         },
       },
       {
-        title: { en: "RELAXED FIT", ar: "قصة مريحة" },
+        title: { en: "RELAXED FIT", ar: "قصة واسعة" },
         body: {
           en: "A relaxed silhouette made for effortless everyday wear.",
-          ar: "قصة مريحة تمنحك مظهرًا طبيعيًا وسهلًا كل يوم.",
+          ar: "قصة واسعة مريحة بتدّيك لوك طبيعي كل يوم.",
         },
       },
       {
-        title: { en: "EMBROIDERED ARTWORK", ar: "تطريز مستوحى من الرحلة" },
+        title: { en: "EMBROIDERED ARTWORK", ar: "تطريز على الظهر" },
         body: {
           en: "The back artwork gives the hoodie its defining character.",
-          ar: "التطريز الخلفي يمنح الهودي هويته البصرية المميزة.",
+          ar: "التطريز اللي على الظهر هو اللي بيميّز الهودي.",
         },
       },
       {
         title: { en: "DESERT SAND", ar: "رملي صحراوي" },
         body: {
           en: "A warm neutral tone inspired by the landscape that shaped the collection.",
-          ar: "درجة دافئة ومحايدة مستوحاة من المشهد الذي شكّل روح المجموعة.",
+          ar: "لون دافي وهادي مستوحى من الصحرا اللي شكّلت التشكيلة.",
         },
       },
     ],
@@ -217,9 +217,9 @@ export const initialProducts: Product[] = [
       ar: {
         name: "هودي الرحلة",
         description:
-          "هودي الرحلة بقصة مريحة وخامة ثقيلة باللون الرملي الصحراوي، مع تطريز مستوحى من الطريق والجبال واتساع الصحراء.",
+          "هودي الرحلة بقصة واسعة وخامة تقيلة بلون رملي صحراوي، مع تطريز مستوحى من الطريق والجبال والصحرا.",
         artwork:
-          "يجمع التطريز بين الشمس والجبال والطريق في مشهد واحد مستوحى من رحلات الصحراء.",
+          "التطريز بيجمع الشمس والجبال والطريق في مشهد واحد مستوحى من رحلات الصحرا.",
       },
     },
   },

@@ -310,21 +310,21 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
                   <span className={styles.trustIcon}>💵</span>
                   <div className={styles.trustText}>
                     <strong>{locale === "ar" ? "الدفع عند الاستلام" : "Cash on Delivery"}</strong>
-                    <span>{locale === "ar" ? "ادفع عند استلام طلبك" : "Pay when your order arrives"}</span>
+                    <span>{locale === "ar" ? "بتدفع لما يوصلك" : "Pay when your order arrives"}</span>
                   </div>
                 </div>
                 <div className={styles.trustBadgeItem}>
                   <span className={styles.trustIcon}>🚚</span>
                   <div className={styles.trustText}>
                     <strong>{locale === "ar" ? "شحن سريع" : "Express Delivery"}</strong>
-                    <span>{locale === "ar" ? "توصيل خلال 2-4 أيام" : "Delivered in 2-4 business days"}</span>
+                    <span>{locale === "ar" ? "بيوصلك في 2-4 أيام" : "Delivered in 2-4 business days"}</span>
                   </div>
                 </div>
                 <div className={styles.trustBadgeItem}>
                   <span className={styles.trustIcon}>🔄</span>
                   <div className={styles.trustText}>
-                    <strong>{locale === "ar" ? "إرجاع واستبدال" : "Easy Exchange"}</strong>
-                    <span>{locale === "ar" ? "سياسة إرجاع خلال 14 يوم" : "14-day hassle-free return policy"}</span>
+                    <strong>{locale === "ar" ? "استبدال واسترجاع" : "Easy Exchange"}</strong>
+                    <span>{locale === "ar" ? "خلال 14 يوم من الاستلام" : "14-day hassle-free return policy"}</span>
                   </div>
                 </div>
               </div>
