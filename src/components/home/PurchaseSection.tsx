@@ -271,7 +271,7 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
                     {t("product.sizeLabel")}
                   </span>
                   <a href="#size" className={styles.sizeGuideLink}>
-                    📏 {locale === "ar" ? "جدول المقاسات" : "Size Guide"}
+                    {locale === "ar" ? "جدول المقاسات" : "Size Guide"}
                   </a>
                 </div>
                 <SizeSelector

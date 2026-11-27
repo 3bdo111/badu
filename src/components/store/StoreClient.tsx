@@ -147,13 +147,7 @@ export function StoreClient({ products, locale, dict }: StoreClientProps) {
                     <span className={styles.price}>
                       {formatPrice(product.price, product.currency, locale)}
                     </span>
-                    <span
-                      style={{
-                        fontSize: "0.8rem",
-                        fontWeight: 600,
-                        textDecoration: "underline",
-                      }}
-                    >
+                    <span className={styles.cardCta}>
                       {dict.store.exploreProduct} {arrowSymbol}
                     </span>
                   </div>

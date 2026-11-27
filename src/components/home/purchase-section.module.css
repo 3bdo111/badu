@@ -1,5 +1,6 @@
 .purchase {
   padding-block: var(--space-9);
+  border-block-start: 1px solid var(--color-border);
 }
 
 .grid {
@@ -11,7 +12,7 @@
 .gallery {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 .frame {
@@ -20,12 +21,12 @@
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: var(--radius-md);
-  background-color: var(--color-secondary);
+  background-color: var(--color-surface);
 }
 
 .thumbnails {
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-2);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
@@ -40,32 +41,35 @@
 
 .thumbBtn {
   border: 1px solid transparent;
-  padding: 2px;
+  padding: 0;
   background: none;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   cursor: pointer;
   scroll-snap-align: start;
   flex-shrink: 0;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  transition: border-color var(--duration-base) var(--ease-out), transform 120ms ease;
+  opacity: 0.55;
+  transition: opacity var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out);
 }
 
-.thumbBtn:active {
-  transform: scale(0.94);
+.thumbBtn:hover {
+  opacity: 1;
 }
 
 .activeThumb {
   border-color: var(--color-foreground);
+  opacity: 1;
 }
 
 .thumbFrame {
   position: relative;
-  width: 4rem;
+  width: 3.75rem;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  border-radius: var(--radius-sm);
-  background-color: var(--color-secondary);
+  border-radius: 0;
+  background-color: var(--color-surface);
 }
 
 .info {
@@ -78,12 +82,11 @@
 .name {
   font-size: var(--text-h1);
   line-height: var(--leading-heading);
+  text-transform: uppercase;
 }
 
-.price {
-  font-family: var(--font-display);
-  font-size: var(--text-h3);
-  color: var(--color-foreground);
+:lang(ar) .name {
+  text-transform: none;
 }
 
 .metaBadges {
@@ -97,33 +100,44 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: var(--text-small);
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--color-foreground-secondary);
 }
 
+:lang(ar) .availability {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: var(--text-small);
+}
+
 .dot {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.45rem;
+  height: 0.45rem;
   border-radius: var(--radius-full);
   background-color: var(--color-muted);
 }
 
 .dotAvailable {
-  background-color: #6d7f57;
+  background-color: #0b0b0b;
 }
 
 .dotUnavailable {
-  background-color: #a4574a;
+  background-color: #b3b3b3;
 }
 
 .tagBadge {
-  font-size: var(--text-small);
-  letter-spacing: var(--tracking-label);
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 0.2rem 0.6rem;
-  border-radius: var(--radius-full);
-  background-color: var(--color-secondary);
-  color: var(--color-foreground-secondary);
+  padding: 0.25rem 0.6rem;
+  border-radius: 0;
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-muted);
 }
 
 :lang(ar) .tagBadge {
@@ -137,19 +151,20 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-3);
+  width: 100%;
 }
 
 .optionLabel {
   font-size: var(--text-label);
-  font-weight: 600;
-  letter-spacing: var(--tracking-label);
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-muted);
 }
 
 :lang(ar) .optionLabel {
   letter-spacing: 0;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .colorValue {
@@ -160,8 +175,8 @@
 }
 
 .swatch {
-  width: 1rem;
-  height: 1rem;
+  width: 0.9rem;
+  height: 0.9rem;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
 }
@@ -176,14 +191,14 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: 0.4rem 0.8rem;
-  font-size: var(--text-small);
+  padding: 0.45rem 0.8rem;
+  font-size: 0.8rem;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
+  border-radius: 0;
   background: transparent;
   color: var(--color-foreground);
   cursor: pointer;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  transition: border-color 0.15s ease;
 }
 
 .colorSwatchBtn:hover {
@@ -192,8 +207,8 @@
 
 .colorSwatchBtnSelected {
   border-color: var(--color-foreground);
-  background-color: var(--color-secondary);
-  font-weight: 600;
+  background-color: transparent;
+  font-weight: 700;
 }
 
 .buyRow {
@@ -205,7 +220,7 @@
 }
 
 .buyRow .addedButton {
-  background-color: #6d7f57;
+  background-color: var(--color-foreground);
 }
 
 .feedback {
@@ -221,7 +236,7 @@
   padding-block-start: var(--space-5);
   margin-block-start: var(--space-2);
   max-width: 48ch;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 .sizeHeaderRow {
@@ -232,34 +247,42 @@
 }
 
 .sizeGuideLink {
-  font-size: var(--text-small);
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--color-foreground);
   text-decoration: underline;
   text-underline-offset: 4px;
-  font-weight: 500;
   transition: opacity var(--duration-base) var(--ease-out);
 }
 
+:lang(ar) .sizeGuideLink {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: var(--text-small);
+}
+
 .sizeGuideLink:hover {
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
 .mainBuyBtn {
   min-width: 14rem;
   font-weight: 700;
-  letter-spacing: var(--tracking-label);
 }
 
 .trustBadgesGrid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-3);
+  gap: var(--space-2);
   width: 100%;
   max-width: 48ch;
-  padding: var(--space-4);
-  background-color: var(--color-secondary);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
+  padding: var(--space-4) 0 0;
+  background-color: transparent;
+  border-radius: 0;
+  border: none;
+  border-block-start: 1px solid var(--color-border);
   margin-block-start: var(--space-2);
 }
 
@@ -270,8 +293,7 @@
 }
 
 .trustIcon {
-  font-size: 1.25rem;
-  line-height: 1;
+  display: none;
 }
 
 .trustText {
@@ -283,11 +305,20 @@
 
 .trustText strong {
   color: var(--color-foreground);
-  font-weight: 600;
+  font-weight: 700;
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+:lang(ar) .trustText strong {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: var(--text-small);
 }
 
 .trustText span {
-  color: var(--color-foreground-secondary);
+  color: var(--color-muted);
 }
 
 @media (min-width: 64rem) {
@@ -296,7 +327,7 @@
   }
 
   .grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.05fr 1fr;
     gap: var(--space-9);
   }
 

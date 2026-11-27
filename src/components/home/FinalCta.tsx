@@ -64,7 +64,7 @@ export function FinalCta({ featuredProduct, section }: FinalCtaProps) {
                   </span>
                   <ProductPriceDisplay product={product} size="md" variant="inverse" />
                   <span className={styles.snippetBadge}>
-                    💵 {isAr ? "الدفع عند الاستلام متاح" : "Cash on Delivery Supported"}
+                    {isAr ? "الدفع عند الاستلام متاح" : "Cash on Delivery Supported"}
                   </span>
                 </div>
               </div>

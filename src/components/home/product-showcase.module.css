@@ -27,12 +27,13 @@
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: var(--radius-md);
-  background-color: var(--color-secondary);
+  background-color: var(--color-surface);
 }
 
 .caption {
   font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-muted);
 }
@@ -49,6 +50,6 @@
 
   .grid {
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-7);
+    gap: var(--space-6);
   }
 }

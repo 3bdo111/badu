@@ -181,7 +181,7 @@ export default async function OrderConfirmationPage({
                 rel="noopener noreferrer"
                 className={styles.whatsappConfirmBtn}
               >
-                {locale === "ar" ? "🟢 تأكيد الطلب عبر واتساب" : "🟢 Confirm order via WhatsApp"}
+                {locale === "ar" ? "تأكيد الطلب عبر واتساب" : "Confirm order via WhatsApp"}
               </a>
             )}
             <Button href="/" variant="primary" size="lg" className={styles.actionBtn}>

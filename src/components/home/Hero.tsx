@@ -43,8 +43,12 @@ export function Hero({ section, featuredProduct }: HeroProps) {
       ? isAr
         ? section.ctaLabelAr || t("hero.cta")
         : section.ctaLabelEn || t("hero.cta")
-      : t("hero.cta")) || (isAr ? "أطلب هودي بادو الصحراوي — تسوّق الآن" : "GET YOUR DESERT X HOODIE — SHOP NOW");
+      : t("hero.cta")) || (isAr ? "تسوّق الآن" : "SHOP NOW");
   const ctaUrl = section?.ctaUrl || "#hoodie";
+
+  const trustItems = isAr
+    ? ["الدفع عند الاستلام", "توصيل 2-4 أيام", "استبدال 14 يوم"]
+    : ["Cash on Delivery", "2-4 Day Delivery", "14-Day Exchange"];
 
   return (
     <section id="home" className={styles.hero} aria-labelledby="hero-title">
@@ -52,27 +56,11 @@ export function Hero({ section, featuredProduct }: HeroProps) {
         <div className={styles.grid}>
           <div className={styles.copy}>
             <Reveal>
-              <div className={styles.topMetaRow}>
-                <div className={styles.eyebrowBadge}>
-                  <span className={styles.badgeDot} />
-                  <span className={styles.badgeText}>{t("hero.eyebrow")}</span>
-                </div>
-                <div className={styles.ratingBadge}>
-                  <span className={styles.stars}>💵</span>
-                  <span className={styles.ratingText}>
-                    {isAr ? "الدفع عند الاستلام متاح" : "Cash on Delivery Available"}
-                  </span>
-                </div>
-              </div>
+              <p className={styles.eyebrow}>{t("hero.eyebrow")}</p>
             </Reveal>
 
             <Reveal delay={80}>
-              <Heading
-                level={1}
-                display
-                id="hero-title"
-                className={styles.title}
-              >
+              <Heading level={1} display id="hero-title" className={styles.title}>
                 {title}
               </Heading>
             </Reveal>
@@ -83,23 +71,11 @@ export function Hero({ section, featuredProduct }: HeroProps) {
 
             {product && (
               <Reveal delay={200}>
-                <div className={styles.productSpotlight}>
-                  <div className={styles.spotlightHeader}>
-                    <div className={styles.spotlightTitleBlock}>
-                      <span className={styles.productName}>
-                        {product.translations[locale]?.name || product.translations.en.name}
-                      </span>
-                      <span className={styles.modelPill}>
-                        📏 {isAr ? "الموديل: 185 سم | يرتدي مقاس L" : "Model: 185 cm | Wears Size L"}
-                      </span>
-                    </div>
-                    <ProductPriceDisplay product={product} size="lg" />
-                  </div>
-                  <div className={styles.highlightPills}>
-                    <span className={styles.pill}>🧵 480GSM {isAr ? "قطن عضوي ثقيل" : "Organic Cotton"}</span>
-                    <span className={styles.pill}>✨ {isAr ? "تطريز 3D عالي الكثافة" : "High-Density Embroidery"}</span>
-                    <span className={styles.pill}>✂️ {isAr ? "قصّة واسعة مريحة Oversized" : "Relaxed Oversized Fit"}</span>
-                  </div>
+                <div className={styles.priceLine}>
+                  <span className={styles.productName}>
+                    {product.translations[locale]?.name || product.translations.en.name}
+                  </span>
+                  <ProductPriceDisplay product={product} size="md" />
                 </div>
               </Reveal>
             )}
@@ -109,20 +85,21 @@ export function Hero({ section, featuredProduct }: HeroProps) {
                 <Button href={ctaUrl} size="lg" className={styles.primaryCta}>
                   {ctaLabel}
                 </Button>
-                <Button href="#story" size="lg" variant="ghost">
+                <Button href="#story" size="lg" variant="outline">
                   {t("hero.secondaryCta")}
                 </Button>
               </div>
             </Reveal>
 
             <Reveal delay={280}>
-              <div className={styles.heroTrustRow}>
-                <span>💵 {isAr ? "الدفع عند الاستلام (COD)" : "Cash on Delivery (COD)"}</span>
-                <span>•</span>
-                <span>🚚 {isAr ? "شحن سريع خلال 2-4 أيام" : "Express 2-4 Day Shipping"}</span>
-                <span>•</span>
-                <span>🔄 {isAr ? "استبدال وإرجاع خلال 14 يوم" : "14-Day Free Returns"}</span>
-              </div>
+              <p className={styles.trustLine}>
+                {trustItems.map((item, idx) => (
+                  <span key={item}>
+                    {idx > 0 && <span aria-hidden="true"> · </span>}
+                    {item}
+                  </span>
+                ))}
+              </p>
             </Reveal>
           </div>
 
@@ -136,13 +113,7 @@ export function Hero({ section, featuredProduct }: HeroProps) {
                     priority
                     sizes="(min-width: 64rem) 46vw, 100vw"
                   />
-                  <div className={styles.priceBadgeOverlay}>
-                    <ProductPriceDisplay product={product} size="md" showBadge={true} />
-                  </div>
                 </div>
-                <span className={styles.index} aria-hidden="true">
-                  {t("hero.index")}
-                </span>
               </figure>
             </Reveal>
           )}
@@ -151,4 +122,3 @@ export function Hero({ section, featuredProduct }: HeroProps) {
     </section>
   );
 }
-

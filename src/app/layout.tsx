@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Fraunces, Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
+import { Archivo, Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
 import { I18nProvider } from "@/i18n/I18nProvider";
 import { dictionaries, defaultLocale } from "@/i18n/dictionaries";
 import {
@@ -17,9 +17,10 @@ import { SkipLink } from "@/components/layout/SkipLink";
 import { getSiteUrl, SITE_CONFIG } from "@/lib/config/site";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const inter = Inter({
@@ -149,7 +150,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       lang={locale}
       dir={directionFor(locale)}
       suppressHydrationWarning
-      className={`${fraunces.variable} ${inter.variable} ${plexArabic.variable}`}
+      className={`${archivo.variable} ${inter.variable} ${plexArabic.variable}`}
     >
       <head>
         <script

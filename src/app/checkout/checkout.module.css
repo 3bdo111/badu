@@ -91,12 +91,12 @@
 }
 
 .inputError {
-  border-color: #a4574a;
+  border-color: #b3b3b3;
 }
 
 .errorText {
   font-size: var(--text-xs);
-  color: #a4574a;
+  color: #b3b3b3;
 }
 
 .paymentBox {
@@ -224,7 +224,7 @@
   background-color: rgba(164, 87, 74, 0.1);
   border: 1px solid rgba(164, 87, 74, 0.3);
   border-radius: var(--radius-sm);
-  color: #a4574a;
+  color: #b3b3b3;
   font-size: var(--text-small);
 }
 

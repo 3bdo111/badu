@@ -1,10 +1,11 @@
 .hero {
-  padding-block: var(--space-6) var(--space-8);
+  padding-block: var(--space-7) var(--space-9);
+  border-block-end: 1px solid var(--color-border);
 }
 
 .grid {
   display: grid;
-  gap: var(--space-6);
+  gap: var(--space-7);
   align-items: center;
 }
 
@@ -15,45 +16,54 @@
   gap: var(--space-4);
 }
 
-.topMetaRow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-3);
+.eyebrow {
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-muted);
 }
 
-.ratingBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--radius-full);
-  background-color: var(--color-accent-subtle, rgba(234, 179, 8, 0.1));
-  border: 1px solid rgba(234, 179, 8, 0.3);
-}
-
-.stars {
-  color: #f59e0b;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-}
-
-.ratingText {
+:lang(ar) .eyebrow {
+  letter-spacing: 0;
+  text-transform: none;
   font-size: var(--text-small);
-  font-weight: 600;
-  color: var(--color-foreground);
 }
 
 .title {
   margin-block-start: var(--space-1);
-  line-height: 1.15;
+  line-height: var(--leading-display);
 }
 
 .subtitle {
   font-size: var(--text-body);
   color: var(--color-foreground-secondary);
-  max-width: 36rem;
-  line-height: 1.6;
+  max-width: 34rem;
+  line-height: 1.7;
+}
+
+.priceLine {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+  border-block: 1px solid var(--color-border);
+  width: 100%;
+  max-width: 24rem;
+}
+
+.productName {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-foreground);
+}
+
+:lang(ar) .productName {
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .ctaRow {
@@ -62,6 +72,28 @@
   align-items: center;
   gap: var(--space-3);
   margin-block-start: var(--space-2);
+}
+
+.trustLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-block-start: var(--space-2);
+}
+
+:lang(ar) .trustLine {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: var(--text-small);
+}
+
+.trustLine span[aria-hidden] {
+  opacity: 0.5;
 }
 
 .figure {
@@ -75,167 +107,20 @@
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: var(--radius-md);
-  background-color: var(--color-secondary);
-  box-shadow: var(--shadow-lg);
+  background-color: var(--color-surface);
 }
-
-.index {
-  position: absolute;
-  inset-block-end: var(--space-4);
-  inset-inline-end: var(--space-4);
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
-  color: var(--color-muted);
-  background-color: color-mix(in srgb, var(--color-background) 82%, transparent);
-  backdrop-filter: blur(6px);
-  padding-block: var(--space-1);
-  padding-inline: var(--space-3);
-  border-radius: var(--radius-full);
-}
-
-:lang(ar) .index {
-  letter-spacing: 0;
-}
-
-.eyebrowBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 0.35rem 0.85rem;
-  border-radius: var(--radius-full);
-  background-color: var(--color-secondary);
-  border: 1px solid var(--color-border);
-}
-
-.badgeDot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: var(--radius-full);
-  background-color: var(--color-accent);
-}
-
-.badgeText {
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  color: var(--color-foreground);
-  font-weight: 600;
-}
-
-:lang(ar) .badgeText {
-  letter-spacing: 0;
-  text-transform: none;
-}
-
-.productSpotlight {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4) var(--space-5);
-  background-color: var(--color-secondary);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  max-width: 36rem;
-  width: 100%;
-  box-shadow: var(--shadow-sm);
-}
-
-.spotlightHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-}
-
-.spotlightTitleBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.productName {
-  font-family: var(--font-display);
-  font-size: var(--text-h3);
-  font-weight: 700;
-  color: var(--color-foreground);
-}
-
-.modelPill {
-  font-size: 0.8rem;
-  color: var(--color-foreground-secondary);
-  font-weight: 500;
-}
-
-.priceTag {
-  font-family: var(--font-display);
-  font-size: var(--text-h3);
-  font-weight: 800;
-  color: var(--color-foreground);
-  background-color: var(--color-background);
-  padding: 0.25rem 0.75rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-}
-
-.highlightPills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.pill {
-  font-size: 0.78rem;
-  color: var(--color-foreground);
-  background-color: var(--color-background);
-  padding: 0.25rem 0.65rem;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border);
-  font-weight: 500;
-}
-
-.heroTrustRow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: 0.82rem;
-  color: var(--color-foreground-secondary);
-  margin-block-start: var(--space-1);
-}
-
-.priceBadgeOverlay {
-  position: absolute;
-  inset-block-start: var(--space-4);
-  inset-inline-start: var(--space-4);
-  background-color: rgba(255, 255, 255, 0.95);
-  color: #121110;
-  padding: 0.35rem 0.85rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  z-index: 2;
-}
-
-.priceBadgeOverlay span,
-.priceBadgeOverlay s {
-  color: #121110 !important;
-}
-
-.priceBadgeOverlay s {
-  opacity: 0.65;
-}
-
 
 @media (min-width: 64rem) {
   .hero {
-    padding-block: var(--space-8) var(--space-9);
+    padding-block: var(--space-8) var(--space-10);
   }
 
   .grid {
-    grid-template-columns: 1.05fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--space-9);
   }
-}
 
+  .title {
+    font-size: clamp(3.25rem, 5.4vw, 5.75rem);
+  }
+}

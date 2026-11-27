@@ -452,7 +452,7 @@ export function CheckoutForm() {
                   disabled={submitting}
                   className={styles.whatsappBtn}
                 >
-                  {submitting ? t("checkout.submitting") : `🟢 ${t("checkout.whatsappOrder")}`}
+                  {submitting ? t("checkout.submitting") : t("checkout.whatsappOrder")}
                 </button>
                 <p className={styles.whatsappNote}>{t("checkout.whatsappNote")}</p>
               </div>
