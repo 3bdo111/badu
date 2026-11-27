@@ -15,7 +15,7 @@ export function CampaignBand() {
       <div className={styles.grid}>
         <figure className={styles.figure}>
           <Image
-            src="/images/campaign/boy-black.png"
+            src="/images/campaign/2026/boy-black-back.jpg"
             alt={isAr ? "موديل لابس هودي بادو أسود" : "Model wearing the BADU hoodie in black"}
             fill
             sizes="(max-width: 64rem) 100vw, 30vw"
@@ -36,7 +36,7 @@ export function CampaignBand() {
 
         <figure className={styles.figure}>
           <Image
-            src="/images/campaign/girl-black.png"
+            src="/images/campaign/2026/girl-blue-street.jpg"
             alt={isAr ? "موديل لابسة هودي بادو أسود" : "Model wearing the BADU hoodie in black"}
             fill
             sizes="(max-width: 64rem) 100vw, 30vw"
