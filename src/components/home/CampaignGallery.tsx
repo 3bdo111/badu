@@ -9,27 +9,27 @@ import styles from "./campaign-gallery.module.css";
 type Shot = { src: string; altEn: string; altAr: string };
 
 const OPENER_MAIN: Shot = {
-  src: "/images/campaign/2026/girl-blue-street.jpg",
-  altEn: "Slate blue hoodie against a sandstone wall",
-  altAr: "الهودي الأزرق على حيطة حجر رملي",
+  src: "/images/campaign/2026/studio-girl-blue-front.jpg",
+  altEn: "Slate blue hoodie on a tan studio backdrop",
+  altAr: "الهودي الأزرق على خلفية استوديو لونها بيج",
 };
 
 const OPENER_SECOND: Shot = {
-  src: "/images/campaign/2026/boy-black-desert.jpg",
-  altEn: "Black hoodie in the desert at golden hour",
-  altAr: "هودي أسود في الصحرا وقت الغروب",
+  src: "/images/campaign/2026/studio-boy-black-front.jpg",
+  altEn: "Black hoodie on a cream studio backdrop",
+  altAr: "الهودي الأسود على خلفية استوديو كريمي",
 };
 
 const BACK_SHOTS: Shot[] = [
   {
-    src: "/images/campaign/2026/girl-blue-back.jpg",
-    altEn: "Slate blue hoodie from the back against sandstone",
-    altAr: "الهودي الأزرق من ورا على حجر رملي",
+    src: "/images/campaign/2026/studio-girl-blue-back.jpg",
+    altEn: "Slate blue hoodie from the back, cream backdrop",
+    altAr: "الهودي الأزرق من ورا على خلفية كريمي",
   },
   {
-    src: "/images/campaign/2026/boy-black-back.jpg",
-    altEn: "Black Journey hoodie from the back, camel embroidery, pyramids at sunset",
-    altAr: "هودي الرحلة الأسود من ورا، تطريز الجمل، الأهرامات وقت الغروب",
+    src: "/images/campaign/2026/studio-boy-black-back.jpg",
+    altEn: "Black Journey hoodie from the back, camel embroidery, tan backdrop",
+    altAr: "هودي الرحلة الأسود من ورا، تطريز الجمل، على خلفية بيج",
   },
 ];
 
