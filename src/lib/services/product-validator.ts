@@ -126,17 +126,41 @@ export function normalizeProduct(
         },
       ];
 
-  const images: ProductImage[] = rawImages.map((img, idx) => ({
-    id: img.id || `img-${id}-${idx}`,
-    src: img.src,
-    alt: {
-      en: img.alt?.en || raw.translations?.en?.name || "Product image",
-      ar: img.alt?.ar || raw.translations?.ar?.name || "صورة المنتج",
-    },
-    isPrimary: idx === 0,
-    sortOrder: idx,
-    colorKey: img.colorKey || null,
-  }));
+  // Image ids are primary keys in product_images. A newly added image (from the
+  // admin's media picker) arrives with no id, so one is derived here. The
+  // index-based pattern can already be taken by a stored image once the gallery
+  // has been reordered or had an image removed, which made the save fail with a
+  // duplicate-key error. Existing ids are kept; new ones are made unique.
+  const reservedImageIds = new Set<string>(
+    rawImages.map((img) => img.id?.trim() || "").filter(Boolean)
+  );
+  const usedImageIds = new Set<string>();
+  const images: ProductImage[] = rawImages.map((img, idx) => {
+    let imageId = img.id?.trim() || "";
+    if (!imageId || usedImageIds.has(imageId)) {
+      const base = `img-${id}-${idx}`;
+      imageId = base;
+      let suffix = 1;
+      while (reservedImageIds.has(imageId) || usedImageIds.has(imageId)) {
+        imageId = `${base}-${suffix}`;
+        suffix += 1;
+      }
+      reservedImageIds.add(imageId);
+    }
+    usedImageIds.add(imageId);
+
+    return {
+      id: imageId,
+      src: img.src,
+      alt: {
+        en: img.alt?.en || raw.translations?.en?.name || "Product image",
+        ar: img.alt?.ar || raw.translations?.ar?.name || "صورة المنتج",
+      },
+      isPrimary: idx === 0,
+      sortOrder: idx,
+      colorKey: img.colorKey || null,
+    };
+  });
 
   const colors = Array.isArray(raw.colors) && raw.colors.length > 0
     ? raw.colors
