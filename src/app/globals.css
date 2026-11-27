@@ -20,9 +20,9 @@
   --color-border: #e3e3e3;
 
   /* --- Typography --- */
-  --font-display: var(--font-archivo), var(--font-plex-arabic), "Helvetica Neue",
+  --font-display: var(--font-bricolage), var(--font-alexandria), "Helvetica Neue",
     Helvetica, Arial, sans-serif;
-  --font-body: var(--font-inter), var(--font-plex-arabic), system-ui, sans-serif;
+  --font-body: var(--font-inter), var(--font-alexandria), system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   --text-display: clamp(2.6rem, 6.4vw, 5.5rem);

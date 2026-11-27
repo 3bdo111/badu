@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Archivo, Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
+import { Bricolage_Grotesque, Alexandria, Inter } from "next/font/google";
 import { I18nProvider } from "@/i18n/I18nProvider";
 import { dictionaries, defaultLocale } from "@/i18n/dictionaries";
 import {
@@ -17,10 +17,23 @@ import { SkipLink } from "@/components/layout/SkipLink";
 import { getSiteUrl, SITE_CONFIG } from "@/lib/config/site";
 import "./globals.css";
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+// Display: Bricolage Grotesque — a modern editorial grotesque with a bit of
+// grit; reads as streetwear rather than corporate. Latin only, so Arabic
+// falls through to Alexandria below.
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "600", "700", "800"],
+  display: "swap",
+});
+
+// Alexandria — modern geometric Arabic, designed in Egypt. Carries display
+// and body Arabic, and doubles as the Latin body fallback.
+const alexandria = Alexandria({
+  variable: "--font-alexandria",
+  subsets: ["arabic", "latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 const inter = Inter({
@@ -28,11 +41,7 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const plexArabic = IBM_Plex_Sans_Arabic({
-  variable: "--font-plex-arabic",
-  subsets: ["arabic"],
-  weight: ["100", "200", "300", "400", "500", "600", "700"],
-});
+
 
 async function getInitialLocale(): Promise<Locale> {
   const store = await cookies();
@@ -150,7 +159,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       lang={locale}
       dir={directionFor(locale)}
       suppressHydrationWarning
-      className={`${archivo.variable} ${inter.variable} ${plexArabic.variable}`}
+      className={`${bricolage.variable} ${inter.variable} ${alexandria.variable}`}
     >
       <head>
         <script
