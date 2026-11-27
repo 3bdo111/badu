@@ -126,26 +126,25 @@ export default async function Home() {
 
   // Editorial running order. The CMS still owns each section's content and
   // visibility; the sequence below is the designed narrative.
+  // Short narrative: hook, guarantees, the two products, one campaign beat,
+  // the story, questions, closing call. Everything else lives on the product
+  // page, so the home page never repeats the buy panel.
   const ORDER = [
     "hero",
     "trust_bar",
-    "product_showcase",
-    "featured_product",
     "product_grid",
     "campaign",
     "story",
-    "features",
-    "artwork",
-    "size_guide",
-    "reviews",
     "faq",
     "final_cta",
   ];
-  const ordered = [...publicSections].sort((a, b) => {
+  const ordered = publicSections
+    .filter((section) => ORDER.includes(section.sectionKey))
+    .sort((a, b) => {
     const ai = ORDER.indexOf(a.sectionKey);
     const bi = ORDER.indexOf(b.sectionKey);
-    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
-  });
+      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+    });
 
   return <>{ordered.map(renderSection)}</>;
 }

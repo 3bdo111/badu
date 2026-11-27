@@ -33,3 +33,11 @@
   background-color: var(--color-foreground);
   color: var(--color-background);
 }
+
+
+/* Mobile readability: keep the small label legible on a phone. */
+@media (max-width: 47.99rem) {
+  .option {
+    font-size: 0.72rem; letter-spacing: 0.06em;
+  }
+}

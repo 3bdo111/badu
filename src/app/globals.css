@@ -352,3 +352,15 @@ section[id] {
     transition: none !important;
   }
 }
+
+
+/* Mobile readability: the small uppercase labels carry the design, but on a
+   phone they were landing at ~11px with wide tracking. Lift them just enough
+   to read at arm's length without losing the editorial look. */
+@media (max-width: 47.99rem) {
+  :root {
+    --text-label: 0.78rem;
+    --text-xs: 0.78rem;
+    --tracking-label: 0.12em;
+  }
+}

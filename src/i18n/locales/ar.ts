@@ -80,7 +80,7 @@ const ar: Dictionary = {
     index: "٠١ / ٠١",
   },
   hook: {
-    eyebrow: "دروب ٠١ — Desert X جورني",
+    eyebrow: "دروب ٠١ — ⁦Desert X⁩ جورني",
     line1: "قطن تقيل.",
     line2: "طريق طويل.",
     line3: "ومفيش اختصارات.",
@@ -88,9 +88,9 @@ const ar: Dictionary = {
     primaryCta: "اطلب الدروب",
     secondaryCta: "شوف الشغل",
     priceLabel: "بيبدأ من",
-    caption: "Desert X جورني — مصر",
+    caption: "⁦Desert X⁩ جورني — مصر",
     scroll: "انزل",
-    marquee: "بادو · Desert X جورني · قطن ٤٨٠ جرام · تطريز بإيد · القاهرة ·",
+    marquee: "بادو · ⁦Desert X⁩ جورني · قطن ٤٨٠ جرام · تطريز بإيد · القاهرة ·",
     campaignLabel: "الحملة ٠٢",
     campaignTitle: "الشارع مش محتاج إذن.",
     campaignBody: "معمول للطريق، مش للفيديو. البسه وانزل.",
@@ -129,7 +129,7 @@ const ar: Dictionary = {
     story: {
       label: "٠٥ — حكاية الماركة",
       heading: "الطريق هو الإلهام.",
-      body: "الصحرا مش مجرد مكان، هي إحساس: مفتوحة، مفاجئة، وحرة. Desert X Journey اتبنى على الإحساس ده. بنعمل ستريت وير لناس بتتحرك بهدف، وبتحب المجهول، ومش محتاجة تمشي ورا الطريق المعتاد.",
+      body: "الصحرا مش مجرد مكان، هي إحساس: مفتوحة، مفاجئة، وحرة. ⁦Desert X⁩ Journey اتبنى على الإحساس ده. بنعمل ستريت وير لناس بتتحرك بهدف، وبتحب المجهول، ومش محتاجة تمشي ورا الطريق المعتاد.",
       philosophyHeading: "مفيش وجهة محددة. مفيش طريق مرسوم.",
       philosophyBody: "دي رحلتك إنت.",
     },
@@ -156,7 +156,7 @@ const ar: Dictionary = {
       ],
     },
     purchase: {
-      label: "Desert X جورني — دروب ٠١",
+      label: "⁦Desert X⁩ جورني — دروب ٠١",
       available: "متاح للطلب",
       unavailable: "خلص",
       selectSize: "اختار المقاس",

@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRef } from "react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Container } from "@/components/ui/Container";
+import { useScrollDrift } from "@/components/ui/useScrollDrift";
 import { formatPrice } from "@/lib/format";
 import type { Product } from "@/lib/types/product";
 import styles from "./hook-hero.module.css";
@@ -20,6 +22,10 @@ interface HookHeroProps {
 export function HookHero({ featuredProduct }: HookHeroProps) {
   const { t, locale } = useI18n();
   const isAr = locale === "ar";
+  // The garment drifts with the page: a small lift, a fraction of a degree
+  // of tilt and a gentle settle. Skipped under reduced motion.
+  const heroImageRef = useRef<HTMLDivElement>(null);
+  useScrollDrift(heroImageRef, { travel: 30, tilt: 1.1, zoom: 0.05 });
 
   const price = featuredProduct
     ? formatPrice(featuredProduct.price, featuredProduct.currency, locale)
@@ -62,18 +68,20 @@ export function HookHero({ featuredProduct }: HookHeroProps) {
         </div>
 
         <figure className={styles.figure}>
-          <Image
-            src="/images/campaign/girl-blue.png"
-            alt={
-              isAr
-                ? "موديل لابسة هودي بادو أزرق بقصة واسعة"
-                : "Model wearing the BADU oversized hoodie in slate blue"
-            }
-            fill
-            priority
-            sizes="(max-width: 64rem) 100vw, 50vw"
-            className={styles.image}
-          />
+          <div ref={heroImageRef} className={styles.imageWrap}>
+            <Image
+              src="/images/campaign/girl-blue.png"
+              alt={
+                isAr
+                  ? "موديل لابسة هودي بادو أزرق بقصة واسعة"
+                  : "Model wearing the BADU oversized hoodie in slate blue"
+              }
+              fill
+              priority
+              sizes="(max-width: 64rem) 100vw, 50vw"
+              className={styles.image}
+            />
+          </div>
           <figcaption className={styles.caption}>
             <span>{t("hook.caption")}</span>
             <span className={styles.captionIndex}>01</span>
