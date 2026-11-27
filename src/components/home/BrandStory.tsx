@@ -22,8 +22,21 @@ export function BrandStory({ section }: BrandStoryProps) {
 
   if (!product) return null;
 
-  const primaryDetailImg = product.images[2] ?? product.images[0];
   const secondaryDetailImg = product.images[3] ?? product.images[1];
+
+  /**
+   * Brand-partner photo for the story frame (plain concrete wall with the
+   * BADU statement). The CMS still points at the old street-pair shot, so
+   * that legacy value is treated as unset and falls back to this asset.
+   * Any other CMS image keeps working as an override.
+   */
+  const STORY_IMAGE = "/images/story-badu-wall.jpg";
+  const LEGACY_STORY_IMAGE_MARKERS = ["/images/story.jpg", "story-street-pair"];
+  const cmsStoryImage = section?.imageUrl ?? "";
+  const storyImage =
+    cmsStoryImage && !LEGACY_STORY_IMAGE_MARKERS.some((marker) => cmsStoryImage.includes(marker))
+      ? cmsStoryImage
+      : STORY_IMAGE;
 
   const title = section
     ? (isAr ? section.titleAr || t("sections.story.heading") : section.titleEn || t("sections.story.heading"))
@@ -75,21 +88,13 @@ export function BrandStory({ section }: BrandStoryProps) {
             <Reveal delay={140}>
               <div className={styles.visualComposition}>
                 <div className={styles.mainFrame}>
-                  {section?.imageUrl ? (
-                    <Image
-                      src={section.imageUrl}
-                      alt={title}
-                      fill
-                      sizes="(min-width: 64rem) 42vw, 100vw"
-                      style={{ objectFit: "cover" }}
-                    />
-                  ) : (
-                    <ProductImage
-                      product={product}
-                      image={primaryDetailImg}
-                      sizes="(min-width: 64rem) 42vw, 100vw"
-                    />
-                  )}
+                  <Image
+                    src={storyImage}
+                    alt={title}
+                    fill
+                    sizes="(min-width: 64rem) 42vw, 100vw"
+                    style={{ objectFit: "cover" }}
+                  />
                   <div className={styles.frameGradient} />
                 </div>
 
