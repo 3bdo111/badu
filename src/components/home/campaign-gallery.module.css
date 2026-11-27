@@ -40,8 +40,8 @@
 }
 
 .openerSide {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 0.75rem;
 }
 
@@ -85,6 +85,7 @@
 }
 
 .panelIndex {
+  align-self: flex-start;
   font-family: var(--font-inter);
   font-size: 0.7rem;
   letter-spacing: 0.18em;
@@ -164,6 +165,17 @@
 
   .openerSide {
     gap: 1rem;
+  }
+
+  /* The small square grows to meet the panel, so no white gap can open up. */
+  .openerSecond {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .openerSecond .frame {
+    aspect-ratio: auto;
+    height: 100%;
   }
 
   .duet {

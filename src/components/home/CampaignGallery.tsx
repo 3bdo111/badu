@@ -9,16 +9,29 @@ import styles from "./campaign-gallery.module.css";
 type Shot = { src: string; altEn: string; altAr: string };
 
 const OPENER_MAIN: Shot = {
-  src: "/images/campaign/2026/studio-girl-blue-front.jpg",
-  altEn: "Slate blue hoodie on a tan studio backdrop",
-  altAr: "الهودي الأزرق على خلفية استوديو لونها بيج",
+  src: "/images/campaign/2026/girl-blue-front-cream.jpg",
+  altEn: "Slate blue Journey hoodie on a cream backdrop",
+  altAr: "هودي الرحلة الأزرق على خلفية كريمي",
 };
 
 const OPENER_SECOND: Shot = {
-  src: "/images/campaign/2026/studio-boy-black-front.jpg",
-  altEn: "Black hoodie on a cream studio backdrop",
-  altAr: "الهودي الأسود على خلفية استوديو كريمي",
+  src: "/images/campaign/2026/journey-black-gold-tan.jpg",
+  altEn: "Black Journey hoodie with gold sun embroidery on a tan backdrop",
+  altAr: "هودي الرحلة الأسود بتطريز الشمس الدهبي على خلفية بيج",
 };
+
+const PIECE_SHOTS: Shot[] = [
+  {
+    src: "/images/campaign/2026/desertx-black-dark.jpg",
+    altEn: "Desert X in black with grey embroidery on a dark backdrop",
+    altAr: "Desert X أسود بتطريز رمادي على خلفية غامقة",
+  },
+  {
+    src: "/images/campaign/2026/desertx-brown-cream.jpg",
+    altEn: "Desert X in earth brown with camel embroidery on a cream backdrop",
+    altAr: "Desert X بني ترابي بتطريز الجمل على خلفية كريمي",
+  },
+];
 
 const BACK_SHOTS: Shot[] = [
   {
@@ -119,7 +132,7 @@ export function CampaignGallery() {
             </Reveal>
             <Reveal delay={160}>
               <div className={styles.panel}>
-                <span className={styles.panelIndex}>01 — 08</span>
+                <span className={styles.panelIndex} dir="ltr">01 — 08</span>
                 <span className={styles.panelRule} aria-hidden="true" />
                 <span className={styles.panelLabel}>
                   {isAr ? "دروب ٠١ — جورني" : "DROP 01 — THE JOURNEY"}
@@ -142,7 +155,19 @@ export function CampaignGallery() {
           ))}
         </div>
 
-        {/* Movement 3 — detail strip */}
+        {/* Movement 3 — the two Desert X pieces */}
+        <Reveal delay={60}>
+          <p className={styles.movementLabel}>{isAr ? "القطع" : "THE PIECES"}</p>
+        </Reveal>
+        <div className={styles.duet}>
+          {PIECE_SHOTS.map((shot, i) => (
+            <Reveal key={shot.src} delay={i * 100} className={styles.duetItem}>
+              <Frame shot={shot} isAr={isAr} sizes="(min-width: 64rem) 48vw, 100vw" />
+            </Reveal>
+          ))}
+        </div>
+
+        {/* Movement 4 — detail strip */}
         <Reveal delay={60}>
           <p className={styles.movementLabel}>{isAr ? "التفاصيل" : "THE DETAILS"}</p>
         </Reveal>
