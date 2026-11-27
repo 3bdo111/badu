@@ -13,6 +13,7 @@ import { SizeGuide } from "@/components/home/SizeGuide";
 import { Faq } from "@/components/home/Faq";
 import { PurchaseSection } from "@/components/home/PurchaseSection";
 import { Container } from "@/components/ui/Container";
+import { track } from "@/lib/analytics/track";
 
 export function ProductDetailClient({
   slug,
@@ -26,6 +27,17 @@ export function ProductDetailClient({
     () => initialProduct ?? getVisibleProductBySlug(slug)
   );
   const [loaded] = useState(true);
+
+  useEffect(() => {
+    if (!product) return;
+    track("ViewContent", {
+      content_ids: [product.slug],
+      content_name: productName(product, "en"),
+      content_type: "product",
+      value: product.price,
+      currency: product.currency,
+    });
+  }, [product]);
 
   useEffect(() => {
     return productService.subscribe(() => {

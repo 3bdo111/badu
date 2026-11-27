@@ -9,6 +9,7 @@ import { LOCALE_COOKIE, type Locale } from "@/i18n/types";
 import { Container } from "@/components/ui/Container";
 import { SunMark } from "@/components/ui/SunMark";
 import { Button } from "@/components/ui/Button";
+import { PurchaseEvent } from "@/components/analytics/PurchaseEvent";
 import styles from "../confirmation.module.css";
 
 export const metadata: Metadata = {
@@ -104,7 +105,14 @@ export default async function OrderConfirmationPage({
   }
 
   return (
-    <div className={styles.page}>
+    <>
+      <PurchaseEvent
+        orderNumber={order.orderNumber}
+        value={order.totalAmount}
+        currency={order.currency}
+        contentIds={order.items.map((i) => i.productId)}
+      />
+      <div className={styles.page}>
       <Container narrow>
         <div className={styles.card}>
           <div className={styles.header}>
@@ -197,5 +205,6 @@ export default async function OrderConfirmationPage({
         </div>
       </Container>
     </div>
+    </>
   );
 }

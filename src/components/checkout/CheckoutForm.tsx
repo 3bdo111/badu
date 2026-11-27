@@ -7,6 +7,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { useCart } from "@/components/cart/CartProvider";
 import { formatPrice } from "@/lib/format";
 import { calculateShipping } from "@/lib/store/shipping";
+import { track } from "@/lib/analytics/track";
 import { productRepository } from "@/lib/services/product-service";
 import { productName } from "@/lib/types/product";
 import { Container } from "@/components/ui/Container";
@@ -42,6 +43,12 @@ export function CheckoutForm() {
 
   const shipping = calculateShipping(subtotal, currency);
   const grandTotal = subtotal + shipping;
+
+  useEffect(() => {
+    if (items.length === 0) return;
+    track("InitiateCheckout", { value: grandTotal, currency, num_items: items.length });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Load the store's WhatsApp number (public storefront settings)
   useEffect(() => {

@@ -11,6 +11,7 @@ import {
 } from "react";
 import { productRepository } from "@/lib/services/product-service";
 import { getProductStockForSize, isProductAvailable } from "@/lib/types/product";
+import { track } from "@/lib/analytics/track";
 
 function addItemToStore(input: AddItemInput) {
   const product = productRepository.getProductById(input.productId) || productRepository.getProductBySlug(input.slug);
@@ -177,6 +178,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem = useCallback(
     (input: AddItemInput, autoOpen = true) => {
       addItemToStore(input);
+      track("AddToCart", { content_ids: [input.productId], content_type: "product" });
       if (autoOpen) setIsOpen(true);
     },
     []
