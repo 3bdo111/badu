@@ -3,6 +3,7 @@
 import { useI18n } from "@/i18n/I18nProvider";
 import { useCart } from "@/components/cart/CartProvider";
 import { formatPrice } from "@/lib/format";
+import { getVisibleProductBySlug } from "@/data/products";
 import { CartItemRow } from "@/components/cart/CartItemRow";
 import { EmptyCart } from "@/components/cart/EmptyCart";
 import { Container } from "@/components/ui/Container";
@@ -14,7 +15,10 @@ export default function CartPage() {
   const { t, locale } = useI18n();
   const { items, subtotal } = useCart();
 
-  const currency = "USD";
+  // The cart stores ids/sizes only; the currency comes from the product itself
+  // so an EGP store never falls back to a foreign symbol.
+  const currency =
+    (items.length > 0 ? getVisibleProductBySlug(items[0].slug)?.currency : undefined) || "EGP";
 
   return (
     <main className={styles.page}>

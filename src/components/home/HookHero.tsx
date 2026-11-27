@@ -1,0 +1,90 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useI18n } from "@/i18n/I18nProvider";
+import { Container } from "@/components/ui/Container";
+import { formatPrice } from "@/lib/format";
+import type { Product } from "@/lib/types/product";
+import styles from "./hook-hero.module.css";
+
+interface HookHeroProps {
+  featuredProduct?: Product;
+}
+
+/**
+ * Above-the-fold hook: oversized editorial headline on the left, full-bleed
+ * campaign portrait on the right. Three short lines carry the hook; the
+ * product price and the two entry actions sit underneath.
+ */
+export function HookHero({ featuredProduct }: HookHeroProps) {
+  const { t, locale } = useI18n();
+  const isAr = locale === "ar";
+
+  const price = featuredProduct
+    ? formatPrice(featuredProduct.price, featuredProduct.currency, locale)
+    : null;
+
+  return (
+    <section className={styles.hero} aria-labelledby="hook-title">
+      <div className={styles.grid}>
+        <div className={styles.copyCol}>
+          <Container className={styles.copyInner}>
+            <p className={styles.eyebrow}>{t("hook.eyebrow")}</p>
+
+            <h1 id="hook-title" className={styles.title}>
+              <span>{t("hook.line1")}</span>
+              <span>{t("hook.line2")}</span>
+              <span className={styles.outline}>{t("hook.line3")}</span>
+            </h1>
+
+            <p className={styles.sub}>{t("hook.sub")}</p>
+
+            <div className={styles.ctaRow}>
+              <Link href="/store" className={styles.primaryCta}>
+                {t("hook.primaryCta")}
+              </Link>
+              <Link href="/#details" className={styles.secondaryCta}>
+                {t("hook.secondaryCta")}
+              </Link>
+            </div>
+
+            {price && (
+              <p className={styles.priceLine}>
+                <span className={styles.priceLabel}>{t("hook.priceLabel")}</span>
+                <span className={styles.priceValue}>{price}</span>
+                <span className={styles.priceNote}>
+                  {isAr ? "دفع عند الاستلام" : "CASH ON DELIVERY"}
+                </span>
+              </p>
+            )}
+          </Container>
+        </div>
+
+        <figure className={styles.figure}>
+          <Image
+            src="/images/campaign/girl-blue.png"
+            alt={
+              isAr
+                ? "موديل لابسة هودي بادو أزرق بقصة واسعة"
+                : "Model wearing the BADU oversized hoodie in slate blue"
+            }
+            fill
+            priority
+            sizes="(max-width: 64rem) 100vw, 50vw"
+            className={styles.image}
+          />
+          <figcaption className={styles.caption}>
+            <span>{t("hook.caption")}</span>
+            <span className={styles.captionIndex}>01</span>
+          </figcaption>
+        </figure>
+      </div>
+
+      <div className={styles.scrollRow}>
+        <span className={styles.scrollHint}>{t("hook.scroll")}</span>
+        <span className={styles.scrollRule} aria-hidden="true" />
+      </div>
+    </section>
+  );
+}

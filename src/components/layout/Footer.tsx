@@ -82,16 +82,23 @@ export function Footer() {
   return (
     <footer className={styles.footer}>
       <Container>
+        <div className={styles.wordmarkBlock}>
+          <p className={styles.wordmark} aria-hidden="true">
+            BADU
+          </p>
+          <div className={styles.wordmarkMeta}>
+            <p className={styles.tagline}>{t("footer.tagline")}</p>
+            <p className={styles.origin}>
+              {locale === "ar" ? "القاهرة — مصر" : "CAIRO — EGYPT"}
+            </p>
+          </div>
+        </div>
+
         <Reveal>
           <div className={styles.top}>
-            <div className={styles.brand}>
-              <Logo dark />
-              <p className={styles.tagline}>{t("footer.tagline")}</p>
-            </div>
-
             {groups.map((group) => (
               <nav key={group.id} aria-label={group.title.en} className={styles.navColumn}>
-                <p style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--color-accent, #c8a77d)", marginBottom: "0.75rem" }}>
+                <p className={styles.columnTitle}>
                   {group.title[locale] || group.title.en}
                 </p>
                 <ul role="list" className={styles.navList}>
@@ -107,7 +114,7 @@ export function Footer() {
             ))}
 
             <div className={styles.social}>
-              <p className={styles.socialLabel}>{t("footer.socialLabel")}</p>
+              <p className={styles.columnTitle}>{t("footer.socialLabel")}</p>
               <ul role="list" className={styles.socialList}>
                 {socials.map((soc) => (
                   <li key={soc.id}>
@@ -129,6 +136,9 @@ export function Footer() {
         <div className={styles.bottom}>
           <p className={styles.legal}>
             © {year} BADU — {t("footer.rights")}
+          </p>
+          <p className={styles.legal}>
+            {locale === "ar" ? "الدفع عند الاستلام" : "CASH ON DELIVERY"}
           </p>
         </div>
       </Container>

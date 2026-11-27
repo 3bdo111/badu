@@ -73,3 +73,19 @@
 .lg .originalPrice {
   font-size: var(--text-h3);
 }
+
+/* RTL: the currency glyph sits between the number and its neighbour, so the
+   parts need isolating and a wider gap to avoid visual collision. */
+:lang(ar) .container {
+  gap: 1.15rem;
+}
+
+:lang(ar) .lg .currentPrice {
+  font-size: 1.65rem;
+}
+
+:lang(ar) .currentPrice,
+:lang(ar) .originalPrice {
+  unicode-bidi: isolate;
+  white-space: nowrap;
+}

@@ -23,7 +23,7 @@ export function CheckoutForm() {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
-  const [country, setCountry] = useState("United Arab Emirates");
+  const [country, setCountry] = useState("Egypt");
   const [notes, setNotes] = useState("");
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -242,7 +242,7 @@ export function CheckoutForm() {
     <div className={styles.page}>
       <Container>
         <div className={styles.titleBlock}>
-          <p className="label">{t("cart.label")}</p>
+          <p className="label">{locale === "ar" ? "طلب آمن" : "SECURE ORDER"}</p>
           <Heading level={1} className={styles.heading}>
             {t("checkout.title")}
           </Heading>
@@ -288,7 +288,7 @@ export function CheckoutForm() {
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+971 50 123 4567"
+                    placeholder="+20 100 123 4567"
                     aria-invalid={Boolean(errors.phone)}
                     aria-describedby={errors.phone ? "err-phone" : undefined}
                     className={[styles.input, errors.phone ? styles.inputError : ""].join(" ")}

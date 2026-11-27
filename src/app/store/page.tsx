@@ -110,7 +110,7 @@ export default async function StorePage() {
       <div className={styles.page}>
         <Container>
           <div className={styles.header}>
-            <p className="label">{dict.cart.label}</p>
+            <p className="label">{dict.nav.store}</p>
             <h1 className={styles.title}>{dict.store.title}</h1>
             <p className={styles.subtitle}>{dict.store.subtitle}</p>
           </div>

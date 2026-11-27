@@ -47,7 +47,7 @@ export function FeaturedProductsGrid({ products, section }: FeaturedProductsGrid
           <div className={styles.headerRow}>
             <div>
               <p className="label">
-                {isAr ? "التشكيلة كلها" : "FULL COLLECTION"}
+                {isAr ? "دروب ٠١" : "DROP 01"}
               </p>
               <Heading level={2} id="collection-grid-heading" className={styles.heading}>
                 {headingText}

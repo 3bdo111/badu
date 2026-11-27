@@ -96,8 +96,8 @@
 /* CARDS VIEW */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: var(--space-6) var(--space-5);
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: var(--space-7) var(--space-6);
 }
 
 .card {
