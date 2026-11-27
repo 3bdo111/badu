@@ -155,3 +155,11 @@
   text-transform: none;
   letter-spacing: 0;
 }
+
+
+/* Mobile readability: keep the small label legible on a phone. */
+@media (max-width: 47.99rem) {
+  .navLink {
+    font-size: 0.75rem; letter-spacing: 0.1em;
+  }
+}

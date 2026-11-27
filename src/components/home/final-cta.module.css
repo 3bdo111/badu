@@ -122,3 +122,11 @@
     max-width: 42rem;
   }
 }
+
+
+/* Mobile readability: keep the small label legible on a phone. */
+@media (max-width: 47.99rem) {
+  .trustBadgeItem {
+    font-size: 0.75rem; letter-spacing: 0.06em;
+  }
+}

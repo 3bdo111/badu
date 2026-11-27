@@ -48,3 +48,11 @@
 .icon {
   display: none;
 }
+
+
+/* Mobile readability: keep the small label legible on a phone. */
+@media (max-width: 47.99rem) {
+  .item {
+    font-size: 0.78rem; letter-spacing: 0.06em;
+  }
+}
