@@ -128,8 +128,8 @@
 }
 
 .summaryCard {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-foreground);
   border-radius: var(--radius-md);
   padding: var(--space-6);
   display: flex;
@@ -241,5 +241,12 @@
 @media (max-width: 36rem) {
   .fieldGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 64rem) {
+  .summaryCard {
+    position: sticky;
+    inset-block-start: calc(var(--header-height) + var(--space-6));
   }
 }

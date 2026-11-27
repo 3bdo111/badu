@@ -49,6 +49,39 @@
 
 .title span {
   display: block;
+  animation: line-up 760ms var(--ease-snap) both;
+}
+
+.title span:nth-child(2) {
+  animation-delay: 90ms;
+}
+
+.title span:nth-child(3) {
+  animation-delay: 180ms;
+}
+
+.eyebrow {
+  animation: rise-in 620ms var(--ease-snap) both;
+}
+
+.sub {
+  animation: rise-in 700ms var(--ease-snap) 240ms both;
+}
+
+.ctaRow {
+  animation: rise-in 700ms var(--ease-snap) 320ms both;
+}
+
+.priceLine {
+  animation: rise-in 700ms var(--ease-snap) 400ms both;
+}
+
+.image {
+  animation: img-in 1100ms var(--ease-snap) both;
+}
+
+.caption {
+  animation: fade-in 700ms var(--ease-snap) 600ms both;
 }
 
 .outline {

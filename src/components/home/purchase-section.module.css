@@ -336,3 +336,18 @@
     inset-block-start: calc(var(--header-height) + var(--space-5));
   }
 }
+
+/* Image swap: a quick scale-in so switching colour or photo reads as a cut,
+   not a jump. Keyed on the image src so it replays on every change. */
+.frame {
+  animation: img-in 420ms var(--ease-snap) both;
+  overflow: hidden;
+}
+
+.frame img {
+  transition: transform 620ms var(--ease-snap);
+}
+
+.frame:hover img {
+  transform: scale(1.03);
+}

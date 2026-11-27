@@ -139,7 +139,7 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
         <div className={styles.grid}>
           <Reveal className={styles.visual}>
             <div className={styles.gallery}>
-              <div className={styles.frame}>
+              <div className={styles.frame} key={activeImage.src}>
                 <ProductImage
                   product={product}
                   image={activeImage}

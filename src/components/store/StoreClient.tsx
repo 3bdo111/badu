@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Reveal } from "@/components/ui/Reveal";
 import Link from "next/link";
 import type { Product } from "@/lib/types/product";
 import type { Dictionary, Locale } from "@/i18n/types";
@@ -107,7 +108,7 @@ export function StoreClient({ products, locale, dict }: StoreClientProps) {
       {/* Product Display Mode */}
       {viewMode === "cards" ? (
         <div className={styles.grid}>
-          {products.map((product) => {
+          {products.map((product, index) => {
             const primaryImage =
               product.images.find((img) => img.isPrimary) || product.images[0];
 
@@ -119,8 +120,8 @@ export function StoreClient({ products, locale, dict }: StoreClientProps) {
             const name = isRtl ? product.translations.ar.name : product.translations.en.name;
 
             return (
+              <Reveal key={product.id} delay={(index % 4) * 70}>
               <Link
-                key={product.id}
                 href={`/products/${product.slug}`}
                 className={styles.card}
               >
@@ -153,6 +154,7 @@ export function StoreClient({ products, locale, dict }: StoreClientProps) {
                   </div>
                 </div>
               </Link>
+              </Reveal>
             );
           })}
         </div>

@@ -24,6 +24,11 @@
 .image {
   object-fit: cover;
   object-position: center 20%;
+  transition: transform 900ms var(--ease-snap);
+}
+
+.figure:hover .image {
+  transform: scale(1.05);
 }
 
 .copy {
