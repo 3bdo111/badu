@@ -75,7 +75,7 @@ export function HookHero({ featuredProduct, fromPrice }: HookHeroProps) {
         <figure className={styles.figure}>
           <div ref={heroImageRef} className={styles.imageWrap}>
             <Image
-              src="/images/campaign/girl-blue.png"
+              src="/images/campaign/2026/boy-black-desert.jpg"
               alt={
                 isAr
                   ? "موديل لابسة هودي بادو أزرق بقصة واسعة"

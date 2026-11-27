@@ -4,6 +4,7 @@ import type { Product } from "@/lib/types/product";
 import { HookHero } from "@/components/home/HookHero";
 import { Marquee } from "@/components/home/Marquee";
 import { CampaignBand } from "@/components/home/CampaignBand";
+import { CampaignGallery } from "@/components/home/CampaignGallery";
 import { QuickTrustBar } from "@/components/home/QuickTrustBar";
 import { ProductIntro } from "@/components/home/ProductIntro";
 import { ProductShowcase } from "@/components/home/ProductShowcase";
@@ -89,7 +90,12 @@ export default async function Home() {
       case "artwork":
         return <ArtworkStory key="artwork" section={sec} />;
       case "campaign":
-        return <CampaignBand key="campaign" />;
+        return (
+          <div key="campaign">
+            <CampaignBand />
+            <CampaignGallery />
+          </div>
+        );
       case "featured_product":
         return (
           <PurchaseSection
@@ -125,6 +131,8 @@ export default async function Home() {
         <ProductShowcase />
         <BrandStory />
         <ArtworkStory />
+        <CampaignBand />
+        <CampaignGallery />
         <PurchaseSection featuredProduct={featuredProduct} />
         <CraftFeatures />
         <SizeGuide />
