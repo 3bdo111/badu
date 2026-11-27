@@ -396,6 +396,44 @@ export function runSqliteMigrations(db: Database.Database): void {
       `);
     }
 
+    // Copy change (Nov 2026): 480 GSM -> 350 GSM across stored text columns.
+    try {
+      db.exec(`
+        UPDATE storefront_sections SET title_en = replace(title_en, '480', '350') WHERE title_en LIKE '%480%';
+        UPDATE storefront_sections SET title_ar = replace(title_ar, '480', '350') WHERE title_ar LIKE '%480%';
+        UPDATE storefront_sections SET subtitle_en = replace(subtitle_en, '480', '350') WHERE subtitle_en LIKE '%480%';
+        UPDATE storefront_sections SET subtitle_ar = replace(subtitle_ar, '480', '350') WHERE subtitle_ar LIKE '%480%';
+        UPDATE storefront_sections SET body_en = replace(body_en, '480', '350') WHERE body_en LIKE '%480%';
+        UPDATE storefront_sections SET body_ar = replace(body_ar, '480', '350') WHERE body_ar LIKE '%480%';
+        UPDATE storefront_sections SET draft_title_en = replace(draft_title_en, '480', '350') WHERE draft_title_en LIKE '%480%';
+        UPDATE storefront_sections SET draft_title_ar = replace(draft_title_ar, '480', '350') WHERE draft_title_ar LIKE '%480%';
+        UPDATE storefront_sections SET draft_subtitle_en = replace(draft_subtitle_en, '480', '350') WHERE draft_subtitle_en LIKE '%480%';
+        UPDATE storefront_sections SET draft_subtitle_ar = replace(draft_subtitle_ar, '480', '350') WHERE draft_subtitle_ar LIKE '%480%';
+        UPDATE storefront_sections SET draft_body_en = replace(draft_body_en, '480', '350') WHERE draft_body_en LIKE '%480%';
+        UPDATE storefront_sections SET draft_body_ar = replace(draft_body_ar, '480', '350') WHERE draft_body_ar LIKE '%480%';
+        UPDATE products SET desc_en = replace(desc_en, '480', '350') WHERE desc_en LIKE '%480%';
+        UPDATE products SET desc_ar = replace(desc_ar, '480', '350') WHERE desc_ar LIKE '%480%';
+        UPDATE products SET fit_en = replace(fit_en, '480', '350') WHERE fit_en LIKE '%480%';
+        UPDATE products SET fit_ar = replace(fit_ar, '480', '350') WHERE fit_ar LIKE '%480%';
+        UPDATE products SET artwork_en = replace(artwork_en, '480', '350') WHERE artwork_en LIKE '%480%';
+        UPDATE products SET artwork_ar = replace(artwork_ar, '480', '350') WHERE artwork_ar LIKE '%480%';
+        UPDATE product_features SET title_en = replace(title_en, '480', '350') WHERE title_en LIKE '%480%';
+        UPDATE product_features SET title_ar = replace(title_ar, '480', '350') WHERE title_ar LIKE '%480%';
+        UPDATE product_features SET body_en = replace(body_en, '480', '350') WHERE body_en LIKE '%480%';
+        UPDATE product_features SET body_ar = replace(body_ar, '480', '350') WHERE body_ar LIKE '%480%';
+        UPDATE product_faqs SET question_en = replace(question_en, '480', '350') WHERE question_en LIKE '%480%';
+        UPDATE product_faqs SET question_ar = replace(question_ar, '480', '350') WHERE question_ar LIKE '%480%';
+        UPDATE product_faqs SET answer_en = replace(answer_en, '480', '350') WHERE answer_en LIKE '%480%';
+        UPDATE product_faqs SET answer_ar = replace(answer_ar, '480', '350') WHERE answer_ar LIKE '%480%';
+        UPDATE product_story SET title_en = replace(title_en, '480', '350') WHERE title_en LIKE '%480%';
+        UPDATE product_story SET title_ar = replace(title_ar, '480', '350') WHERE title_ar LIKE '%480%';
+        UPDATE product_story SET desc_en = replace(desc_en, '480', '350') WHERE desc_en LIKE '%480%';
+        UPDATE product_story SET desc_ar = replace(desc_ar, '480', '350') WHERE desc_ar LIKE '%480%';
+      `);
+    } catch {
+      // Best effort: very old databases may miss some columns.
+    }
+
     const productCols = db.prepare("PRAGMA table_info(products)").all() as Array<{ name: string }>;
     const productColNames = new Set(productCols.map((c) => c.name));
 

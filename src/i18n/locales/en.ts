@@ -74,7 +74,7 @@ const en: Dictionary = {
     eyebrow: "DESERT X JOURNEY",
     title: "THE JOURNEY HOODIE — BUILT FOR MOVEMENT",
     subtitle:
-      "Heavyweight 480GSM organic cotton hoodie crafted with a relaxed oversized fit, high-density embroidered calligraphy, and effortless everyday comfort.",
+      "Heavyweight 350GSM organic cotton hoodie crafted with a relaxed oversized fit, high-density embroidered calligraphy, and effortless everyday comfort.",
     cta: "SHOP THE HOODIE",
     secondaryCta: "DISCOVER THE STORY",
     index: "01 / 01",
@@ -84,13 +84,13 @@ const en: Dictionary = {
     line1: "HEAVY COTTON.",
     line2: "HARD ROAD.",
     line3: "NO SHORTCUTS.",
-    sub: "A 480 GSM organic cotton hoodie, cut oversized and built to be worn out. Hand-finished embroidery, two colours, made to outlast the season.",
+    sub: "A 350 GSM organic cotton hoodie, cut oversized and built to be worn out. Hand-finished embroidery, two colours, made to outlast the season.",
     primaryCta: "SHOP THE DROP",
     secondaryCta: "SEE THE CRAFT",
     priceLabel: "FROM",
     caption: "DESERT X JOURNEY — EGYPT",
     scroll: "SCROLL",
-    marquee: "BADU · DESERT X JOURNEY · 480 GSM COTTON · HAND EMBROIDERY · CAIRO ·",
+    marquee: "BADU · DESERT X JOURNEY · 350 GSM COTTON · HAND EMBROIDERY · CAIRO ·",
     campaignLabel: "CAMPAIGN 02",
     campaignTitle: "THE STREET DOESN'T ASK PERMISSION.",
     campaignBody: "Built for the road, not the feed. Pull it on and go.",
@@ -146,7 +146,7 @@ const en: Dictionary = {
           body: "High-density 3D embroidered calligraphy and desert journey artwork crafted with precision.",
         },
         {
-          title: "480GSM ORGANIC HEAVYWEIGHT COTTON",
+          title: "350GSM ORGANIC HEAVYWEIGHT COTTON",
           body: "Substantial premium fleece fabric engineered for structural durability and warmth.",
         },
         {
@@ -171,7 +171,7 @@ const en: Dictionary = {
         shipping: "SHIPPING & DELIVERY",
         returns: "RETURNS & EXCHANGES",
         detailsBody:
-          "The Journey Hoodie is a statement piece crafted from 480GSM 100% organic heavyweight cotton fleece. Features high-density 3D embroidered calligraphy across the back.",
+          "The Journey Hoodie is a statement piece crafted from 350GSM 100% organic heavyweight cotton fleece. Features high-density 3D embroidered calligraphy across the back.",
         fitBody:
           "Designed with a Relaxed Oversized Fit for modern streetwear layering. Pre-shrunk construction.",
         careBody: "Machine wash cold inside out with like colors. Line dry to preserve high-density embroidery.",
@@ -205,7 +205,7 @@ const en: Dictionary = {
       items: [
         {
           q: "What material is the Journey Hoodie made from?",
-          a: "The Journey Hoodie is crafted from 480GSM 100% organic heavyweight cotton fleece with high-density embroidered calligraphy detailing.",
+          a: "The Journey Hoodie is crafted from 350GSM 100% organic heavyweight cotton fleece with high-density embroidered calligraphy detailing.",
         },
         {
           q: "What fit does it have?",
