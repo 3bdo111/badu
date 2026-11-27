@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useCart } from "./CartProvider";
 import { formatPrice } from "@/lib/format";
@@ -14,6 +15,13 @@ export function CartDrawer() {
   const { t, locale } = useI18n();
   const { items, subtotal, isOpen, closeCart } = useCart();
   const drawerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
+  // Navigating away (e.g. tapping CHECKOUT) must dismiss the drawer and its
+  // body scroll lock, even when the drawer itself triggers the navigation.
+  useEffect(() => {
+    closeCart();
+  }, [pathname, closeCart]);
 
   // Close on Escape key press
   useEffect(() => {
