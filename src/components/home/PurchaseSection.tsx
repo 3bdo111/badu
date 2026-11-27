@@ -15,6 +15,7 @@ import { Accordion } from "@/components/ui/Accordion";
 import { ProductImage } from "@/components/product/ProductImage";
 import { SizeSelector } from "@/components/product/SizeSelector";
 import { ProductPriceDisplay } from "@/components/product/ProductPriceDisplay";
+import { Icon } from "@/components/ui/Icon";
 import { MobileStickyBuyBar } from "./MobileStickyBuyBar";
 import styles from "./purchase-section.module.css";
 
@@ -307,21 +308,21 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
             <Reveal delay={280}>
               <div className={styles.trustBadgesGrid}>
                 <div className={styles.trustBadgeItem}>
-                  <span className={styles.trustIcon}>💵</span>
+                  <span className={styles.trustIcon}><Icon name="cash" /></span>
                   <div className={styles.trustText}>
                     <strong>{locale === "ar" ? "الدفع عند الاستلام" : "Cash on Delivery"}</strong>
                     <span>{locale === "ar" ? "بتدفع لما يوصلك" : "Pay when your order arrives"}</span>
                   </div>
                 </div>
                 <div className={styles.trustBadgeItem}>
-                  <span className={styles.trustIcon}>🚚</span>
+                  <span className={styles.trustIcon}><Icon name="truck" /></span>
                   <div className={styles.trustText}>
                     <strong>{locale === "ar" ? "شحن سريع" : "Express Delivery"}</strong>
                     <span>{locale === "ar" ? "بيوصلك في 2-4 أيام" : "Delivered in 2-4 business days"}</span>
                   </div>
                 </div>
                 <div className={styles.trustBadgeItem}>
-                  <span className={styles.trustIcon}>🔄</span>
+                  <span className={styles.trustIcon}><Icon name="return" /></span>
                   <div className={styles.trustText}>
                     <strong>{locale === "ar" ? "استبدال واسترجاع" : "Easy Exchange"}</strong>
                     <span>{locale === "ar" ? "خلال 14 يوم من الاستلام" : "14-day hassle-free return policy"}</span>
