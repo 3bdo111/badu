@@ -19,6 +19,7 @@ export function Button({
   href,
   className,
   children,
+  onClick,
   ...rest
 }: ButtonProps) {
   const classes = [styles.button, styles[variant], styles[size], className]
@@ -27,7 +28,7 @@ export function Button({
 
   if (href) {
     return (
-      <Link href={href} className={classes}>
+      <Link href={href} className={classes} onClick={onClick as never}>
         {children}
       </Link>
     );
