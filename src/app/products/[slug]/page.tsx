@@ -42,7 +42,7 @@ export async function generateMetadata({
       nameEn,
       nameAr,
       "BADU Hoodie",
-      "heavyweight hoodie 480gsm",
+      "heavyweight hoodie 350gsm",
       "oversized hoodie",
       "arabic embroidery hoodie",
       "بادو هودي",

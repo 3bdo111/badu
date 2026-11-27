@@ -18,8 +18,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = locale === "ar" ? "كتالوج متجر بادو — BADU Store" : "The Collection — BADU Store";
   const description =
     locale === "ar"
-      ? "شوف تشكيلة ستريت وير من بادو. هودي قطن عضوي 480 جرام بقصة واسعة وتطريز عربي نضيف."
-      : "Explore BADU desert-inspired streetwear collection. Heavyweight 480GSM organic cotton hoodies with high-density embroidery.";
+      ? "شوف تشكيلة ستريت وير من بادو. هودي قطن عضوي 350 جرام بقصة واسعة وتطريز عربي نضيف."
+      : "Explore BADU desert-inspired streetwear collection. Heavyweight 350GSM organic cotton hoodies with high-density embroidery.";
 
   return {
     title,
@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "BADU collection",
       "BADU store",
       "heavyweight hoodie",
-      "oversized hoodie 480gsm",
+      "oversized hoodie 350gsm",
       "متجر بادو",
       "هودي بادو",
       "كتالوج بادو",

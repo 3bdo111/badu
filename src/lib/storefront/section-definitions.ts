@@ -10,7 +10,7 @@
  * Structured section bodies (trust items, craft features, FAQs, reviews,
  * size rows) use a simple pipe format, one item per line:
  *
- *   trust_bar   →  "🧵 | 480GSM Organic Cotton Fleece"
+ *   trust_bar   →  "🧵 | 350GSM Organic Cotton Fleece"
  *   features    →  "Heavyweight Fabric | Body copy for the feature"
  *   faq         →  "Question text? | Answer text"
  *   reviews     →  "Author Name | 5 | Review text"

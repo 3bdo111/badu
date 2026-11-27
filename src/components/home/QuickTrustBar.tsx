@@ -13,7 +13,7 @@ interface QuickTrustBarProps {
 }
 
 const DEFAULT_TRUST_ITEMS: Array<{ icon: IconName; textAr: string; textEn: string }> = [
-  { icon: "fabric", textAr: "قطن عضوي تقيل 480 جرام", textEn: "480GSM Organic Cotton Fleece" },
+  { icon: "fabric", textAr: "قطن عضوي تقيل 350 جرام", textEn: "350GSM Organic Cotton Fleece" },
   { icon: "truck", textAr: "الشحن في 2-4 أيام", textEn: "Express 2-4 Day Delivery" },
   { icon: "return", textAr: "استبدال واسترجاع مجاني 14 يوم", textEn: "14-Day Free Returns & Exchange" },
   { icon: "cash", textAr: "الدفع عند الاستلام متاح", textEn: "Cash on Delivery Available" },
