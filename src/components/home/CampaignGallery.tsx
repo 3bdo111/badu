@@ -132,7 +132,7 @@ export function CampaignGallery() {
             </Reveal>
             <Reveal delay={160}>
               <div className={styles.panel}>
-                <span className={styles.panelIndex} dir="ltr">01 — 08</span>
+                <span className={styles.panelIndex} dir="ltr">01 — 10</span>
                 <span className={styles.panelRule} aria-hidden="true" />
                 <span className={styles.panelLabel}>
                   {isAr ? "دروب ٠١ — جورني" : "DROP 01 — THE JOURNEY"}
