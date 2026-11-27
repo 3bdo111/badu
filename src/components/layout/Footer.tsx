@@ -41,7 +41,7 @@ const DEFAULT_GROUPS: DynamicFooterGroup[] = [
     id: "customer",
     title: { en: "CUSTOMER CARE", ar: "خدمة العملاء" },
     links: [
-      { id: "sizeguide", label: { en: "Size Guide", ar: "جدول المقاسات" }, url: "/#size-guide" },
+      { id: "sizeguide", label: { en: "Size Guide", ar: "جدول المقاسات" }, url: "/products/badu-hoodie#size" },
       { id: "faq", label: { en: "FAQ & Support", ar: "أسئلة بتتكرر" }, url: "/#faq" },
     ],
   },

@@ -45,7 +45,7 @@ export default function CartPage() {
 
             <div className={styles.summaryColumn}>
               <div className={styles.summaryCard}>
-                <h2 className={styles.summaryTitle}>{t("cart.subtotal")}</h2>
+                <h2 className={styles.summaryTitle}>{t("checkout.orderSummary")}</h2>
                 
                 <div className={styles.summaryRow}>
                   <span>{t("cart.subtotal")}</span>

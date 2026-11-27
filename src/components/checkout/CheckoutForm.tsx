@@ -427,7 +427,7 @@ export function CheckoutForm() {
                         {product ? productName(product, locale) : item.slug}
                       </div>
                       <div className={styles.itemMeta}>
-                        {t("cart.sizePrefix")} {item.size} • Qty: {item.quantity}
+                        {t("cart.sizePrefix")} {item.size} • {isAr ? "الكمية" : "Qty"}: {item.quantity}
                       </div>
                     </div>
                     <div>

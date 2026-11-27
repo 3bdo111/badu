@@ -151,10 +151,10 @@ export default async function OrderConfirmationPage({
           <table className={styles.itemsTable}>
             <thead>
               <tr>
-                <th>Item</th>
-                <th style={{ textAlign: "center" }}>Size</th>
-                <th style={{ textAlign: "center" }}>Qty</th>
-                <th style={{ textAlign: "end" }}>Price</th>
+                <th>{locale === "ar" ? "المنتج" : "Item"}</th>
+                <th style={{ textAlign: "center" }}>{locale === "ar" ? "المقاس" : "Size"}</th>
+                <th style={{ textAlign: "center" }}>{locale === "ar" ? "الكمية" : "Qty"}</th>
+                <th style={{ textAlign: "end" }}>{locale === "ar" ? "السعر" : "Price"}</th>
               </tr>
             </thead>
             <tbody>
