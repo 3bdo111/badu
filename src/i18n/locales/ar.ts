@@ -55,6 +55,8 @@ const ar: Dictionary = {
     placeOrder: "أكّد الطلب",
     submitting: "بنجهز طلبك...",
     orderSummary: "ملخص الطلب",
+    subtotal: "المنتجات",
+    shipping: "الشحن",
     total: "الإجمالي",
     confirmationTitle: "طلبك اتأكد",
     confirmationMsg: "استلمنا طلبك، وهتدفع لما يوصلك.",

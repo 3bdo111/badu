@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useCart } from "@/components/cart/CartProvider";
 import { formatPrice } from "@/lib/format";
+import { calculateShipping } from "@/lib/store/shipping";
 import { productRepository } from "@/lib/services/product-service";
 import { productName } from "@/lib/types/product";
 import { Container } from "@/components/ui/Container";
@@ -38,6 +39,9 @@ export function CheckoutForm() {
     (items.length > 0 &&
       productRepository.getProductById(items[0].productId)?.currency) ||
     "USD";
+
+  const shipping = calculateShipping(subtotal, currency);
+  const grandTotal = subtotal + shipping;
 
   // Load the store's WhatsApp number (public storefront settings)
   useEffect(() => {
@@ -215,7 +219,7 @@ export function CheckoutForm() {
       ...(isAr ? ["المنتجات:"] : ["Items:"]),
       ...orderLines,
       "",
-      `${isAr ? "الإجمالي" : "Total"}: ${formatPrice(subtotal, currency, locale)} (COD)`,
+      `${isAr ? "الإجمالي" : "Total"}: ${formatPrice(grandTotal, currency, locale)} (COD)`,
       "",
       isAr ? "بيانات العميل:" : "Customer:",
       `${isAr ? "الاسم" : "Name"}: ${name}`,
@@ -428,9 +432,19 @@ export function CheckoutForm() {
             </div>
 
             <div className={styles.summaryRow}>
+              <span>{t("checkout.subtotal")}</span>
+              <span>{formatPrice(subtotal, currency, locale)}</span>
+            </div>
+
+            <div className={styles.summaryRow}>
+              <span>{t("checkout.shipping")}</span>
+              <span>{formatPrice(shipping, currency, locale)}</span>
+            </div>
+
+            <div className={styles.summaryRow}>
               <span>{t("checkout.total")}</span>
               <span className={styles.totalAmount}>
-                {formatPrice(subtotal, currency, locale)}
+                {formatPrice(grandTotal, currency, locale)}
               </span>
             </div>
 

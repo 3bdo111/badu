@@ -165,7 +165,13 @@ export default async function OrderConfirmationPage({
             </tbody>
           </table>
 
-          {/* Total */}
+          {/* Shipping + total */}
+          {order.totalAmount > order.subtotalAmount && (
+            <div className={styles.totalRow}>
+              <span>{dict.checkout.shipping}</span>
+              <span>{formatPrice(order.totalAmount - order.subtotalAmount, order.currency, locale)}</span>
+            </div>
+          )}
           <div className={styles.totalRow}>
             <span>{dict.checkout.total}</span>
             <span className={styles.totalValue}>

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { serverOrderRepository, type OrderCustomerInfo, type OrderItemInput } from "@/lib/repositories/server-order-repository";
 import { verifyAdminSession } from "@/lib/auth/admin-auth";
+import { notifyOwnerOfNewOrder } from "@/lib/notifications/order-notification";
 
 // Server-side in-memory idempotency cache (60 seconds expiry)
 interface CachedOrderResponse {
@@ -167,6 +168,11 @@ export async function POST(request: Request) {
 
     const order = await serverOrderRepository.createOrder(cleanCustomer, cleanItems);
     const accessKey = crypto.randomBytes(16).toString("hex");
+
+    // Notify the store owner. Never blocks or fails the customer's order.
+    void notifyOwnerOfNewOrder(order).catch((err) => {
+      console.error("[order-notify] failed", err);
+    });
 
     idempotencyCache.set(payloadFingerprint, {
       orderNumber: order.orderNumber,
