@@ -5,18 +5,19 @@ import type { StorefrontSectionRecord } from "@/lib/repositories/server-storefro
 import { parseSectionBodyLines } from "@/lib/storefront/section-definitions";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
+import { Icon, iconFromEmoji, type IconName } from "@/components/ui/Icon";
 import styles from "./quick-trust-bar.module.css";
 
 interface QuickTrustBarProps {
   section?: StorefrontSectionRecord;
 }
 
-const DEFAULT_TRUST_ITEMS = [
-  { icon: "🧵", textAr: "قطن عضوي ثقيل 480GSM", textEn: "480GSM Organic Cotton Fleece" },
-  { icon: "🚚", textAr: "شحن سريع خلال 2-4 أيام", textEn: "Express 2-4 Day Delivery" },
-  { icon: "🔄", textAr: "استبدال وإرجاع مجاني 14 يومًا", textEn: "14-Day Free Returns & Exchange" },
-  { icon: "💵", textAr: "الدفع عند الاستلام متاح (COD)", textEn: "Cash on Delivery Available" },
-  { icon: "🔒", textAr: "ضمان الجودة والرضا التام", textEn: "100% Premium Quality Guarantee" },
+const DEFAULT_TRUST_ITEMS: Array<{ icon: IconName; textAr: string; textEn: string }> = [
+  { icon: "fabric", textAr: "قطن عضوي تقيل 480 جرام", textEn: "480GSM Organic Cotton Fleece" },
+  { icon: "truck", textAr: "الشحن في 2-4 أيام", textEn: "Express 2-4 Day Delivery" },
+  { icon: "return", textAr: "استبدال واسترجاع مجاني 14 يوم", textEn: "14-Day Free Returns & Exchange" },
+  { icon: "cash", textAr: "الدفع عند الاستلام متاح", textEn: "Cash on Delivery Available" },
+  { icon: "shield", textAr: "ضمان الجودة", textEn: "100% Premium Quality Guarantee" },
 ];
 
 export function QuickTrustBar({ section }: QuickTrustBarProps = {}) {
@@ -27,7 +28,10 @@ export function QuickTrustBar({ section }: QuickTrustBarProps = {}) {
   const cmsRows = parseSectionBodyLines(isAr ? section?.bodyAr : section?.bodyEn);
   const trustItems =
     cmsRows.length > 0
-      ? cmsRows.map((cells) => ({ icon: cells[0] || "•", text: cells[1] || "" }))
+      ? cmsRows.map((cells) => ({
+          icon: iconFromEmoji(cells[0]),
+          text: cells[1] || "",
+        }))
       : DEFAULT_TRUST_ITEMS.map((item) => ({
           icon: item.icon,
           text: isAr ? item.textAr : item.textEn,
@@ -44,7 +48,11 @@ export function QuickTrustBar({ section }: QuickTrustBarProps = {}) {
           <div className={styles.grid}>
             {trustItems.map((item, idx) => (
               <div key={`${item.text}-${idx}`} className={styles.item}>
-                <span className={styles.icon} aria-hidden="true">{item.icon}</span>
+                {item.icon && (
+                  <span className={styles.icon} aria-hidden="true">
+                    <Icon name={item.icon} />
+                  </span>
+                )}
                 <span>{item.text}</span>
               </div>
             ))}

@@ -55,7 +55,7 @@ export async function POST(request: Request) {
           error: "Invalid payload.",
           message: {
             en: "Customer details and items are required.",
-            ar: "بيانات العميل والعناصر مطلوبة.",
+            ar: "بيانات العميل والمنتجات مطلوبة.",
           },
         },
         { status: 400 }
@@ -79,7 +79,7 @@ export async function POST(request: Request) {
           error: "Missing required customer fields.",
           message: {
             en: "Please fill in all required customer fields.",
-            ar: "يرجى ملء جميع الحقول المطلوبة للعميل.",
+            ar: "لازم تكمّل كل بيانات العميل.",
           },
         },
         { status: 400 }
@@ -101,7 +101,7 @@ export async function POST(request: Request) {
           error: "Customer field exceeds max allowed length or invalid phone format.",
           message: {
             en: "Please check your entry lengths and phone number.",
-            ar: "يرجى التحقق من طول البيانات المدخلة ورقم الهاتف.",
+            ar: "راجع البيانات ورقم الموبايل تاني.",
           },
         },
         { status: 400 }
@@ -114,7 +114,7 @@ export async function POST(request: Request) {
           error: "Invalid email format.",
           message: {
             en: "Please enter a valid email address.",
-            ar: "يرجى إدخال بريد إلكتروني صحيح.",
+            ar: "اكتب إيميل صح.",
           },
         },
         { status: 400 }
@@ -202,7 +202,7 @@ export async function POST(request: Request) {
         error: "Order creation failed.",
         message: {
           en: errorMsg,
-          ar: "تعذر إتمام الطلب. يرجى المراجعة والمحاولة مرة أخرى.",
+          ar: "مش عارفين نكمل الطلب. راجع البيانات وجرّب تاني.",
         },
       },
       { status: 400 }

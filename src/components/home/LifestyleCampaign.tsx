@@ -22,13 +22,13 @@ export function LifestyleCampaign({ section }: LifestyleCampaignProps = {}) {
 
   const title =
     (isAr ? section?.titleAr : section?.titleEn) ||
-    (isAr ? "وُلِد من الصحراء" : "BORN OF THE DESERT");
+    (isAr ? "اتولد من الصحرا" : "BORN OF THE DESERT");
   const subtitle =
     (isAr ? section?.subtitleAr : section?.subtitleEn) ||
-    (isAr ? "بادو حوارٌ بين الأصالة والشارع." : "BADU is a conversation between heritage and the street.");
+    (isAr ? "بادو حكاية بين الأصالة والشارع." : "BADU is a conversation between heritage and the street.");
   const ctaLabel =
     (isAr ? section?.ctaLabelAr : section?.ctaLabelEn) ||
-    (isAr ? "تسوّق المجموعة" : "SHOP THE COLLECTION");
+    (isAr ? "شوف التشكيلة" : "SHOP THE COLLECTION");
   const ctaUrl = section?.ctaUrl || "/store";
   const imageUrl = section?.imageUrl || "/images/story.jpg";
 

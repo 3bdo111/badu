@@ -53,7 +53,7 @@
 }
 
 .stars {
-  color: #c8a77d;
+  color: var(--color-foreground);
   font-size: 1.25rem;
   letter-spacing: 0.1em;
 }
@@ -96,7 +96,7 @@
 }
 
 .ratingRow {
-  color: #c8a77d;
+  color: var(--color-foreground);
   font-size: 1.1rem;
   letter-spacing: 0.1em;
 }
@@ -105,8 +105,8 @@
   font-size: 0.75rem;
   font-weight: 600;
   padding: 0.2rem 0.6rem;
-  border-radius: var(--radius-full);
-  background-color: rgba(109, 127, 87, 0.15);
+  border-radius: 0;
+  background-color: transparent;
   color: #536440;
 }
 
@@ -188,4 +188,8 @@
 .trustItem span {
   font-size: 0.8rem;
   color: var(--color-foreground-secondary);
+}
+
+.trustIcon {
+  display: none;
 }

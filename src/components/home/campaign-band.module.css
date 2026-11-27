@@ -1,0 +1,121 @@
+.band {
+  background: var(--color-foreground);
+  color: var(--color-background);
+  padding-block: var(--space-8);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+.figure {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #141414;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center 20%;
+  transition: transform 900ms var(--ease-snap);
+}
+
+.figure:hover .image {
+  transform: scale(1.05);
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-block: var(--space-4);
+}
+
+.label {
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+:lang(ar) .label {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: var(--text-small);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--color-background);
+  margin: 0;
+}
+
+:lang(ar) .title {
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 700;
+}
+
+.body {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
+  max-width: 28rem;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.95rem 1.6rem;
+  margin-block-start: var(--space-2);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-foreground);
+  background: var(--color-background);
+  border: 1.5px solid var(--color-background);
+  transition: background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.cta:hover {
+  background: transparent;
+  color: var(--color-background);
+}
+
+:lang(ar) .cta {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.95rem;
+}
+
+@media (min-width: 64rem) {
+  .grid {
+    grid-template-columns: 1fr 1.15fr 1fr;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .copy {
+    padding-inline: var(--space-4);
+    text-align: start;
+  }
+}

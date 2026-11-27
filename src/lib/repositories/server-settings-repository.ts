@@ -9,10 +9,10 @@ import type {
 
 const DEFAULT_SETTINGS: SiteSettings = {
   brandName: "BADU",
-  defaultTitle: { en: "BADU — Desert Streetwear", ar: "بادو — ملابس الشارع الصحراوية" },
+  defaultTitle: { en: "BADU — Desert Streetwear", ar: "بادو — ستريت وير من الصحرا" },
   defaultDescription: {
     en: "Luxury streetwear inspired by the desert landscape.",
-    ar: "ملابس الشارع الفاخرة المستوحاة من سحر الصحراء.",
+    ar: "ستريت وير مستوحى من الصحرا والطريق.",
   },
   defaultLanguage: "en",
   supportedLanguages: ["en", "ar"],
@@ -26,7 +26,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
     enabled: true,
     text: {
       en: "LIMITED DROP — FREE EXPRESS SHIPPING ON ALL ORDERS",
-      ar: "إصدار محدود — شحن سريع مجاني لجميع الطلبات",
+      ar: "إصدار محدود — شحن سريع مجاني على كل الطلبات",
     },
   },
 };
@@ -52,7 +52,7 @@ const DEFAULT_NAVIGATION: NavigationItem[] = [
   },
   {
     id: "nav-story",
-    label: { en: "Story", ar: "القصة" },
+    label: { en: "Story", ar: "حكايتنا" },
     url: "/#story",
     sortOrder: 2,
     visible: true,
@@ -61,7 +61,7 @@ const DEFAULT_NAVIGATION: NavigationItem[] = [
   },
   {
     id: "nav-faq",
-    label: { en: "FAQ", ar: "الأسئلة الشائعة" },
+    label: { en: "FAQ", ar: "أسئلة" },
     url: "/#faq",
     sortOrder: 3,
     visible: true,
@@ -73,13 +73,13 @@ const DEFAULT_NAVIGATION: NavigationItem[] = [
 const DEFAULT_FOOTER_GROUPS: FooterGroup[] = [
   {
     id: "group-explore",
-    title: { en: "EXPLORE", ar: "استكشف" },
+    title: { en: "EXPLORE", ar: "اتفرج" },
     sortOrder: 0,
     visible: true,
     links: [
       { id: "link-store", groupId: "group-explore", label: { en: "Store", ar: "المتجر" }, url: "/store", sortOrder: 0, visible: true },
-      { id: "link-story", groupId: "group-explore", label: { en: "Our Story", ar: "قصتنا" }, url: "/#story", sortOrder: 1, visible: true },
-      { id: "link-artwork", groupId: "group-explore", label: { en: "Artwork Symbolism", ar: "رمزية العمل الفني" }, url: "/#artwork", sortOrder: 2, visible: true },
+      { id: "link-story", groupId: "group-explore", label: { en: "Our Story", ar: "حكايتنا" }, url: "/#story", sortOrder: 1, visible: true },
+      { id: "link-artwork", groupId: "group-explore", label: { en: "Artwork Symbolism", ar: "معنى التطريز" }, url: "/#artwork", sortOrder: 2, visible: true },
     ],
   },
   {
@@ -88,8 +88,8 @@ const DEFAULT_FOOTER_GROUPS: FooterGroup[] = [
     sortOrder: 1,
     visible: true,
     links: [
-      { id: "link-sizeguide", groupId: "group-customer", label: { en: "Size Guide", ar: "دليل المقاسات" }, url: "/#size-guide", sortOrder: 0, visible: true },
-      { id: "link-faq", groupId: "group-customer", label: { en: "FAQ & Support", ar: "الأسئلة الشائعة والدعم" }, url: "/#faq", sortOrder: 1, visible: true },
+      { id: "link-sizeguide", groupId: "group-customer", label: { en: "Size Guide", ar: "جدول المقاسات" }, url: "/#size-guide", sortOrder: 0, visible: true },
+      { id: "link-faq", groupId: "group-customer", label: { en: "FAQ & Support", ar: "أسئلة ومساعدة" }, url: "/#faq", sortOrder: 1, visible: true },
       { id: "link-shipping", groupId: "group-customer", label: { en: "Shipping & COD", ar: "الشحن والدفع عند الاستلام" }, url: "/#faq", sortOrder: 2, visible: true },
     ],
   },

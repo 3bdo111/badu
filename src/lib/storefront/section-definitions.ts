@@ -78,13 +78,13 @@ export const LANDING_SECTIONS: LandingSectionDefinition[] = [
     defaults: {
       ...emptyDefaults,
       titleEn: "MADE FOR THE JOURNEY",
-      titleAr: "صُنِعَ للرحلة",
+      titleAr: "اتعمل للرحلة",
       subtitleEn:
         "Desert inspired. Modern streetwear crafted with intention and heavyweight organic cotton.",
       subtitleAr:
-        "مستوحى من الصحراء. ملابس شريعية عصرية صُنعت بعناية من القطن العضوي الثقيل.",
+        "مستوحى من الصحرا. ستريت وير عصري معمول بعناية من قطن عضوي تقيل.",
       ctaLabelEn: "EXPLORE HOODIE",
-      ctaLabelAr: "استكشف الهودي",
+      ctaLabelAr: "شوف الهودي",
       ctaUrl: "#hoodie",
     },
     hasCta: true,
@@ -137,7 +137,7 @@ export const LANDING_SECTIONS: LandingSectionDefinition[] = [
     defaults: {
       ...emptyDefaults,
       titleEn: "THE COLLECTION",
-      titleAr: "المجموعة",
+      titleAr: "التشكيلة",
       subtitleEn: "Every piece, ready for the journey.",
       subtitleAr: "كل قطعة، جاهزة للرحلة.",
     },
@@ -181,11 +181,11 @@ export const LANDING_SECTIONS: LandingSectionDefinition[] = [
     defaults: {
       ...emptyDefaults,
       titleEn: "BORN OF THE DESERT",
-      titleAr: "وُلِد من الصحراء",
+      titleAr: "اتولد من الصحرا",
       subtitleEn: "BADU is a conversation between heritage and the street.",
-      subtitleAr: "بادو حوارٌ بين الأصالة والشارع.",
+      subtitleAr: "بادو حكاية بين الأصالة والشارع.",
       ctaLabelEn: "SHOP THE COLLECTION",
-      ctaLabelAr: "تسوّق المجموعة",
+      ctaLabelAr: "شوف التشكيلة",
       ctaUrl: "/store",
       imageUrl: "/images/story.jpg",
     },

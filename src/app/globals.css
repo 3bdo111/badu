@@ -1,37 +1,47 @@
 /* ============================================================
    BADU — Design tokens & global styles
-   Modern desert-inspired streetwear.
+   Monochrome editorial streetwear: white ground, black type,
+   heavy uppercase grotesque display, square geometry.
    All visual decisions flow from the tokens below.
    ============================================================ */
 
 :root {
-  /* --- Brand colors (warm desert neutrals) --- */
-  --color-background: #f5f0e8;
-  --color-foreground: #2b2119;
-  --color-primary: #c8a77d;
-  --color-secondary: #e8ddcb;
-  --color-muted: #9a7650;
-  --color-accent: #9a7650;
-  --color-foreground-secondary: #514031;
-  --color-border: color-mix(in srgb, var(--color-foreground) 14%, transparent);
+  /* --- Brand colors (monochrome) --- */
+  --color-background: #ffffff;
+  --color-foreground: #0b0b0b;
+  --color-primary: #0b0b0b;
+  --color-secondary: #f2f2f2;
+  --color-surface: #f4f4f4;
+  --color-muted: #767676;
+  --color-accent: #0b0b0b;
+  --color-accent-subtle: #f2f2f2;
+  --color-accent-foreground: #0b0b0b;
+  --color-foreground-secondary: #3d3d3d;
+  --color-border: #e3e3e3;
 
   /* --- Typography --- */
-  --font-display: var(--font-fraunces), var(--font-plex-arabic), Georgia, serif;
-  --font-body: var(--font-inter), var(--font-plex-arabic), system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-alexandria), "Helvetica Neue",
+    Helvetica, Arial, sans-serif;
+  --font-body: var(--font-inter), var(--font-alexandria), system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  --text-display: clamp(2.75rem, 7.5vw, 6rem);
-  --text-h1: clamp(2.25rem, 5vw, 3.75rem);
-  --text-h2: clamp(1.75rem, 3.5vw, 2.5rem);
-  --text-h3: clamp(1.25rem, 2vw, 1.5rem);
-  --text-body: clamp(1.05rem, 0.5vw + 0.95rem, 1.25rem);
-  --text-small: clamp(0.925rem, 0.3vw + 0.875rem, 1rem);
-  --text-label: clamp(0.825rem, 0.2vw + 0.775rem, 0.9rem);
+  --text-display: clamp(2.6rem, 6.4vw, 5.5rem);
+  --text-h1: clamp(2rem, 4vw, 3.25rem);
+  --text-h2: clamp(1.5rem, 2.6vw, 2.125rem);
+  --text-h3: clamp(1.05rem, 1.2vw, 1.25rem);
+  --text-body: 1rem;
+  --text-base: 1rem;
+  --text-small: 0.875rem;
+  --text-label: 0.7rem;
+  --text-xs: 0.72rem;
+  --text-2xl: 1.5rem;
 
-  --leading-display: 1.05;
-  --leading-heading: 1.2;
-  --leading-body: 1.75;
+  --leading-display: 0.92;
+  --leading-heading: 1.05;
+  --leading-body: 1.65;
 
-  --tracking-label: 0.22em;
+  --tracking-display: -0.03em;
+  --tracking-label: 0.18em;
 
   /* --- Spacing scale --- */
   --space-1: 0.25rem;
@@ -44,28 +54,31 @@
   --space-8: 4rem;
   --space-9: 6rem;
   --space-10: 8rem;
+  --space-11: 7rem;
+  --space-12: 9rem;
 
-  /* --- Radii (restrained) --- */
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 8px;
+  /* --- Radii (square, editorial) --- */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
   --radius-full: 999px;
 
-  /* --- Shadows (soft, warm) --- */
-  --shadow-sm: 0 1px 2px rgb(43 33 25 / 0.06);
-  --shadow-md: 0 4px 16px rgb(43 33 25 / 0.08);
-  --shadow-lg: 0 12px 40px rgb(43 33 25 / 0.12);
+  /* --- Shadows (flat; separation comes from hairlines) --- */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
 
-  /* --- Transitions (slow, subtle, editorial) --- */
-  --duration-fast: 200ms;
-  --duration-base: 400ms;
-  --duration-slow: 700ms;
+  /* --- Transitions --- */
+  --duration-fast: 160ms;
+  --duration-base: 260ms;
+  --duration-normal: 400ms;
+  --duration-slow: 600ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* --- Layout --- */
-  --container: 75rem;
-  --container-narrow: 45rem;
-  --header-height: 4.5rem;
+  --container: 82rem;
+  --container-narrow: 42rem;
+  --header-height: 4.25rem;
 
   /* --- Breakpoint reference (use in media queries) ---
      --bp-sm: 40rem   (640px)
@@ -132,17 +145,17 @@ ol[role="list"] {
   padding: 0;
 }
 
-/* --- Focus (visible, on-brand) --- */
+/* --- Focus (visible) --- */
 :focus-visible {
-  outline: 2px solid var(--color-muted);
+  outline: 2px solid var(--color-foreground);
   outline-offset: 3px;
   border-radius: var(--radius-sm);
 }
 
 /* --- Selection --- */
 ::selection {
-  background: var(--color-primary);
-  color: var(--color-foreground);
+  background: var(--color-foreground);
+  color: var(--color-background);
 }
 
 /* --- Typography primitives --- */
@@ -151,8 +164,10 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 800;
   line-height: var(--leading-heading);
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
   text-wrap: balance;
 }
 
@@ -179,17 +194,30 @@ section[id] {
 
 /* --- Shared utility classes --- */
 .label {
+  font-family: var(--font-body);
   font-size: var(--text-label);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
+  color: var(--color-muted);
 }
 
 /* Arabic script: uppercase tracking breaks letterforms — neutralize it */
 :lang(ar) .label,
 :lang(ar) [class*="label"] {
   letter-spacing: 0;
-  font-weight: 500;
+  font-weight: 600;
+}
+
+/* Arabic: display type stays sentence-case and readable */
+:lang(ar) h1,
+:lang(ar) h2,
+:lang(ar) h3,
+:lang(ar) h4 {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 700;
+  line-height: 1.25;
 }
 
 /* Arabic reads better with slightly looser line-height */
@@ -218,7 +246,7 @@ section[id] {
 @keyframes fade-rise {
   from {
     opacity: 0;
-    transform: translateY(1rem);
+    transform: translateY(0.75rem);
   }
   to {
     opacity: 1;
@@ -240,5 +268,87 @@ section[id] {
   }
   .reveal {
     animation: none !important;
+  }
+}
+
+/* ============================================================
+   Motion — snappy streetwear feel
+   Short durations, hard easing, small travel. Everything here is
+   opt-in per component and disabled under prefers-reduced-motion.
+   ============================================================ */
+
+:root {
+  --ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --motion-fast: 180ms;
+  --motion-base: 320ms;
+  --motion-slow: 620ms;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes line-up {
+  from {
+    opacity: 0;
+    transform: translateY(105%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes img-in {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slow-zoom {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.09);
+  }
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-33.333%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="anim"],
+  .reveal {
+    animation: none !important;
+    transition: none !important;
   }
 }

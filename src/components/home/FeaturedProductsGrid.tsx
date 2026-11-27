@@ -47,14 +47,14 @@ export function FeaturedProductsGrid({ products, section }: FeaturedProductsGrid
           <div className={styles.headerRow}>
             <div>
               <p className="label">
-                {isAr ? "التشكيلة الكاملة" : "FULL COLLECTION"}
+                {isAr ? "دروب ٠١" : "DROP 01"}
               </p>
               <Heading level={2} id="collection-grid-heading" className={styles.heading}>
                 {headingText}
               </Heading>
             </div>
             <Link href="/store" className={styles.viewAllLink}>
-              {isAr ? "عرض الكل ←" : "VIEW ALL →"}
+              {isAr ? "شوف الكل ←" : "VIEW ALL →"}
             </Link>
           </div>
         </Reveal>

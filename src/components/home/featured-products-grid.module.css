@@ -8,6 +8,8 @@
   justify-content: space-between;
   gap: var(--space-4);
   margin-block-end: var(--space-6);
+  padding-block-end: var(--space-4);
+  border-block-end: 1px solid var(--color-border);
 }
 
 .heading {
@@ -16,30 +18,31 @@
 
 .viewAllLink {
   font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-muted);
+  font-weight: 700;
+  color: var(--color-foreground);
   text-decoration: none;
-  border-block-end: 1px solid var(--color-border);
-  padding-block-end: 2px;
-  transition: color 160ms ease, border-color 160ms ease;
   white-space: nowrap;
+  border-block-end: 1px solid var(--color-foreground);
+  padding-block-end: 2px;
+  transition: opacity 160ms ease;
 }
 
 .viewAllLink:hover {
-  color: var(--color-foreground);
-  border-color: var(--color-foreground);
+  opacity: 0.55;
 }
 
 :lang(ar) .viewAllLink {
   letter-spacing: 0;
+  text-transform: none;
   font-size: var(--text-small);
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-4);
+  gap: var(--space-6);
 }
 
 .card {
@@ -56,7 +59,7 @@
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: var(--radius-md);
-  background-color: var(--color-secondary);
+  background-color: var(--color-surface);
 }
 
 /* Refined hover: the photography gently scales, nothing else moves. */
@@ -66,7 +69,7 @@
 
 .card:hover .frame > *,
 .card:focus-visible .frame > * {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
 .meta {
@@ -77,9 +80,17 @@
 
 .name {
   font-family: var(--font-display);
-  font-size: var(--text-body);
-  font-weight: 600;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--color-foreground);
+}
+
+:lang(ar) .name {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 1rem;
 }
 
 @media (min-width: 48rem) {
@@ -97,4 +108,25 @@
   .grid {
     gap: var(--space-6);
   }
+}
+
+.card {
+  animation: rise-in 620ms var(--ease-snap) both;
+  transition: transform var(--motion-base) var(--ease-snap);
+}
+
+.card:nth-child(2) {
+  animation-delay: 80ms;
+}
+
+.card:nth-child(3) {
+  animation-delay: 160ms;
+}
+
+.card:nth-child(4) {
+  animation-delay: 240ms;
+}
+
+.card:hover {
+  transform: translateY(-6px);
 }

@@ -13,6 +13,7 @@ import type { Product } from "@/lib/types/product";
 import { ProductImage } from "@/components/product/ProductImage";
 import { ProductPriceDisplay } from "@/components/product/ProductPriceDisplay";
 import type { StorefrontSectionRecord } from "@/lib/repositories/server-storefront-repository";
+import { Icon } from "@/components/ui/Icon";
 import styles from "./final-cta.module.css";
 
 interface FinalCtaProps {
@@ -64,7 +65,7 @@ export function FinalCta({ featuredProduct, section }: FinalCtaProps) {
                   </span>
                   <ProductPriceDisplay product={product} size="md" variant="inverse" />
                   <span className={styles.snippetBadge}>
-                    💵 {isAr ? "الدفع عند الاستلام متاح" : "Cash on Delivery Supported"}
+                    {isAr ? "الدفع عند الاستلام متاح" : "Cash on Delivery Supported"}
                   </span>
                 </div>
               </div>
@@ -76,20 +77,20 @@ export function FinalCta({ featuredProduct, section }: FinalCtaProps) {
 
             <div className={styles.trustBadgesGrid}>
               <div className={styles.trustBadgeItem}>
-                <span className={styles.badgeIcon}>🔒</span>
+                <span className={styles.badgeIcon}><Icon name="shield" /></span>
                 <span>{isAr ? "دفع آمن 100%" : "100% Secure Checkout"}</span>
               </div>
               <div className={styles.trustBadgeItem}>
-                <span className={styles.badgeIcon}>💵</span>
+                <span className={styles.badgeIcon}><Icon name="cash" /></span>
                 <span>{isAr ? "الدفع عند الاستلام" : "Cash on Delivery"}</span>
               </div>
               <div className={styles.trustBadgeItem}>
-                <span className={styles.badgeIcon}>🚚</span>
-                <span>{isAr ? "شحن 2-4 أيام عمل" : "Express 2-4 Day Delivery"}</span>
+                <span className={styles.badgeIcon}><Icon name="truck" /></span>
+                <span>{isAr ? "الشحن في 2-4 أيام عمل" : "Express 2-4 Day Delivery"}</span>
               </div>
               <div className={styles.trustBadgeItem}>
-                <span className={styles.badgeIcon}>🔄</span>
-                <span>{isAr ? "إرجاع مجاني خلال 14 يوم" : "14-Day Free Returns"}</span>
+                <span className={styles.badgeIcon}><Icon name="return" /></span>
+                <span>{isAr ? "استرجاع مجاني خلال 14 يوم" : "14-Day Free Returns"}</span>
               </div>
             </div>
           </div>

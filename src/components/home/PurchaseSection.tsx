@@ -15,6 +15,7 @@ import { Accordion } from "@/components/ui/Accordion";
 import { ProductImage } from "@/components/product/ProductImage";
 import { SizeSelector } from "@/components/product/SizeSelector";
 import { ProductPriceDisplay } from "@/components/product/ProductPriceDisplay";
+import { Icon } from "@/components/ui/Icon";
 import { MobileStickyBuyBar } from "./MobileStickyBuyBar";
 import styles from "./purchase-section.module.css";
 
@@ -139,7 +140,7 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
         <div className={styles.grid}>
           <Reveal className={styles.visual}>
             <div className={styles.gallery}>
-              <div className={styles.frame}>
+              <div className={styles.frame} key={activeImage.src}>
                 <ProductImage
                   product={product}
                   image={activeImage}
@@ -271,7 +272,7 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
                     {t("product.sizeLabel")}
                   </span>
                   <a href="#size" className={styles.sizeGuideLink}>
-                    📏 {locale === "ar" ? "جدول المقاسات" : "Size Guide"}
+                    {locale === "ar" ? "جدول المقاسات" : "Size Guide"}
                   </a>
                 </div>
                 <SizeSelector
@@ -307,24 +308,24 @@ export function PurchaseSection({ section, featuredProduct }: PurchaseSectionPro
             <Reveal delay={280}>
               <div className={styles.trustBadgesGrid}>
                 <div className={styles.trustBadgeItem}>
-                  <span className={styles.trustIcon}>💵</span>
+                  <span className={styles.trustIcon}><Icon name="cash" /></span>
                   <div className={styles.trustText}>
                     <strong>{locale === "ar" ? "الدفع عند الاستلام" : "Cash on Delivery"}</strong>
-                    <span>{locale === "ar" ? "ادفع عند استلام طلبك" : "Pay when your order arrives"}</span>
+                    <span>{locale === "ar" ? "بتدفع لما يوصلك" : "Pay when your order arrives"}</span>
                   </div>
                 </div>
                 <div className={styles.trustBadgeItem}>
-                  <span className={styles.trustIcon}>🚚</span>
+                  <span className={styles.trustIcon}><Icon name="truck" /></span>
                   <div className={styles.trustText}>
                     <strong>{locale === "ar" ? "شحن سريع" : "Express Delivery"}</strong>
-                    <span>{locale === "ar" ? "توصيل خلال 2-4 أيام" : "Delivered in 2-4 business days"}</span>
+                    <span>{locale === "ar" ? "بيوصلك في 2-4 أيام" : "Delivered in 2-4 business days"}</span>
                   </div>
                 </div>
                 <div className={styles.trustBadgeItem}>
-                  <span className={styles.trustIcon}>🔄</span>
+                  <span className={styles.trustIcon}><Icon name="return" /></span>
                   <div className={styles.trustText}>
-                    <strong>{locale === "ar" ? "إرجاع واستبدال" : "Easy Exchange"}</strong>
-                    <span>{locale === "ar" ? "سياسة إرجاع خلال 14 يوم" : "14-day hassle-free return policy"}</span>
+                    <strong>{locale === "ar" ? "استبدال واسترجاع" : "Easy Exchange"}</strong>
+                    <span>{locale === "ar" ? "خلال 14 يوم من الاستلام" : "14-day hassle-free return policy"}</span>
                   </div>
                 </div>
               </div>

@@ -91,12 +91,12 @@
 }
 
 .inputError {
-  border-color: #a4574a;
+  border-color: #b3b3b3;
 }
 
 .errorText {
   font-size: var(--text-xs);
-  color: #a4574a;
+  color: #b3b3b3;
 }
 
 .paymentBox {
@@ -128,8 +128,8 @@
 }
 
 .summaryCard {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-foreground);
   border-radius: var(--radius-md);
   padding: var(--space-6);
   display: flex;
@@ -224,7 +224,7 @@
   background-color: rgba(164, 87, 74, 0.1);
   border: 1px solid rgba(164, 87, 74, 0.3);
   border-radius: var(--radius-sm);
-  color: #a4574a;
+  color: #b3b3b3;
   font-size: var(--text-small);
 }
 
@@ -241,5 +241,12 @@
 @media (max-width: 36rem) {
   .fieldGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 64rem) {
+  .summaryCard {
+    position: sticky;
+    inset-block-start: calc(var(--header-height) + var(--space-6));
   }
 }

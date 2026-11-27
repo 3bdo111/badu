@@ -1,9 +1,9 @@
 .reveal {
   opacity: 0;
-  transform: translateY(1.5rem);
+  transform: translateY(2rem);
   transition:
-    opacity var(--duration-slow) var(--ease-out),
-    transform var(--duration-slow) var(--ease-out);
+    opacity var(--motion-slow) var(--ease-snap),
+    transform var(--motion-slow) var(--ease-snap);
   will-change: opacity, transform;
 }
 

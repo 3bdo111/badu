@@ -1,14 +1,15 @@
 import { serverStorefrontRepository, type StorefrontSectionRecord } from "@/lib/repositories/server-storefront-repository";
 import { serverProductRepository } from "@/lib/repositories/server-product-repository";
 import type { Product } from "@/lib/types/product";
-import { Hero } from "@/components/home/Hero";
+import { HookHero } from "@/components/home/HookHero";
+import { Marquee } from "@/components/home/Marquee";
+import { CampaignBand } from "@/components/home/CampaignBand";
 import { QuickTrustBar } from "@/components/home/QuickTrustBar";
 import { ProductIntro } from "@/components/home/ProductIntro";
 import { ProductShowcase } from "@/components/home/ProductShowcase";
 import { FeaturedProductsGrid } from "@/components/home/FeaturedProductsGrid";
 import { BrandStory } from "@/components/home/BrandStory";
 import { ArtworkStory } from "@/components/home/ArtworkStory";
-import { LifestyleCampaign } from "@/components/home/LifestyleCampaign";
 import { PurchaseSection } from "@/components/home/PurchaseSection";
 import { CraftFeatures } from "@/components/home/CraftFeatures";
 import { SizeGuide } from "@/components/home/SizeGuide";
@@ -58,7 +59,12 @@ export default async function Home() {
   const renderSection = (sec: StorefrontSectionRecord) => {
     switch (sec.sectionKey) {
       case "hero":
-        return <Hero key="hero" section={sec} featuredProduct={featuredProduct} />;
+        return (
+          <div key="hero">
+            <HookHero featuredProduct={featuredProduct} />
+            <Marquee />
+          </div>
+        );
       case "trust_bar":
         return <QuickTrustBar key="trust_bar" section={sec} />;
       case "product_intro":
@@ -72,7 +78,7 @@ export default async function Home() {
       case "artwork":
         return <ArtworkStory key="artwork" section={sec} />;
       case "campaign":
-        return <LifestyleCampaign key="campaign" section={sec} />;
+        return <CampaignBand key="campaign" />;
       case "featured_product":
         return (
           <PurchaseSection
@@ -101,7 +107,8 @@ export default async function Home() {
   if (publicSections.length === 0) {
     return (
       <>
-        <Hero featuredProduct={featuredProduct} />
+        <HookHero featuredProduct={featuredProduct} />
+        <Marquee />
         <QuickTrustBar />
         <ProductIntro />
         <ProductShowcase />
@@ -117,5 +124,28 @@ export default async function Home() {
     );
   }
 
-  return <>{publicSections.map(renderSection)}</>;
+  // Editorial running order. The CMS still owns each section's content and
+  // visibility; the sequence below is the designed narrative.
+  const ORDER = [
+    "hero",
+    "trust_bar",
+    "product_showcase",
+    "featured_product",
+    "product_grid",
+    "campaign",
+    "story",
+    "features",
+    "artwork",
+    "size_guide",
+    "reviews",
+    "faq",
+    "final_cta",
+  ];
+  const ordered = [...publicSections].sort((a, b) => {
+    const ai = ORDER.indexOf(a.sectionKey);
+    const bi = ORDER.indexOf(b.sectionKey);
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+
+  return <>{ordered.map(renderSection)}</>;
 }

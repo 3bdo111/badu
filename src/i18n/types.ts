@@ -103,6 +103,23 @@ export interface Dictionary {
     secondaryCta: string;
     index: string;
   };
+  hook: {
+    eyebrow: string;
+    line1: string;
+    line2: string;
+    line3: string;
+    sub: string;
+    primaryCta: string;
+    secondaryCta: string;
+    priceLabel: string;
+    caption: string;
+    scroll: string;
+    marquee: string;
+    campaignLabel: string;
+    campaignTitle: string;
+    campaignBody: string;
+    campaignCta: string;
+  };
   product: {
     colorLabel: string;
     sizeLabel: string;

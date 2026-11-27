@@ -1,8 +1,61 @@
 .footer {
   margin-block-start: auto;
-  background-color: var(--color-foreground);
-  color: var(--color-background);
-  padding-block: var(--space-8) var(--space-6);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  border-block-start: 1px solid var(--color-border);
+  padding-block: var(--space-7) var(--space-5);
+}
+
+.wordmarkBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-block-end: var(--space-6);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(4.5rem, 19vw, 15rem);
+  line-height: 0.78;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  margin: 0;
+  max-width: none;
+}
+
+.wordmarkMeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.origin {
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+:lang(ar) .origin {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.columnTitle {
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-block-end: var(--space-3);
+}
+
+:lang(ar) .columnTitle {
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .top {
@@ -10,53 +63,60 @@
   flex-direction: column;
   gap: var(--space-7);
   padding-block-end: var(--space-7);
-  border-block-end: 1px solid color-mix(in srgb, var(--color-background) 18%, transparent);
+  border-block-end: 1px solid var(--color-border);
 }
 
 .brand {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 .tagline {
   font-family: var(--font-display);
-  font-size: var(--text-h3);
-  letter-spacing: 0.06em;
-  color: var(--color-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
   max-width: none;
+}
+
+:lang(ar) .tagline {
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .navList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .navLink {
-  font-size: var(--text-small);
+  font-size: 0.8rem;
   font-weight: 500;
-  color: var(--color-background);
+  letter-spacing: 0.06em;
+  color: var(--color-foreground-secondary);
   text-decoration: none;
   transition: color var(--duration-base) var(--ease-out);
 }
 
 .navLink:hover {
-  color: var(--color-primary);
+  color: var(--color-foreground);
 }
 
 .socialLabel {
   font-size: var(--text-label);
-  font-weight: 600;
-  letter-spacing: var(--tracking-label);
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-background) 60%, transparent);
-  margin-block-end: var(--space-3);
+  color: var(--color-muted);
+  margin-block-end: var(--space-2);
 }
 
 :lang(ar) .socialLabel {
   letter-spacing: 0;
-  font-weight: 500;
 }
 
 .socialList {
@@ -66,23 +126,42 @@
 
 .socialPlaceholder {
   font-size: var(--text-small);
-  color: color-mix(in srgb, var(--color-background) 45%, transparent);
-  border-block-end: 1px dashed color-mix(in srgb, var(--color-background) 30%, transparent);
-  padding-block-end: 2px;
+  color: var(--color-muted);
 }
 
 .bottom {
   display: flex;
-  padding-block-start: var(--space-6);
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-block-start: var(--space-5);
 }
 
 .legal {
   font-size: var(--text-label);
-  letter-spacing: 0.06em;
-  color: color-mix(in srgb, var(--color-background) 60%, transparent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+:lang(ar) .legal {
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 @media (min-width: 64rem) {
+  .wordmarkBlock {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+
+  .wordmarkMeta {
+    align-items: flex-end;
+    padding-block-end: var(--space-4);
+  }
+
   .top {
     flex-direction: row;
     align-items: flex-start;

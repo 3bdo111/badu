@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = locale === "ar" ? "كتالوج متجر بادو — BADU Store" : "The Collection — BADU Store";
   const description =
     locale === "ar"
-      ? "اكتشف تشكيلة ملابس الشارع من بادو. هودي قطن عضوي 480GSM بقصة واسعة وتطريز عربي فاخر عالي الكثافة."
+      ? "شوف تشكيلة ستريت وير من بادو. هودي قطن عضوي 480 جرام بقصة واسعة وتطريز عربي نضيف."
       : "Explore BADU desert-inspired streetwear collection. Heavyweight 480GSM organic cotton hoodies with high-density embroidery.";
 
   return {
@@ -110,7 +110,7 @@ export default async function StorePage() {
       <div className={styles.page}>
         <Container>
           <div className={styles.header}>
-            <p className="label">{dict.cart.label}</p>
+            <p className="label">{dict.nav.store}</p>
             <h1 className={styles.title}>{dict.store.title}</h1>
             <p className={styles.subtitle}>{dict.store.subtitle}</p>
           </div>

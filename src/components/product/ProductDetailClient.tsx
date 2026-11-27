@@ -8,6 +8,9 @@ import { productService } from "@/lib/services/product-service";
 import type { Product } from "@/lib/types/product";
 import { productName } from "@/lib/types/product";
 import { ProductShowcase } from "@/components/home/ProductShowcase";
+import { CraftFeatures } from "@/components/home/CraftFeatures";
+import { SizeGuide } from "@/components/home/SizeGuide";
+import { Faq } from "@/components/home/Faq";
 import { PurchaseSection } from "@/components/home/PurchaseSection";
 import { Container } from "@/components/ui/Container";
 
@@ -57,7 +60,7 @@ export function ProductDetailClient({
             </h1>
             <p style={{ color: "var(--color-muted)", marginBottom: "2rem" }}>
               {locale === "ar"
-                ? "قد يكون تم إخفاء هذا المنتج أو إزالته من المتجر."
+                ? "يمكن المنتج ده اتشال أو اتخفي من المتجر."
                 : "This product may have been hidden or removed from the storefront."}
             </p>
             <Link
@@ -82,9 +85,9 @@ export function ProductDetailClient({
   }
 
   return (
-    <div style={{ paddingTop: "2rem", paddingBottom: "4rem" }}>
+    <div style={{ paddingTop: "1.25rem" }}>
       <Container>
-        <nav aria-label="Breadcrumb" style={{ marginBottom: "1.5rem" }}>
+        <nav aria-label="Breadcrumb" style={{ marginBottom: "0.5rem" }}>
           <p className="label" style={{ marginBottom: 0 }}>
             <Link href="/" style={{ textDecoration: "none", color: "var(--color-muted)" }}>
               ← {t("nav.home")}
@@ -94,8 +97,12 @@ export function ProductDetailClient({
           </p>
         </nav>
       </Container>
-      <ProductShowcase product={product} />
+      {/* Buy first: the gallery + purchase panel is the product hero. */}
       <PurchaseSection featuredProduct={product} />
+      <ProductShowcase product={product} />
+      <CraftFeatures />
+      <SizeGuide />
+      <Faq />
     </div>
   );
 }

@@ -23,7 +23,7 @@ export function CheckoutForm() {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
-  const [country, setCountry] = useState("United Arab Emirates");
+  const [country, setCountry] = useState("Egypt");
   const [notes, setNotes] = useState("");
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -91,11 +91,11 @@ export function CheckoutForm() {
 
   const validateForm = () => {
     const errs: Record<string, string> = {};
-    if (!name.trim()) errs.name = isAr ? "الاسم الكامل مطلوب." : "Full name is required.";
-    if (!phone.trim()) errs.phone = isAr ? "رقم الهاتف مطلوب." : "Phone number is required.";
-    if (!address.trim()) errs.address = isAr ? "عنوان التوصيل مطلوب." : "Delivery address is required.";
-    if (!city.trim()) errs.city = isAr ? "المدينة مطلوبة." : "City is required.";
-    if (!country.trim()) errs.country = isAr ? "الدولة مطلوبة." : "Country is required.";
+    if (!name.trim()) errs.name = isAr ? "اكتب اسمك بالكامل." : "Full name is required.";
+    if (!phone.trim()) errs.phone = isAr ? "اكتب رقم الموبايل." : "Phone number is required.";
+    if (!address.trim()) errs.address = isAr ? "اكتب العنوان بالتفصيل." : "Delivery address is required.";
+    if (!city.trim()) errs.city = isAr ? "اكتب المدينة." : "City is required.";
+    if (!country.trim()) errs.country = isAr ? "اكتب الدولة." : "Country is required.";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -137,7 +137,7 @@ export function CheckoutForm() {
 
       if (!res.ok || !data.success) {
         setServerError(
-          data.message?.[locale] || data.message?.en || (isAr ? "تعذر إتمام الطلب." : "Order creation failed.")
+          data.message?.[locale] || data.message?.en || (isAr ? "مش عارفين نكمل الطلب." : "Order creation failed.")
         );
         return { ok: false };
       }
@@ -145,7 +145,7 @@ export function CheckoutForm() {
       return { ok: true, orderNumber: String(data.orderNumber) };
     } catch {
       setServerError(
-        isAr ? "حدث خطأ في الاتصال بالخادم. يرجى المحاولة مرة أخرى." : "Connection error. Please try again."
+        isAr ? "في مشكلة في الاتصال. جرّب تاني." : "Connection error. Please try again."
       );
       return { ok: false };
     }
@@ -242,7 +242,7 @@ export function CheckoutForm() {
     <div className={styles.page}>
       <Container>
         <div className={styles.titleBlock}>
-          <p className="label">{t("cart.label")}</p>
+          <p className="label">{locale === "ar" ? "طلب آمن" : "SECURE ORDER"}</p>
           <Heading level={1} className={styles.heading}>
             {t("checkout.title")}
           </Heading>
@@ -288,7 +288,7 @@ export function CheckoutForm() {
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+971 50 123 4567"
+                    placeholder="+20 100 123 4567"
                     aria-invalid={Boolean(errors.phone)}
                     aria-describedby={errors.phone ? "err-phone" : undefined}
                     className={[styles.input, errors.phone ? styles.inputError : ""].join(" ")}
@@ -452,7 +452,7 @@ export function CheckoutForm() {
                   disabled={submitting}
                   className={styles.whatsappBtn}
                 >
-                  {submitting ? t("checkout.submitting") : `🟢 ${t("checkout.whatsappOrder")}`}
+                  {submitting ? t("checkout.submitting") : t("checkout.whatsappOrder")}
                 </button>
                 <p className={styles.whatsappNote}>{t("checkout.whatsappNote")}</p>
               </div>
