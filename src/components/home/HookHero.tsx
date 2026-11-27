@@ -12,6 +12,8 @@ import styles from "./hook-hero.module.css";
 
 interface HookHeroProps {
   featuredProduct?: Product;
+  /** Cheapest visible product price, used for the "from" line. */
+  fromPrice?: number;
 }
 
 /**
@@ -19,7 +21,7 @@ interface HookHeroProps {
  * campaign portrait on the right. Three short lines carry the hook; the
  * product price and the two entry actions sit underneath.
  */
-export function HookHero({ featuredProduct }: HookHeroProps) {
+export function HookHero({ featuredProduct, fromPrice }: HookHeroProps) {
   const { t, locale } = useI18n();
   const isAr = locale === "ar";
   // The garment drifts with the page: a small lift, a fraction of a degree
@@ -27,9 +29,12 @@ export function HookHero({ featuredProduct }: HookHeroProps) {
   const heroImageRef = useRef<HTMLDivElement>(null);
   useScrollDrift(heroImageRef, { travel: 30, tilt: 1.1, zoom: 0.05 });
 
-  const price = featuredProduct
-    ? formatPrice(featuredProduct.price, featuredProduct.currency, locale)
-    : null;
+  const priceValue =
+    typeof fromPrice === "number" ? fromPrice : featuredProduct?.price;
+  const price =
+    typeof priceValue === "number" && featuredProduct
+      ? formatPrice(priceValue, featuredProduct.currency, locale)
+      : null;
 
   return (
     <section className={styles.hero} aria-labelledby="hook-title">
