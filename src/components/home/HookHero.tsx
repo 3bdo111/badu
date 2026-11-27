@@ -29,6 +29,12 @@ export function HookHero({ featuredProduct, fromPrice }: HookHeroProps) {
   const heroImageRef = useRef<HTMLDivElement>(null);
   useScrollDrift(heroImageRef, { travel: 30, tilt: 1.1, zoom: 0.05 });
 
+  // The craft section lives on the product page now, so the secondary CTA has
+  // to cross pages: on the home page the "#details" anchor does not exist.
+  const craftHref = featuredProduct
+    ? `/products/${featuredProduct.slug}#details`
+    : "/store";
+
   const priceValue =
     typeof fromPrice === "number" ? fromPrice : featuredProduct?.price;
   const price =
@@ -55,7 +61,7 @@ export function HookHero({ featuredProduct, fromPrice }: HookHeroProps) {
               <Link href="/store" className={styles.primaryCta}>
                 {t("hook.primaryCta")}
               </Link>
-              <Link href="/#details" className={styles.secondaryCta}>
+              <Link href={craftHref} className={styles.secondaryCta}>
                 {t("hook.secondaryCta")}
               </Link>
             </div>
