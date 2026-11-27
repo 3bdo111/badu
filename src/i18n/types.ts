@@ -80,6 +80,8 @@ export interface Dictionary {
     placeOrder: string;
     submitting: string;
     orderSummary: string;
+    subtotal: string;
+    shipping: string;
     total: string;
     confirmationTitle: string;
     confirmationMsg: string;

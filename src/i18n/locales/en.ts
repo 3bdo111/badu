@@ -55,6 +55,8 @@ const en: Dictionary = {
     placeOrder: "PLACE ORDER",
     submitting: "PROCESSING ORDER...",
     orderSummary: "ORDER SUMMARY",
+    subtotal: "SUBTOTAL",
+    shipping: "SHIPPING",
     total: "TOTAL",
     confirmationTitle: "ORDER CONFIRMED",
     confirmationMsg: "Your order has been received. Payment will be collected upon delivery.",

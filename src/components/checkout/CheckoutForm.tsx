@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useCart } from "@/components/cart/CartProvider";
 import { formatPrice } from "@/lib/format";
+import { calculateShipping } from "@/lib/store/shipping";
+import { track } from "@/lib/analytics/track";
 import { productRepository } from "@/lib/services/product-service";
 import { productName } from "@/lib/types/product";
 import { Container } from "@/components/ui/Container";
@@ -38,6 +40,15 @@ export function CheckoutForm() {
     (items.length > 0 &&
       productRepository.getProductById(items[0].productId)?.currency) ||
     "USD";
+
+  const shipping = calculateShipping(subtotal, currency);
+  const grandTotal = subtotal + shipping;
+
+  useEffect(() => {
+    if (items.length === 0) return;
+    track("InitiateCheckout", { value: grandTotal, currency, num_items: items.length });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Load the store's WhatsApp number (public storefront settings)
   useEffect(() => {
@@ -215,7 +226,7 @@ export function CheckoutForm() {
       ...(isAr ? ["المنتجات:"] : ["Items:"]),
       ...orderLines,
       "",
-      `${isAr ? "الإجمالي" : "Total"}: ${formatPrice(subtotal, currency, locale)} (COD)`,
+      `${isAr ? "الإجمالي" : "Total"}: ${formatPrice(grandTotal, currency, locale)} (COD)`,
       "",
       isAr ? "بيانات العميل:" : "Customer:",
       `${isAr ? "الاسم" : "Name"}: ${name}`,
@@ -416,7 +427,7 @@ export function CheckoutForm() {
                         {product ? productName(product, locale) : item.slug}
                       </div>
                       <div className={styles.itemMeta}>
-                        {t("cart.sizePrefix")} {item.size} • Qty: {item.quantity}
+                        {t("cart.sizePrefix")} {item.size} • {isAr ? "الكمية" : "Qty"}: {item.quantity}
                       </div>
                     </div>
                     <div>
@@ -428,9 +439,19 @@ export function CheckoutForm() {
             </div>
 
             <div className={styles.summaryRow}>
+              <span>{t("checkout.subtotal")}</span>
+              <span>{formatPrice(subtotal, currency, locale)}</span>
+            </div>
+
+            <div className={styles.summaryRow}>
+              <span>{t("checkout.shipping")}</span>
+              <span>{formatPrice(shipping, currency, locale)}</span>
+            </div>
+
+            <div className={styles.summaryRow}>
               <span>{t("checkout.total")}</span>
               <span className={styles.totalAmount}>
-                {formatPrice(subtotal, currency, locale)}
+                {formatPrice(grandTotal, currency, locale)}
               </span>
             </div>
 

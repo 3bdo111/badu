@@ -10,6 +10,7 @@ import {
   type Locale,
 } from "@/i18n/types";
 import { CartProvider } from "@/components/cart/CartProvider";
+import { Analytics } from "@/components/analytics/Analytics";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -172,6 +173,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body suppressHydrationWarning>
+        <Analytics />
         <I18nProvider initialLocale={locale}>
           <CartProvider>
             <CartDrawer />

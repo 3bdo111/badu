@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { getDb } from "@/lib/db/db";
+import { calculateShipping } from "@/lib/store/shipping";
 
 export type OrderStatus =
   | "PENDING"
@@ -242,7 +243,7 @@ export const serverOrderRepository = {
           orderId,
           orderNumber,
           subtotal,
-          subtotal, // Total = Subtotal for Cash on Delivery
+          subtotal + calculateShipping(subtotal, currency), // COD total = subtotal + flat shipping
           currency,
           customer.name.trim(),
           customer.phone.trim(),

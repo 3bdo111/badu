@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useCart } from "./CartProvider";
 import { formatPrice } from "@/lib/format";
+import { getVisibleProductBySlug } from "@/data/products";
 import { CartItemRow } from "./CartItemRow";
 import { EmptyCart } from "./EmptyCart";
 import { Button } from "@/components/ui/Button";
@@ -42,7 +43,9 @@ export function CartDrawer() {
 
   if (!isOpen) return null;
 
-  const currency = "USD";
+  // The cart stores ids/sizes only; take the currency from the product, like the cart page does.
+  const currency =
+    (items.length > 0 ? getVisibleProductBySlug(items[0].slug)?.currency : undefined) || "EGP";
 
   return (
     <div className={styles.backdrop} onClick={closeCart} aria-hidden="true">

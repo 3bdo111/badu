@@ -9,6 +9,7 @@ import { LOCALE_COOKIE, type Locale } from "@/i18n/types";
 import { Container } from "@/components/ui/Container";
 import { SunMark } from "@/components/ui/SunMark";
 import { Button } from "@/components/ui/Button";
+import { PurchaseEvent } from "@/components/analytics/PurchaseEvent";
 import styles from "../confirmation.module.css";
 
 export const metadata: Metadata = {
@@ -104,7 +105,14 @@ export default async function OrderConfirmationPage({
   }
 
   return (
-    <div className={styles.page}>
+    <>
+      <PurchaseEvent
+        orderNumber={order.orderNumber}
+        value={order.totalAmount}
+        currency={order.currency}
+        contentIds={order.items.map((i) => i.productId)}
+      />
+      <div className={styles.page}>
       <Container narrow>
         <div className={styles.card}>
           <div className={styles.header}>
@@ -143,10 +151,10 @@ export default async function OrderConfirmationPage({
           <table className={styles.itemsTable}>
             <thead>
               <tr>
-                <th>Item</th>
-                <th style={{ textAlign: "center" }}>Size</th>
-                <th style={{ textAlign: "center" }}>Qty</th>
-                <th style={{ textAlign: "end" }}>Price</th>
+                <th>{locale === "ar" ? "المنتج" : "Item"}</th>
+                <th style={{ textAlign: "center" }}>{locale === "ar" ? "المقاس" : "Size"}</th>
+                <th style={{ textAlign: "center" }}>{locale === "ar" ? "الكمية" : "Qty"}</th>
+                <th style={{ textAlign: "end" }}>{locale === "ar" ? "السعر" : "Price"}</th>
               </tr>
             </thead>
             <tbody>
@@ -165,7 +173,13 @@ export default async function OrderConfirmationPage({
             </tbody>
           </table>
 
-          {/* Total */}
+          {/* Shipping + total */}
+          {order.totalAmount > order.subtotalAmount && (
+            <div className={styles.totalRow}>
+              <span>{dict.checkout.shipping}</span>
+              <span>{formatPrice(order.totalAmount - order.subtotalAmount, order.currency, locale)}</span>
+            </div>
+          )}
           <div className={styles.totalRow}>
             <span>{dict.checkout.total}</span>
             <span className={styles.totalValue}>
@@ -191,5 +205,6 @@ export default async function OrderConfirmationPage({
         </div>
       </Container>
     </div>
+    </>
   );
 }
